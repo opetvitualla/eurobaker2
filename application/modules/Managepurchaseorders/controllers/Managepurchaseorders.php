@@ -87,6 +87,8 @@ class Managepurchaseorders extends MY_Controller {
 					"FK_purchase_id" 		=> $po_id,
 					"FK_raw_material_id" 	=> $item->item_id,
 					"quantity" 				=> $item->quantity,
+					"total" 				=> $item->total,
+					"price" 				=> $item->price,
 					"status" 				=> 1,
 					"item_unit" 			=>  $item->unit,
 					"date_added"			=> date("Y-m-d h:i:s")
@@ -134,6 +136,8 @@ class Managepurchaseorders extends MY_Controller {
 				$data = array(
 					"FK_purchase_id" 		=> $po_id,
 					"FK_raw_material_id" 	=> $item->item_id,
+					"total" 				=> $item->total,
+					"price" 				=> $item->price,
 					"quantity" 				=> $item->quantity,
 					"status" 				=> 1,
 					"date_added"			=> date("Y-m-d h:i:s")

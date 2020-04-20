@@ -193,7 +193,7 @@ $(document).ready(function () {
 				</select>
 			</td>
 			<td>
-				<input required readonly type="text" class="form-control item-price">
+				<input required type="text" class="form-control item-price">
 			</td>
 			<td>
 				<input required readonly type="text" class="form-control item-total">
@@ -248,13 +248,42 @@ $(document).ready(function () {
 		let row 		= $(this).closest('tr');
 		let selected 	= row.find(".itemselect option:selected");
 		let item_id 	= selected.attr("data-id")
-		let item 		= items.find(itm => itm.PK_raw_materials_id == item_id);
+		// let item 		= items.find(itm => itm.PK_raw_materials_id == item_id);
+		let price = row.find(".item-price").val();
 
-		let total 	= calculateTotal(item.sales_price, qty)
+
+		let total = calculateTotal(price, qty)
 		
 		row.find(".item-total").val(total)
 
 		generateOverTotal();
+	})
+
+	$(document).on("change", ".item-price", function () {
+
+		let price = Number($(this).val());
+		
+		if (isNaN(price)) {
+			$(this).val(1)
+			price = 1;
+		}
+
+		let row = $(this).closest('tr');
+		let selected = row.find(".itemselect option:selected");
+		let item_id = selected.attr("data-id")
+
+		if (item_id != undefined && item_id != "") {
+			let qty = row.find(".item-qty").val();
+
+			console.log(qty, price)
+
+			let total = calculateTotal(price, qty)
+
+			row.find(".item-total").val(total)
+
+			generateOverTotal();	
+		}
+		
 	})
 
 	// 
@@ -290,6 +319,8 @@ $(document).ready(function () {
 					item_id: item_ids,
 					quantity: row.find(".item-qty").val(),
 					unit: row.find(".item-unit").val(),
+					price: row.find(".item-price").val(),
+					total: row.find(".item-total").val(),
 				})
 			})
 
@@ -342,6 +373,8 @@ $(document).ready(function () {
 					item_id: item_ids,
 					quantity: row.find(".item-qty").val(),
 					unit: row.find(".item-unit").val(),
+					price: row.find(".item-price").val(),
+					total: row.find(".item-total").val(),
 				})
 			})
 
@@ -586,10 +619,10 @@ $(document).ready(function () {
 								</select>
 							</td>
 							<td>
-								<input required readonly type="text" value="${po_item.average_cost}" class="form-control item-price">
+								<input required type="text" value="${po_item.price}" class="form-control item-price">
 							</td>
 							<td>
-								<input required readonly type="text" value="${Number(po_item.quantity) * Number(po_item.average_cost)}" class="form-control item-total">
+								<input required readonly type="text" value="${Number(po_item.quantity) * Number(po_item.price)}" class="form-control item-total">
 							</td>
 							<td>
 								<a style="font-size:16px;" href="javascript:;" class="mx-auto fa fa-trash text-danger remove-po-item"></a>

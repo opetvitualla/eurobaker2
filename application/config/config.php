@@ -34,8 +34,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
- $config['base_url'] = 'https://eurobaker.web2.ph/inventory_system/';
-// $config['base_url'] = 'http://cbmcgroup.com.ph/portal/';
+//  $config['base_url'] = 'https://eurobaker.web2.ph/inventory_system/';
+$config['base_url'] = 'http://localhost/eurobaker/';
 
 /*
 |--------------------------------------------------------------------------
