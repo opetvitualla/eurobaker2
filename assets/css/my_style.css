@@ -31,7 +31,7 @@ hr{height: 1px;}
 .o-total{font-weight: bold; font-size: 17px;}
 .o-total span{font-weight: normal;}
 
-.btn {min-width: 85px;}
+.btn {min-width: 200px;}
 
 .sidebar-nav > ul > li > a.active { font-weight: 400; background: #e8e2e3; color: #26c6da; border-left: 3px solid #20aee3; border-left-color: rgb(32, 174, 227); color: #d42c36 !important; }
 

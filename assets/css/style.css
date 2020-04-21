@@ -21,8 +21,8 @@ Author: Themedesigner
 Email: niravjoshi87@gmail.com
 File: scss
 */
-/******************* 
-Global Styles 
+/*******************
+Global Styles
 *******************/
 @import url(../scss/icons/font-awesome/css/font-awesome.min.css);
 @import url(../scss/icons/simple-line-icons/css/simple-line-icons.css);
@@ -33,12 +33,27 @@ Global Styles
 @import url(../scss/icons/material-design-iconic-font/css/materialdesignicons.min.css);
 @import url(../css/spinners.css);
 @import url(../css/animate.css);
+
+@font-face {
+   font-family:"Gilroy-Light";
+   src: url(../fonts/Gilroy/Gilroy-Light.ttf);
+}
+
+@font-face {
+   font-family:"Gilroy-Medium";
+   src: url(../fonts/Gilroy/Gilroy-Medium.ttf);
+}
+
+@font-face {
+   font-family:"Gilroy-Regular";
+   src: url(../fonts/Gilroy/Gilroy-Regular.ttf);
+}
 * {
   outline: none; }
 
 body {
   background: #fff;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Gilroy-Regular", sans-serif;
   margin: 0;
   overflow-x: hidden;
   color: #67757c;
@@ -74,8 +89,8 @@ h4,
 h5,
 h6 {
   color: #455a64;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 400; }
+  font-family: "Gilroy-Regular", sans-serif;
+  font-weight: bold; }
 
 h1 {
   line-height: 48px;
@@ -1474,8 +1489,8 @@ Author: Themedesigner
 Email: niravjoshi87@gmail.com
 File: scss
 */
-/*============================================================== 
- For all pages 
+/*==============================================================
+ For all pages
  ============================================================== */
 #main-wrapper {
   width: 100%; }
@@ -1491,8 +1506,8 @@ File: scss
   font-size: 30px;
   font-weight: 500; }
 
-/*============================================================== 
- Index page 
+/*==============================================================
+ Index page
  ============================================================== */
 .topheader {
   padding: 15px 0px;
@@ -1825,21 +1840,21 @@ Author: Themedesigner
 Email: niravjoshi87@gmail.com
 File: scss
 */
-/*============================================================== 
- For Laptop & above all (1650px) 
+/*==============================================================
+ For Laptop & above all (1650px)
  ============================================================== */
-/*============================================================== 
- For Laptop & above all (1370px) 
+/*==============================================================
+ For Laptop & above all (1370px)
  ============================================================== */
-/*-- ============================================================== 
- Small Desktop & above all (1024px) 
+/*-- ==============================================================
+ Small Desktop & above all (1024px)
  ============================================================== */
 @media (min-width: 1024px) {
   .testimonial-text {
     width: 80%; } }
 
-/*-- ============================================================== 
- Ipad & above all(768px) 
+/*-- ==============================================================
+ Ipad & above all(768px)
  ============================================================== */
 @media (min-width: 768px) {
   .dual-bg {
@@ -1854,8 +1869,8 @@ File: scss
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#474d5d', endColorstr='#383c49', GradientType=1);
     /* IE6-9 */ } }
 
-/*-- ============================================================== 
- Phone and below ipad(767px) 
+/*-- ==============================================================
+ Phone and below ipad(767px)
  ============================================================== */
 @media (max-width: 767px) {
   .topheader .stylish-nav {

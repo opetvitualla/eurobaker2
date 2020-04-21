@@ -18,12 +18,18 @@
                     </div>
 
                     <div class="col-md-5 align-self-center text-right d-none d-md-block">
-                      <label for="startDate">Date :</label>
-                      <input name="startDate" id="startDate" value="<?= date('Y-m') ?>" class="date-picker" />
+                      <div class='input-group mb-3'>
+                        <input name="startDate" id="startDate" value="<?= date('Y-m') ?>" class="form-control date-picker" />
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <span class="ti-calendar"></span>
+                            </span>
+                        </div>
+                      </div>
                       <div class="mb-6">
                         <form class="export" action="<?= base_url('ManageReports/generateEndingInventory') ?>" method="post">
                             <input type="hidden" name="date" value="<?= date('Y-m') ?>">
-                            <button type="submit" class="btn btn-info"><i class="fa fa-download"></i> Export </button>
+                            <button type="submit" class="btn btn-info theme-bg"><i class="fa fa-download"></i> Export </button>
                         </form>
                       </div>
 

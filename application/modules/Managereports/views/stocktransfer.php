@@ -31,7 +31,7 @@
                         <form class="export" action="<?= base_url('ManageReports/generateTransferReports') ?>" method="post">
                             <input type="hidden" name="date_start" value="<?= date('Y-m-d') ?>">
                             <input type="hidden" name="date_end" value="<?= date('Y-m-d') ?>">
-                            <button type="submit" class="btn btn-info"><i class="fa fa-download"></i> Export </button>
+                            <button type="submit" class="btn btn-info theme-bg"><i class="fa fa-download"></i> Export </button>
                         </form>
                       </div>
 
