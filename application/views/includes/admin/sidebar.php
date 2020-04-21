@@ -9,7 +9,11 @@
                 </li>
                 <li> <a class="waves-effect waves-dark" href="<?= base_url('Managesuppliers/') ?>" aria-expanded="false"><i class="icon-Truck"></i><span class="hide-menu">Supplier</span></a>
                 </li>
-                <li> <a class="waves-effect waves-dark" href="<?= base_url('Managerawmaterials/') ?>" aria-expanded="false"><i class="icon-Bag-Items"></i><span class="hide-menu">Raw Materials</span></a>
+                <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="icon-Bag-Items"></i><span class="hide-menu">Raw Materials</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="<?= base_url('Managerawmaterials/') ?>">List of Raw Materials</a></li>
+                        <li><a href="<?= base_url('Managerawmaterials/Categories') ?>">Categories</a></li>
+                    </ul>
                 </li>
                 <li> <a class="waves-effect waves-dark" href="<?= base_url('Manageiteminventory/') ?>" aria-expanded="false"><i class="icon-Bar-Chart  "></i><span class="hide-menu">Item Inventory </span></a>
                 </li>

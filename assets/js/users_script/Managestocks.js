@@ -116,6 +116,7 @@ $(document).ready(function() {
         let datas = res.data.data;
         let po_items = datas[0].po_items
         $(".po-table.transfer").html("")
+        // $('.strno').html()
 
         po_items.map(po_item => {
 
@@ -288,7 +289,7 @@ $(document).ready(function() {
 		// }
 
 		confirm_alert("Are you sure to transfer these items?").then(res => {
-			let frmdata = new FormData();
+			var frmdata = new FormData($(this)[0]);
 
 			let po_items = [];
 			let total_items = $(".total-item").html();

@@ -54,6 +54,7 @@ class Managestocks extends MY_Controller {
 
 		public function save_stock_transfer() {
 			$transfer = $this->input->post();
+
 			if(!empty($transfer)){
 
 				$data = array(
@@ -61,6 +62,7 @@ class Managestocks extends MY_Controller {
 					"FK_origin_branch_id" 	  => 1,
 					"FK_destination_branch_id" 	  => 2,
 					"stock_out" 	  => $transfer['total_items'],
+					'str_no'			=>	$transfer['str_no'],
 					"status"		  => 0,
 				);
 

@@ -86,6 +86,14 @@
                                           <!--/span-->
                                       </div>
                                       <div class="row">
+                                          <div class="col-md-4">
+                                              <div class="form-group">
+                                                  <label>STR No./BI no.:</label>
+                                                  <input type="number" class="form-control" name="str_no" value="">
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="row">
                                         <table class="table table-bordered po-table transfer">
                                             <thead>
                                                 <tr>
@@ -223,6 +231,14 @@
                                         </div>
                                     </div>
                                     <!--/span-->
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>STR No./BI no.:</label>
+                                            <p class="strno"></p>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                   <table class="table table-bordered po-table transfer-view">
