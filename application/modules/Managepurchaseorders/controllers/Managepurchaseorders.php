@@ -37,6 +37,7 @@ class Managepurchaseorders extends MY_Controller {
 		
 		$column_order = array(
 			'PK_purchase_order_id',
+			'purchase_order_no',
 			'outlet.outlet_name',
 			'sup.supplier_name',
 			'po.total_amount',
@@ -47,7 +48,7 @@ class Managepurchaseorders extends MY_Controller {
 			"eb_suppliers sup" => "sup.PK_supplier_id = po.FK_supplier_id",
 			"eb_outlets outlet" => "outlet.PK_branch_id = po.FK_branch_id",
 		);
-		$select       = "PK_purchase_order_id, outlet.outlet_name, sup.supplier_name, po.status, po.date_added, po.total_amount";
+		$select       = "PK_purchase_order_id, purchase_order_no, outlet.outlet_name, sup.supplier_name, po.status, po.date_added, po.total_amount";
 		$where        = array(
 			'po.status !=' => "deleted",
 		);
@@ -72,6 +73,7 @@ class Managepurchaseorders extends MY_Controller {
 			$data = array(
 				"FK_supplier_id"  => $post["supplier_id"],
 				"FK_user_id" 	  => 1, // change if naa nay user
+				"purchase_order_no" => "N/A",
 				"FK_branch_id" 	  => 1,
 				"status"		  => "pending",
 				"total_amount"	  => $post["over_total"],
@@ -228,10 +230,14 @@ class Managepurchaseorders extends MY_Controller {
 		$response = array("result" => "error");
 
 		$po_id = $post["po_id"];
-		$disc_items = json_decode($post["disc_item"]);
+		$po_no = $post["po_no"];
+
+		if(!empty($post["disc_item"])){
+			$disc_items = json_decode($post["disc_item"]);
+		}
+		
 
 		if(!empty($po_id)){
-			
 			$data = array(
 				"FK_purchase_id" => $po_id,
 				"FK_received_user_id" => get_user_id(),
@@ -241,7 +247,7 @@ class Managepurchaseorders extends MY_Controller {
 
 			insertData("eb_purchase_order_received", $data);
 
-			$set = array( "status" => "received", );
+			$set = array( "status" => "received",  "purchase_order_no" => "{$po_no}");
 			$where = array( "PK_purchase_order_id" => "$po_id" );
 
 			updateData("eb_purchase_order", $set, $where);

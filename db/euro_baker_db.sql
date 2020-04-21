@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 20, 2020 at 11:44 AM
+-- Generation Time: Apr 21, 2020 at 12:13 PM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 5.6.31
 
@@ -153,6 +153,7 @@ INSERT INTO `eb_po_discrepancy_items` (`po_discrepancy_item_id`, `fk_po_discrepa
 
 CREATE TABLE `eb_purchase_order` (
   `PK_purchase_order_id` int(11) NOT NULL,
+  `purchase_order_no` varchar(60) NOT NULL,
   `FK_supplier_id` int(11) NOT NULL,
   `FK_user_id` int(11) NOT NULL,
   `FK_branch_id` int(11) NOT NULL,
@@ -166,18 +167,19 @@ CREATE TABLE `eb_purchase_order` (
 -- Dumping data for table `eb_purchase_order`
 --
 
-INSERT INTO `eb_purchase_order` (`PK_purchase_order_id`, `FK_supplier_id`, `FK_user_id`, `FK_branch_id`, `status`, `date_added`, `total_amount`, `remarks`) VALUES
-(8, 3, 1, 1, 'received', '2020-03-25 07:40:25', 1814.46, ''),
-(9, 3, 1, 1, 'pending', '2020-03-25 07:48:24', 387.87, ''),
-(10, 3, 1, 1, 'pending', '2020-03-26 03:52:27', 331.85, ''),
-(11, 3, 1, 1, 'received', '2020-04-02 12:04:56', 1080.14, ''),
-(12, 5, 1, 1, 'pending', '2020-04-09 07:10:40', 3600.34, ''),
-(13, 5, 1, 1, 'pending', '2020-04-09 07:14:08', 5.1, ''),
-(14, 1, 1, 1, 'pending', '2020-04-10 07:19:46', 1039, ''),
-(15, 3, 1, 1, 'processing', '2020-04-13 10:00:43', 45, ''),
-(16, 3, 1, 1, 'received', '2020-04-13 10:08:02', 584.31, ''),
-(17, 3, 1, 1, 'received', '2020-04-13 10:48:51', 769.5, ''),
-(18, 3, 1, 1, 'pending', '2020-04-20 10:12:05', 3412.68, '');
+INSERT INTO `eb_purchase_order` (`PK_purchase_order_id`, `purchase_order_no`, `FK_supplier_id`, `FK_user_id`, `FK_branch_id`, `status`, `date_added`, `total_amount`, `remarks`) VALUES
+(8, '12345', 3, 1, 1, 'received', '2020-03-25 07:40:25', 1814.46, ''),
+(9, 'N/A', 3, 1, 1, 'pending', '2020-03-25 07:48:24', 387.87, ''),
+(10, 'N/A', 3, 1, 1, 'pending', '2020-03-26 03:52:27', 331.85, ''),
+(11, '12345', 3, 1, 1, 'received', '2020-04-02 12:04:56', 1080.14, ''),
+(12, 'N/A', 5, 1, 1, 'pending', '2020-04-09 07:10:40', 3600.34, ''),
+(13, 'N/A', 5, 1, 1, 'pending', '2020-04-09 07:14:08', 5.1, ''),
+(14, 'N/A', 1, 1, 1, 'pending', '2020-04-10 07:19:46', 1039, ''),
+(15, 'N/A', 3, 1, 1, 'processing', '2020-04-13 10:00:43', 45, ''),
+(16, '123166', 3, 1, 1, 'received', '2020-04-13 10:08:02', 584.31, ''),
+(17, '135661', 3, 1, 1, 'received', '2020-04-13 10:48:51', 769.5, ''),
+(18, 'N/A', 3, 1, 1, 'processing', '2020-04-20 10:12:05', 3412.68, ''),
+(19, '156123', 2, 1, 1, 'received', '2020-04-21 11:51:28', 322.85, '');
 
 -- --------------------------------------------------------
 
@@ -247,8 +249,10 @@ INSERT INTO `eb_purchase_order_item` (`PK_po_item_id`, `FK_purchase_id`, `FK_raw
 (64, 16, 11, 1, 0, 0, '1', 'pc', '2020-04-13 10:08:02'),
 (65, 17, 4, 4, 0, 0, '1', 'kg', '2020-04-13 10:48:51'),
 (66, 17, 6, 5, 0, 0, '1', 'pc', '2020-04-13 10:48:51'),
-(73, 18, 1, 11, 3166.68, 287.88, '1', '', '2020-04-20 10:23:06'),
-(74, 18, 8, 2, 246, 123, '1', '', '2020-04-20 10:23:06');
+(79, 18, 1, 11, 3166.68, 287.88, '1', '', '2020-04-21 11:41:48'),
+(80, 18, 8, 2, 246, 123, '1', '', '2020-04-21 11:41:48'),
+(81, 19, 2, 1, 311.85, 311.85, '1', 'Sack', '2020-04-21 11:51:28'),
+(82, 19, 7, 1, 11, 11, '1', 'pc', '2020-04-21 11:51:28');
 
 -- --------------------------------------------------------
 
@@ -272,7 +276,8 @@ INSERT INTO `eb_purchase_order_received` (`PK_po_received_id`, `FK_purchase_id`,
 (2, 8, 1, 1, '2020-03-25 07:40:46'),
 (4, 11, 1, 1, '2020-04-09 09:31:31'),
 (5, 16, 1, 1, '2020-04-13 10:08:23'),
-(6, 17, 1, 1, '2020-04-13 10:49:30');
+(6, 17, 1, 1, '2020-04-13 10:49:30'),
+(7, 19, 1, 1, '2020-04-21 12:08:21');
 
 -- --------------------------------------------------------
 
@@ -3825,7 +3830,7 @@ ALTER TABLE `eb_po_discrepancy_items`
 -- AUTO_INCREMENT for table `eb_purchase_order`
 --
 ALTER TABLE `eb_purchase_order`
-  MODIFY `PK_purchase_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `PK_purchase_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT for table `eb_purchase_order_discrepancy`
 --
@@ -3835,12 +3840,12 @@ ALTER TABLE `eb_purchase_order_discrepancy`
 -- AUTO_INCREMENT for table `eb_purchase_order_item`
 --
 ALTER TABLE `eb_purchase_order_item`
-  MODIFY `PK_po_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `PK_po_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 --
 -- AUTO_INCREMENT for table `eb_purchase_order_received`
 --
 ALTER TABLE `eb_purchase_order_received`
-  MODIFY `PK_po_received_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `PK_po_received_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `eb_raw_materials`
 --

@@ -39,6 +39,7 @@
                                 <thead>
                                     <tr>
                                         <th>P.O No.</th>
+                                        <th>P.O Number</th>
                                         <th>Outlet Name</th>
                                         <th>Supplier</th>
                                         <th>Status</th>

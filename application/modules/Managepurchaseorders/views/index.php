@@ -39,6 +39,7 @@
                                     <table id="purchase_Orders" class="table table-bordered table-striped text-center">
                                         <thead>
                                             <tr>
+                                                <th>P.O ID</th>
                                                 <th>P.O No.</th>
                                                 <th>Outlet Name</th>
                                                 <th>Supplier</th>
@@ -203,7 +204,7 @@
                     <div class="modal-dialog modal-lg" style="max-width:900px;">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Receiveds Purchase Order</h5>
+                                <h5 class="modal-title">Received Purchase Order</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -211,6 +212,12 @@
                             <div class="modal-body">
                                 <div class="form-body">
                                     <div class="card-body">
+                                        <div class="form-row mb-4">
+                                            <div class="col-md-4">
+                                                <label class="fbold" for="supplier">Purchase Order No:</label>
+                                                <div class="div_value purchase_no_received">sample text</div>
+                                            </div>
+                                        </div>                        
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label class="fbold" for="supplier">Supplier</label>
@@ -278,6 +285,12 @@
                                     <input type="hidden" name="po_id" class="po_received_id">
                                     <div class="form-body">
                                         <div class="card-body">
+                                            <div class="form-row mb-4">
+                                                <div class="col-md-4">
+                                                    <label class="fbold" for="supplier">Purchase Order No:</label>
+                                                    <input type="text" id="purchase_no" required class="form-control">
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <label class="fbold" for="supplier">Supplier</label>

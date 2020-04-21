@@ -49,6 +49,7 @@ $(document).ready(function () {
 					return str;
 				}
 			},
+			{ "data": "purchase_order_no" },
 			{ "data": "outlet_name" },
 			{ "data": "supplier_name" },
 			{
@@ -115,6 +116,7 @@ $(document).ready(function () {
 					return str;
 				}
 			},
+			{ "data": "purchase_order_no" },
 			{ "data": "outlet_name" },
 			{ "data": "supplier_name" },
 			{
@@ -399,7 +401,7 @@ $(document).ready(function () {
 		confirm_alert("Are you sure to recieve this purchase order?").then(res => {
 			let frmdata = new FormData();
 			let po_id = $(".po_received_id").val()
-			
+			let po_no = $("#purchase_no").val();
 
 			let disc_items = [];
 
@@ -418,6 +420,7 @@ $(document).ready(function () {
 			let dreason = $("#discrepancy_reason").val();
 
 			frmdata.append("po_id", po_id);
+			frmdata.append("po_no", po_no);
 			frmdata.append("disc_item", JSON.stringify(disc_items));
 			frmdata.append("reason", dreason);
 
@@ -536,6 +539,7 @@ $(document).ready(function () {
 				$(".table-po-body-received").html("")
 				$(".po_receive_supplier").html(result[0].supplier_name)
 				$(".po_received_date").html(result[0].date_received)
+				$(".purchase_no_received").html(result[0].purchase_order_no)
 
 				let po_items = result[0].po_items
 
