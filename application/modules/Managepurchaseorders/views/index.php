@@ -335,7 +335,7 @@
                                                     </div>
                                                     <hr>
                                                     <div class="card-body text-right ">
-                                                        <button type="submit" class="btn btn-success btn-generate-arf"> Submit</button>                            
+                                                        <button type="submit" class="btn btn-success"> Submit</button>                            
                                                         <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close"> Close</button>
                                                     </div>
                                                 </div>
