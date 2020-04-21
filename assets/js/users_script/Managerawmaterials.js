@@ -162,4 +162,113 @@ $(document).ready(function () {
                }
           });
      });
+
+     var table_raw_materials_cat = $('#raw_Materials_Cat').DataTable({
+          "language": { "infoFiltered": "" },
+          "processing": true, //Feature control the processing indicator.
+          "serverSide": true, //Feature control DataTables' server-side processing mode.
+          "responsive": true,
+          "order": [[0, 'desc']], //Initial no order.
+          "columns": [
+               {
+                    "data": "PK_category_id", "render": function (data, type, row, meta) {
+                         var str = 'CAT-' + row.PK_category_id;
+                         return str;
+                    }
+               },
+               { "data": "category_name" },
+               { "data": "date_added" },
+               {
+                    "data": "PK_category_id", "render": function (data, type, row, meta) {
+                         var str = '<div class="action-btn-div"><a href="javascript:;" id="edit_Category_Details" data-id="' + row.PK_category_id + '"><i class="fa fa-edit"></i></a>';
+                         str += '<a href="javascript:;" id="view_Category_Details" class="text-success"  data-id="' + row.PK_category_id + '"><i class="fa fa-eye"></i></a></div>';
+                         return str;
+                    }
+               },
+          ],
+          "ajax": {
+               "url": base_url + "Managerawmaterials/getCategories",
+               "type": "POST"
+          },
+          "columnDefs": [
+               {
+                    "targets": [3],
+                    "orderable": false,
+               },
+          ],
+     });
+
+    $(document).on('submit', '#Raw_Material_Cat_Add', function (e) {
+         e.preventDefault();
+         var formData = new FormData($(this)[0]);
+
+         $.ajax({
+              url: base_url + 'Managerawmaterials/addCategory',
+              data: formData,
+              processData: false,
+              contentType: false,
+              cache: false,
+              type: 'POST',
+              success: function (data) {
+                   s_alert("Successfully Saved!", "success");
+                   table_raw_materials_cat.ajax.reload();
+                   $('.add_raw_material_cat_modal').modal('hide');
+              }
+         });
+    });
+
+    $(document).on('click', '#view_Category_Details', function () {
+         var id = $(this).data('id');
+         $('.view_category_details_modal').modal('show');
+         $('.view_category_details_modal input').prop('disabled', true);
+
+         $.ajax({
+              url: base_url + 'Managerawmaterials/viewCategoryDetails',
+              type: "post",
+              data: { "id": id },
+              dataType: 'json',
+              success: function (data) {
+                   $('.view_category_details_modal input[name="category_name"]').val(data.category_name);
+              }
+         });
+    });
+
+    $(document).on('click', '#edit_Category_Details', function () {
+         var id = $(this).data('id');
+         console.log(id);
+         $('.edit_category_details_modal').modal('show');
+
+         $.ajax({
+              url: base_url + 'Managerawmaterials/viewCategoryDetails',
+              type: "post",
+              data: { "id": id },
+              dataType: 'json',
+              success: function (data) {
+                   $('.edit_category_details_modal input[name="category_name"]').val(data.category_name);
+                   $('.edit_category_details_modal .edit_Button').attr('data-id', data.PK_category_id);
+              }
+         });
+    });
+
+    $(document).on('submit', '#Raw_Material_Cat_Edit', function (e) {
+         e.preventDefault();
+         var formData = new FormData($(this)[0]);
+         var dataid = $('#Raw_Material_Cat_Edit .edit_Button').data('id');
+         formData.append('id', dataid)
+
+         $.ajax({
+              url: base_url + 'Managerawmaterials/updateCategoryDetails',
+              data: formData,
+              processData: false,
+              contentType: false,
+              cache: false,
+              type: 'POST',
+              success: function (data) {
+                   s_alert("Successfully Saved!", "success");
+                   table_raw_materials_cat.ajax.reload();
+                   $('.edit_category_details_modal').modal('hide');
+              }
+         });
+    });
+
 })
