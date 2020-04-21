@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.4
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Apr 20, 2020 at 05:03 AM
--- Server version: 5.7.29
--- PHP Version: 7.3.6
+-- Host: 127.0.0.1
+-- Generation Time: Apr 20, 2020 at 11:44 AM
+-- Server version: 10.1.25-MariaDB
+-- PHP Version: 5.6.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `eurobake_inventory_db`
+-- Database: `euro_baker_db`
 --
 
 -- --------------------------------------------------------
@@ -176,7 +176,8 @@ INSERT INTO `eb_purchase_order` (`PK_purchase_order_id`, `FK_supplier_id`, `FK_u
 (14, 1, 1, 1, 'pending', '2020-04-10 07:19:46', 1039, ''),
 (15, 3, 1, 1, 'processing', '2020-04-13 10:00:43', 45, ''),
 (16, 3, 1, 1, 'received', '2020-04-13 10:08:02', 584.31, ''),
-(17, 3, 1, 1, 'received', '2020-04-13 10:48:51', 769.5, '');
+(17, 3, 1, 1, 'received', '2020-04-13 10:48:51', 769.5, ''),
+(18, 3, 1, 1, 'pending', '2020-04-20 10:12:05', 3412.68, '');
 
 -- --------------------------------------------------------
 
@@ -211,6 +212,8 @@ CREATE TABLE `eb_purchase_order_item` (
   `FK_purchase_id` int(11) NOT NULL,
   `FK_raw_material_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
+  `total` float NOT NULL,
+  `price` float NOT NULL,
   `status` varchar(55) NOT NULL,
   `item_unit` varchar(50) NOT NULL,
   `date_added` datetime NOT NULL
@@ -220,30 +223,32 @@ CREATE TABLE `eb_purchase_order_item` (
 -- Dumping data for table `eb_purchase_order_item`
 --
 
-INSERT INTO `eb_purchase_order_item` (`PK_po_item_id`, `FK_purchase_id`, `FK_raw_material_id`, `quantity`, `status`, `item_unit`, `date_added`) VALUES
-(40, 8, 1, 3, '1', 'Sack', '2020-03-25 07:40:25'),
-(41, 8, 6, 3, '1', 'Sack', '2020-03-25 07:40:25'),
-(42, 8, 2, 3, '1', 'Sack', '2020-03-25 07:40:25'),
-(43, 9, 9, 1, '1', 'Sack', '2020-03-25 07:48:24'),
-(44, 9, 1, 1, '1', 'Sack', '2020-03-25 07:48:24'),
-(45, 9, 5, 1, '1', 'Sack', '2020-03-25 07:48:24'),
-(46, 10, 5, 1, '1', 'Sack', '2020-03-26 03:52:27'),
-(47, 10, 2, 1, '1', 'Sack', '2020-03-26 03:52:28'),
-(48, 11, 9, 2, '1', 'Sack', '2020-04-02 12:04:56'),
-(49, 11, 2, 2, '1', 'Sack', '2020-04-02 12:04:56'),
-(50, 11, 11, 1, '1', 'Sack', '2020-04-02 12:04:56'),
-(51, 12, 2, 11, '1', 'pc', '2020-04-09 07:10:40'),
-(52, 12, 8, 1, '1', 'Sack', '2020-04-09 07:10:40'),
-(53, 13, 6, 1, '1', 'pc', '2020-04-09 07:14:08'),
-(54, 14, 5, 5, '1', 'pc', '2020-04-10 07:19:46'),
-(55, 14, 16, 3, '1', 'kg', '2020-04-10 07:19:46'),
-(56, 14, 2, 3, '1', 'kg', '2020-04-10 07:19:46'),
-(61, 15, 5, 1, '1', '', '2020-04-13 10:05:52'),
-(62, 15, 7, 1, '1', '', '2020-04-13 10:05:52'),
-(63, 16, 1, 1, '1', 'Sack', '2020-04-13 10:08:02'),
-(64, 16, 11, 1, '1', 'pc', '2020-04-13 10:08:02'),
-(65, 17, 4, 4, '1', 'kg', '2020-04-13 10:48:51'),
-(66, 17, 6, 5, '1', 'pc', '2020-04-13 10:48:51');
+INSERT INTO `eb_purchase_order_item` (`PK_po_item_id`, `FK_purchase_id`, `FK_raw_material_id`, `quantity`, `total`, `price`, `status`, `item_unit`, `date_added`) VALUES
+(40, 8, 1, 3, 0, 0, '1', 'Sack', '2020-03-25 07:40:25'),
+(41, 8, 6, 3, 0, 0, '1', 'Sack', '2020-03-25 07:40:25'),
+(42, 8, 2, 3, 0, 0, '1', 'Sack', '2020-03-25 07:40:25'),
+(43, 9, 9, 1, 0, 0, '1', 'Sack', '2020-03-25 07:48:24'),
+(44, 9, 1, 1, 0, 0, '1', 'Sack', '2020-03-25 07:48:24'),
+(45, 9, 5, 1, 0, 0, '1', 'Sack', '2020-03-25 07:48:24'),
+(46, 10, 5, 1, 0, 0, '1', 'Sack', '2020-03-26 03:52:27'),
+(47, 10, 2, 1, 0, 0, '1', 'Sack', '2020-03-26 03:52:28'),
+(48, 11, 9, 2, 0, 0, '1', 'Sack', '2020-04-02 12:04:56'),
+(49, 11, 2, 2, 0, 0, '1', 'Sack', '2020-04-02 12:04:56'),
+(50, 11, 11, 1, 0, 0, '1', 'Sack', '2020-04-02 12:04:56'),
+(51, 12, 2, 11, 0, 0, '1', 'pc', '2020-04-09 07:10:40'),
+(52, 12, 8, 1, 0, 0, '1', 'Sack', '2020-04-09 07:10:40'),
+(53, 13, 6, 1, 0, 0, '1', 'pc', '2020-04-09 07:14:08'),
+(54, 14, 5, 5, 0, 0, '1', 'pc', '2020-04-10 07:19:46'),
+(55, 14, 16, 3, 0, 0, '1', 'kg', '2020-04-10 07:19:46'),
+(56, 14, 2, 3, 0, 0, '1', 'kg', '2020-04-10 07:19:46'),
+(61, 15, 5, 1, 0, 0, '1', '', '2020-04-13 10:05:52'),
+(62, 15, 7, 1, 0, 0, '1', '', '2020-04-13 10:05:52'),
+(63, 16, 1, 1, 0, 0, '1', 'Sack', '2020-04-13 10:08:02'),
+(64, 16, 11, 1, 0, 0, '1', 'pc', '2020-04-13 10:08:02'),
+(65, 17, 4, 4, 0, 0, '1', 'kg', '2020-04-13 10:48:51'),
+(66, 17, 6, 5, 0, 0, '1', 'pc', '2020-04-13 10:48:51'),
+(73, 18, 1, 11, 3166.68, 287.88, '1', '', '2020-04-20 10:23:06'),
+(74, 18, 8, 2, 246, 123, '1', '', '2020-04-20 10:23:06');
 
 -- --------------------------------------------------------
 
@@ -3796,145 +3801,121 @@ ALTER TABLE `eb_users_meta`
 --
 ALTER TABLE `eb_forgot_password_keys`
   MODIFY `PK_forget_id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `eb_item_inventory`
 --
 ALTER TABLE `eb_item_inventory`
   MODIFY `PK_inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
-
 --
 -- AUTO_INCREMENT for table `eb_outlet`
 --
 ALTER TABLE `eb_outlet`
   MODIFY `PK_branch_id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `eb_outlets`
 --
 ALTER TABLE `eb_outlets`
   MODIFY `PK_branch_id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
 --
 -- AUTO_INCREMENT for table `eb_po_discrepancy_items`
 --
 ALTER TABLE `eb_po_discrepancy_items`
   MODIFY `po_discrepancy_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
 --
 -- AUTO_INCREMENT for table `eb_purchase_order`
 --
 ALTER TABLE `eb_purchase_order`
-  MODIFY `PK_purchase_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
-
+  MODIFY `PK_purchase_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `eb_purchase_order_discrepancy`
 --
 ALTER TABLE `eb_purchase_order_discrepancy`
   MODIFY `pk_po_discrepancy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
 --
 -- AUTO_INCREMENT for table `eb_purchase_order_item`
 --
 ALTER TABLE `eb_purchase_order_item`
-  MODIFY `PK_po_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
-
+  MODIFY `PK_po_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 --
 -- AUTO_INCREMENT for table `eb_purchase_order_received`
 --
 ALTER TABLE `eb_purchase_order_received`
   MODIFY `PK_po_received_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
 --
 -- AUTO_INCREMENT for table `eb_raw_materials`
 --
 ALTER TABLE `eb_raw_materials`
   MODIFY `PK_raw_materials_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2954;
-
 --
 -- AUTO_INCREMENT for table `eb_raw_materials_cat`
 --
 ALTER TABLE `eb_raw_materials_cat`
   MODIFY `PK_category_id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
 --
 -- AUTO_INCREMENT for table `eb_raw_materials_list`
 --
 ALTER TABLE `eb_raw_materials_list`
   MODIFY `PK_raw_materials_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
 --
 -- AUTO_INCREMENT for table `eb_segment`
 --
 ALTER TABLE `eb_segment`
   MODIFY `PK_segment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
 --
 -- AUTO_INCREMENT for table `eb_so_discrepancy_items`
 --
 ALTER TABLE `eb_so_discrepancy_items`
   MODIFY `so_discrepancy_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
 --
 -- AUTO_INCREMENT for table `eb_stock_out`
 --
 ALTER TABLE `eb_stock_out`
   MODIFY `PK_stock_out_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
 --
 -- AUTO_INCREMENT for table `eb_stock_out_approved`
 --
 ALTER TABLE `eb_stock_out_approved`
   MODIFY `pk_stockout_approved_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
 --
 -- AUTO_INCREMENT for table `eb_stock_out_discrepancy`
 --
 ALTER TABLE `eb_stock_out_discrepancy`
   MODIFY `pk_so_discrepancy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
 --
 -- AUTO_INCREMENT for table `eb_stock_out_items`
 --
 ALTER TABLE `eb_stock_out_items`
   MODIFY `PK_stock_out_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
 --
 -- AUTO_INCREMENT for table `eb_stock_transfer`
 --
 ALTER TABLE `eb_stock_transfer`
   MODIFY `PK_stock_transfer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
-
 --
 -- AUTO_INCREMENT for table `eb_stock_transfer_items`
 --
 ALTER TABLE `eb_stock_transfer_items`
   MODIFY `PK_transfer_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
 --
 -- AUTO_INCREMENT for table `eb_suppliers`
 --
 ALTER TABLE `eb_suppliers`
   MODIFY `PK_supplier_id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
 --
 -- AUTO_INCREMENT for table `eb_units`
 --
 ALTER TABLE `eb_units`
   MODIFY `PK_unit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
 --
 -- AUTO_INCREMENT for table `eb_users`
 --
 ALTER TABLE `eb_users`
   MODIFY `PK_user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
 --
 -- AUTO_INCREMENT for table `eb_users_meta`
 --
 ALTER TABLE `eb_users_meta`
-  MODIFY `PK_user_meta_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-COMMIT;
+  MODIFY `PK_user_meta_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
