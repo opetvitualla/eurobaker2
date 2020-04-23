@@ -5,6 +5,8 @@
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
 
+                <li> <a class="waves-effect waves-dark" href="<?= base_url('Manageemployees') ?>" aria-expanded="false"><i class="icon-User "></i><span class="hide-menu">Manage Users</span></a>
+                </li>
                 <li> <a class="waves-effect waves-dark" href="<?= base_url('Managepurchaseorders') ?>" aria-expanded="false"><i class="icon-Remove-Cart "></i><span class="hide-menu">Purchase Order</span></a>
                 </li>
                 <li> <a class="waves-effect waves-dark" href="<?= base_url('Managesuppliers/') ?>" aria-expanded="false"><i class="icon-Truck"></i><span class="hide-menu">Supplier</span></a>
