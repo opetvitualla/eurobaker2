@@ -270,5 +270,14 @@ $(document).ready(function () {
               }
          });
     });
+     
+     
+     // units
+
+     $(".show-add_unit-modal").click(function () {
+          $(".add_unit_modal").modal();
+     })
+
+     $("#unit_conversion_table").DataTable();
 
 })
