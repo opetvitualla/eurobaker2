@@ -13,14 +13,10 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label class="fbold" for="supplier">Select Item</label>
-                                    <select name="segment_id" class="supplier_select form-control" style="width: 100%;">
-                                        <optgroup label="Select Segment">
-                                            <?php
-                                                foreach ($segments as $seg) {
-                                                    echo "<option value='{$seg->PK_segment_id}' >{$seg->segment_name}</option>";
-                                                }
-                                            ?>
+                                    <label class="fbold">Select Item</label>
+                                    <select name="item_selects" class="item_dropdown form-control" style="width: 100%;">
+                                        <optgroup label="Select Item">
+                                            
                                         </optgroup>
                                     </select>
                                 </div>
@@ -33,19 +29,19 @@
                                     <thead>
                                         <tr>
                                             <td>Item Name</td>
-                                            <td>Quantity</td>
-                                            <td style="width: 122px;">Item Unit</td>
-                                            <td>Price</td>
-                                            <td>Total</td>
+                                            <td>Unit of Measurement</td>
+                                            <td style="width: 122px;">Value</td>
+                                            <td>New Unit</td>
+                                            <td style="width: 122px;">Value</td>
                                             <td>Action</td>
                                         </tr>
                                     </thead>
-                                    <tbody class="table-po-body">
+                                    <tbody class="table-unit-body">
                                     </tbody>
                                 </table>
                                 <div class="row">
                                     <div class="col-md-12 text-center">
-                                        <button type="button" class="btn btn-default btn-add-item"><i class="fa fa-plus"></i> Add More Item</button>
+                                        <button type="button" class="btn btn-default btn-add-item-unit"><i class="fa fa-plus"></i> Add More Item</button>
 
                                     </div>
                                 </div>

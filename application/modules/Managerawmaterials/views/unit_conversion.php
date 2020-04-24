@@ -52,7 +52,7 @@
                                                 <td>3</td>
                                                 <td>4-23-2020</td>
                                                 <td>
-                                                    <a href="" class="text-success"><i class="fa fa-eye"></i></a>
+                                                     <a href="" class="text-success"><i class="fa fa-eye"></i></a>
                                                 </td>
                                             </tr>
                                             <tr>
