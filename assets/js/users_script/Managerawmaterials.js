@@ -1,9 +1,16 @@
 $(document).ready(function () {
      var base_url = $('.base_url').val();
      let items = [];
+     let all_units = [];
+     axios.get(`${base_url}Global_api/get_units`).then(res => {
+          all_units = res.data.data;
+     })
+
      axios.get(`${base_url}Global_api/get_items`).then(res => {
           items = res.data.data;
      })
+
+
      $('select[name="related_item"]').select2();
 
      var table_raw_materials = $('#raw_Materials').DataTable({
@@ -270,6 +277,98 @@ $(document).ready(function () {
               }
          });
     });
+     
+     
+     // units
+     $(".show-add_unit-modal").click(function () {
+          
+
+          let item_option = "<option value=''>Please select</option>";
+          items.map(item => {
+               item_option += `<option value="${item.PK_raw_materials_id}">${item.material_name}</option>`;
+          })
+
+          $(".item_dropdown").html(item_option);
+          $(".item_dropdown").select2();
+         
+          $(".add_unit_modal").modal();
+     })
+
+     $("#unit_conversion_table").DataTable();
+
+     $(".btn-add-item-unit").click(function () {
+          let item_id = $(".item_dropdown").val();
+
+          if (item_id == undefined || item_id == "" || item_id == 0) {
+               s_alert("Select an item first", "error")
+               return;
+          }
+
+          let res = items.find(item => item.PK_raw_materials_id == item_id)
+
+          let i_units = "";
+
+          all_units.map(unit => {
+               i_units += `<option value="${unit.PK_unit_id}">${unit.unit_name}</option>`
+          })
+
+          if (res != undefined) {
+               let html = `
+                   <tr>
+                      <td><span>${res.material_name}</span></td>
+                      <td>${res.unit}</td>
+                      <td><input class="form-control uom_value" type="number"/></td>
+                      <td>
+                         <select class="form-control ">
+                              ${i_units}
+                         </select>
+                      </td>
+                      <td><input class="form-control new_value" type="number"/></td>
+                      <td>
+                         <a href="javascript:;" class="text-danger"><i class="fa fa-trash"></i></a>
+                      </td>
+                   </tr>
+               `;
+               $(".table-unit-body").append(html)
+          }
+
+
+     })
+
+     $(".item_dropdown").change(function () {
+          let item_id = $(this).val();
+
+          let res = items.find(item => item.PK_raw_materials_id == item_id)
+
+          let i_units = "";
+          
+          all_units.map(unit => {
+               i_units += `<option value="${unit.PK_unit_id}">${unit.unit_name}</option>`    
+          })
+
+          if (res != undefined) {
+               let html = `
+                   <tr>
+                      <td><span>${res.material_name}</span></td>
+                      <td>${res.unit}</td>
+                      <td><input class="form-control uom_value" type="number"/></td>
+                      <td>
+                         <select class="form-control ">
+                              ${i_units}
+                         </select>
+                      </td>
+                      <td><input class="form-control new_value" type="number"/></td>
+                      <td>
+                         <a href="javascript:;" class="text-danger"><i class="fa fa-trash"></i></a>
+                      </td>
+                   </tr>
+               `;
+               $(".table-unit-body").html(html)
+          }
+
+
+          
+     })
 
      var table_raw_materials_unit = $('#raw_Materials_Unit').DataTable({
           "language": { "infoFiltered": "" },
