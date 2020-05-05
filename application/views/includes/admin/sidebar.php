@@ -4,9 +4,10 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
-
-                <li> <a class="waves-effect waves-dark" href="<?= base_url('Manageemployees') ?>" aria-expanded="false"><i class="icon-User "></i><span class="hide-menu">Manage Users</span></a>
-                </li>
+                <?php if ($this->session->userdata('user_type') == 1) { ?>
+                  <li> <a class="waves-effect waves-dark" href="<?= base_url('Manageemployees') ?>" aria-expanded="false"><i class="icon-User "></i><span class="hide-menu">Manage Users</span></a>
+                  </li>
+                <?php } ?>
                 <li> <a class="waves-effect waves-dark" href="<?= base_url('Managepurchaseorders') ?>" aria-expanded="false"><i class="icon-Remove-Cart "></i><span class="hide-menu">Purchase Order</span></a>
                 </li>
                 <li> <a class="waves-effect waves-dark" href="<?= base_url('Managesuppliers/') ?>" aria-expanded="false"><i class="icon-Truck"></i><span class="hide-menu">Supplier</span></a>
@@ -15,7 +16,7 @@
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="<?= base_url('Managerawmaterials/') ?>">List of Raw Materials</a></li>
                         <li><a href="<?= base_url('Managerawmaterials/Categories') ?>">Categories</a></li>
-                        <li><a href="<?= base_url('Managerawmaterials/unit_conversion') ?>">Units</a></li>
+                        <li><a href="<?= base_url('Managerawmaterials/Units') ?>">Units</a></li>
                         <li><a href="<?= base_url('Managerawmaterials/unit_conversion') ?>">Item Unit Conversion</a></li>
                     </ul>
                 </li>
@@ -23,7 +24,7 @@
                 </li>
                 <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="icon-Warehouse "></i><span class="hide-menu">Manage Stocks</span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="<?= base_url('Managestocks/StockTransfer') ?>">Stock Transfer</a></li>
+                        <li><a href="<?= base_url('Managestocks/StockTransfer') ?>  ">Stock Transfer</a></li>
                         <li><a href="<?= base_url('Stockout') ?>">Stock Out</a></li>
                         <li><a href="<?= base_url('Managestocks/StockAdjustments') ?>">Stock Adjustment</a></li>
                     </ul>

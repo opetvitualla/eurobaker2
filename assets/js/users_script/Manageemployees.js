@@ -60,55 +60,68 @@ $(document).ready(function() {
   $(document).on('click', '#view_Employee_Details', function() {
       var id = $(this).data('id');
       $('.view_employee_details_modal').modal('show');
-      $('.view_employee_details_modal input').prop('disabled', true);
+      $('.view_employee_details_modal input, .view_employee_details_modal select').prop('disabled', true);
 
       $.ajax({
-           url: base_url + 'Manageemployee/viewDetails',
+           url: base_url + 'Manageemployees/viewDetails',
            type     :  "post",
            data     :  {  "id"  : id  },
            dataType :  'json',
            success  :  function(data){
-                        $('.view_employee_details_modal input[name="supplier_name"]').val(data.supplier_name);
+             console.log(data);
+                        $('.view_employee_details_modal input[name="first_name"]').val(data.firstname);
+                        $('.view_employee_details_modal input[name="last_name"]').val(data.lastname);
+                        $('.view_employee_details_modal input[name="email_address"]').val(data.email_address);
+                        $('.view_employee_details_modal input[name="age"]').val(data.age);
+                        $('.view_employee_details_modal input[value='+data.gender+']').prop("checked", true);
+                        $('.view_employee_details_modal input[name="username"]').val(data.username);
+                        $('.view_employee_details_modal input[name="password"]').val(data.password);
+                        $('.view_employee_details_modal select[name="outlet_id"] option[value='+data.branch_assigned+']').attr('selected','selected');
+                        $('.view_employee_details_modal select[name="user_type"] option[value='+data.user_type+']').attr('selected','selected');
                         $('.view_employee_details_modal input[name="address"]').val(data.address);
-                        $('.view_employee_details_modal input[name="contact_number"]').val(data.contact_number);
            }
       });
   });
 
-  $(document).on('click', '#edit_Supplier_Details', function() {
+  $(document).on('click', '#edit_Employee_Details', function() {
       var id = $(this).data('id');
-      $('.edit_supplier_details_modal').modal('show');
+      $('.edit_employee_details_modal').modal('show');
 
       $.ajax({
-           url: base_url + 'Managesuppliers/viewDetails',
+           url: base_url + 'Manageemployees/viewDetails',
            type     :  "post",
            data     :  {  "id"  : id  },
            dataType :  'json',
            success  :  function(data){
-                        $('.edit_supplier_details_modal input[name="supplier_name"]').val(data.supplier_name);
-                        $('.edit_supplier_details_modal input[name="address"]').val(data.address);
-                        $('.edit_supplier_details_modal input[name="contact_number"]').val(data.contact_number);
-                        $('.edit_supplier_details_modal .edit_Button').attr('data-id', data.PK_supplier_id);
+                       $('.edit_employee_details_modal input[name="user_id"]').val(data.PK_user_id);
+                       $('.edit_employee_details_modal input[name="first_name"]').val(data.firstname);
+                       $('.edit_employee_details_modal input[name="last_name"]').val(data.lastname);
+                       $('.edit_employee_details_modal input[name="email_address"]').val(data.email_address);
+                       $('.edit_employee_details_modal input[name="age"]').val(data.age);
+                       $('.edit_employee_details_modal input[value='+data.gender+']').prop("checked", true);
+                       $('.edit_employee_details_modal input[name="username"]').val(data.username);
+                       $('.edit_employee_details_modal input[name="password"]').val(data.password);
+                       $('.edit_employee_details_modal select[name="outlet_id"] option[value='+data.branch_assigned+']').attr('selected','selected');
+                       $('.edit_employee_details_modal select[name="user_type"] option[value='+data.user_type+']').attr('selected','selected');
+                       $('.edit_employee_details_modal input[name="address"]').val(data.address);
            }
       });
   });
 
-  $(document).on('submit','#Supplier_Edit', function(e) {
+  $(document).on('submit','#Employee_Edit', function(e) {
        e.preventDefault();
        var formData = new FormData($(this)[0]);
-       var dataid   = $('.edit_supplier_details_modal .edit_Button').data('id');
-       formData.append('id', dataid)
 
        $.ajax({
-            url: base_url + 'Managesuppliers/updateDetails',
+            url: base_url + 'Manageemployees/updateDetails',
             data        : formData,
             processData : false,
             contentType : false,
             cache       : false,
             type        : 'POST',
             success     : function(data){
-                          table_suppliers.ajax.reload();
-                          $('.edit_supplier_details_modal').modal('hide');
+                          table_employees.ajax.reload();
+                          $('.edit_employee_details_modal').modal('hide');
             }
        });
   });

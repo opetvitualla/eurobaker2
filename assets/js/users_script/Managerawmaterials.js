@@ -647,4 +647,137 @@ $(document).ready(function () {
 
      })
 
+     var table_raw_materials_unit = $('#raw_Materials_Unit').DataTable({
+          "language": { "infoFiltered": "" },
+          "processing": true, //Feature control the processing indicator.
+          "serverSide": true, //Feature control DataTables' server-side processing mode.
+          "responsive": true,
+          "order": [[0, 'desc']], //Initial no order.
+          "columns": [
+               {
+                    "data": "PK_category_id", "render": function (data, type, row, meta) {
+                         var str = 'UNIT-' + row.PK_unit_id;
+                         return str;
+                    }
+               },
+               { "data": "unit_name" },
+               { "data": "unit_abbr" },
+               { "data": "date_added" },
+               {
+                    "data": "PK_category_id", "render": function (data, type, row, meta) {
+                         var str = '<div class="action-btn-div"><a href="javascript:;" id="edit_Unit_Details" data-id="' + row.PK_unit_id + '"><i class="fa fa-edit"></i></a>';
+                         str += '<a href="javascript:;" id="view_Unit_Details" class="text-success"  data-id="' + row.PK_unit_id + '"><i class="fa fa-eye"></i></a>';
+                         str += '<a href="javascript:;" id="delete_unit" class="text-danger"  data-id="' + row.PK_unit_id + '"><i class="fa fa-trash"></i></a></div>';
+                         return str;
+                    }
+               },
+          ],
+          "ajax": {
+               "url": base_url + "Managerawmaterials/getUnits",
+               "type": "POST"
+          },
+          "columnDefs": [
+               {
+                    "targets": [4],
+                    "orderable": false,
+               },
+          ],
+     });
+
+    $(document).on('submit', '#Raw_Material_Unit_Add', function (e) {
+         e.preventDefault();
+         var formData = new FormData($(this)[0]);
+
+         $.ajax({
+              url: base_url + 'Managerawmaterials/addUnit',
+              data: formData,
+              processData: false,
+              contentType: false,
+              cache: false,
+              type: 'POST',
+              success: function (data) {
+                   s_alert("Successfully Saved!", "success");
+                   table_raw_materials_unit.ajax.reload();
+                   $('.add_raw_material_unit_modal').modal('hide');
+              }
+         });
+    });
+
+    $(document).on('click', '#view_Unit_Details', function () {
+         var id = $(this).data('id');
+         $('.view_unit_details_modal').modal('show');
+         $('.view_unit_details_modal input').prop('disabled', true);
+
+         $.ajax({
+              url: base_url + 'Managerawmaterials/viewUnitDetails',
+              type: "post",
+              data: { "id": id },
+              dataType: 'json',
+              success: function (data) {
+                   $('.view_unit_details_modal input[name="unit_name"]').val(data.unit_name);
+                   $('.view_unit_details_modal input[name="unit_abbr"]').val(data.unit_abbr);
+              }
+         });
+    });
+
+    $(document).on('click', '#edit_Unit_Details', function () {
+         var id = $(this).data('id');
+         console.log(id);
+         $('.edit_unit_details_modal').modal('show');
+
+         $.ajax({
+              url: base_url + 'Managerawmaterials/viewUnitDetails',
+              type: "post",
+              data: { "id": id },
+              dataType: 'json',
+              success: function (data) {
+                   $('.edit_unit_details_modal input[name="unit_name"]').val(data.unit_name);
+                   $('.edit_unit_details_modal input[name="unit_abbr"]').val(data.unit_abbr);
+                   $('.edit_unit_details_modal .edit_Button').attr('data-id', data.PK_unit_id);
+              }
+         });
+    });
+
+    $(document).on('click', '#delete_unit', function () {
+         var id       = $(this).data('id');
+         var frmdata  = {
+                          "id": id,
+                          "delete": true
+                         };
+            confirm_alert("Are you sure you want to delete this unit?").then(confirm => {
+           $.ajax({
+                url: base_url + 'Managerawmaterials/updateUnitDetails',
+                type: "post",
+                data: { "id": id, "delete": true },
+                dataType: 'json',
+                success: function (data) {
+                      s_alert("Successfully Saved!", "success");
+                      table_raw_materials_unit.ajax.reload();
+                }
+           });
+         });
+
+    });
+
+    $(document).on('submit', '#Raw_Material_Unit_Edit', function (e) {
+         e.preventDefault();
+         var formData = new FormData($(this)[0]);
+         var dataid = $('#Raw_Material_Unit_Edit .edit_Button').data('id');
+         formData.append('id', dataid)
+
+         $.ajax({
+              url: base_url + 'Managerawmaterials/updateUnitDetails',
+              data: formData,
+              processData: false,
+              contentType: false,
+              cache: false,
+              type: 'POST',
+              success: function (data) {
+                   s_alert("Successfully Saved!", "success");
+                   table_raw_materials_unit.ajax.reload();
+                   $('.edit_unit_details_modal').modal('hide');
+              }
+         });
+    });
+
 })
