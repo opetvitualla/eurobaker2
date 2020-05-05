@@ -230,5 +230,154 @@ class ManageRawMaterials extends MY_Controller {
 
 	}
 
+	public function save_unit_conversion(){
+		
+		$reponse = array("result" => false);
+
+		$post = json_decode($this->input->post("unit_items"));
+
+		if(!empty($post)){
+			
+			$item_id = $post[0]->item_id;
+
+			$data = array(
+				"fk_item_id" => $item_id,
+				"status" => 1,
+				"date_added" => date("Y-m-d"),
+				"date_updated" => date("Y-m-d"),
+				"total_items" => count($post)
+			);
+
+			$new_added_id = insertData("eb_unit_converted", $data);
+
+			if(!empty($new_added_id)){
+
+				foreach ($post as $key) {
+					$data = array(
+						"fk_unit_con_id" => $new_added_id,
+						"fk_new_unit_id" => $key->new_unit,
+						"uom_value" 	 => 	$key->uom_value,
+						"new_unit_value" => $key->new_unit_value,
+					);
+
+					insertData("eb_unit_coverted_item", $data);
+				}
+
+				$reponse = array("result" => true);
+			}
+
+		}
+
+		echo json_encode($reponse);
+
+	}
+
+	public function getunitconverted_table() {
+		$limit        = $this->input->post('length');
+		$offset       = $this->input->post('start');
+		$search       = $this->input->post('search');
+		$order        = $this->input->post('order');
+		$draw         = $this->input->post('draw');
+
+		$column_order = array(
+			'fk_item_id',
+			'item.material_name',
+			'item.unit',
+			'con_unit.total_items',
+			'con_unit.date_updated',
+		);
+		$join         = array(
+			"eb_raw_materials_list item" => "item.PK_raw_materials_id = con_unit.fk_item_id",
+		);
+
+		$select       = "*";
+		$where        = array();
+		$group        = array();
+		$list         = $this->MY_Model->get_datatables('eb_unit_converted con_unit',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
+
+		$list_items = array(
+			"draw" => $draw,
+			"recordsTotal" => $list['count_all'],
+			"recordsFiltered" => $list['count'],
+			"data" => $list['data']
+		);
+
+		echo json_encode($list_items);
+	}
+
+	public function get_unit_data($con_id = 0){
+		$reponse = array("result" => false);
+
+		if($con_id != 0){
+			$par["select"] = "*";
+			$par["where"]  = array(
+				"pk_unit_con_id" => $con_id,
+				"con_data.status" => 1,
+			);
+			$par["join"] = array(
+				"eb_raw_materials_list item" => "item.PK_raw_materials_id = con_data.fk_item_id"
+			);
+
+			$get_data = getData("eb_unit_converted con_data", $par);
+
+			if(!empty($get_data)){
+				unset($par["join"]);
+				$par["where"]  = array(
+					"fk_unit_con_id" => $con_id
+				);
+
+				$data = getData("eb_unit_coverted_item con", $par);
+				if(!empty($data)){
+					$get_data[0]["items"] = $data;
+					$reponse = array("result" => true, "data" => $get_data);
+				}
+			}
+		
+		}
+
+		echo json_encode($reponse);
+	}
+
+	public function update_unit_conversion(){
+
+		$reponse = array("result" => false);
+
+		$post = json_decode($this->input->post("unit_items"));
+
+		if(!empty($post)){
+			
+			$item_id = $post[0]->item_id;
+			$unit_con_id = $post[0]->unit_con_id;
+
+			$data = array(
+				"date_updated" => date("Y-m-d"),
+				"total_items" => count($post)
+			);
+			$where = array( "pk_unit_con_id" => $unit_con_id );
+			
+			updateData("eb_unit_converted", $data, $where);
+
+			$where = array( "fk_unit_con_id" => $unit_con_id );
+
+			deleteData("eb_unit_coverted_item", $where);
+
+			foreach ($post as $key) {
+				$data = array(
+					"fk_unit_con_id" => $unit_con_id,
+					"fk_new_unit_id" => $key->new_unit,
+					"uom_value" 	 => $key->uom_value,
+					"new_unit_value" => $key->new_unit_value,
+				);
+
+				insertData("eb_unit_coverted_item", $data);
+			}
+
+			$reponse = array("result" => true);
+
+		}
+
+		echo json_encode($reponse);
+
+	}
 
 }

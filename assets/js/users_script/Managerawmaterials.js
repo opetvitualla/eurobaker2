@@ -280,9 +280,46 @@ $(document).ready(function () {
      
      
      // units
+     var unit_conversion_table = $('#unit_conversion_table').DataTable({
+          "language": { "infoFiltered": "" },
+          "processing": true, //Feature control the processing indicator.
+          "serverSide": true, //Feature control DataTables' server-side processing mode.
+          "responsive": true,
+          "order": [[0, 'desc']], //Initial no order.
+          "columns": [
+               {
+                    "data": "fk_item_id", "render": function (data, type, row, meta) {
+                         var str = 'RM-' + row.fk_item_id;
+                         return str;
+                    }
+               },
+               { "data": "material_name" },
+               { "data": "unit" },
+               { "data": "total_items" },
+               { "data": "date_updated" },
+               {
+                    "data": "pk_unit_con_id", "render": function (data, type, row, meta) {
+                         var str = '<div class="action-btn-div">';
+                         str += '<a href="javascript:;" class="text-success view_units_con"  data-id="' + row.pk_unit_con_id + '"><i class="fa fa-eye"></i></a>';
+                         str += '<a href="javascript:;" class="text-primary btn-edit-unit"  data-id="' + row.pk_unit_con_id + '"><i class="fa fa-edit"></i></a></div>';
+                         return str;
+                    }
+               },
+          ],
+          "ajax": {
+               "url": base_url + "Managerawmaterials/getunitconverted_table",
+               "type": "POST"
+          },
+          "columnDefs": [
+               {
+                    "targets": [3],
+                    "orderable": false,
+               },
+          ],
+     });
+
      $(".show-add_unit-modal").click(function () {
           
-
           let item_option = "<option value=''>Please select</option>";
           items.map(item => {
                item_option += `<option value="${item.PK_raw_materials_id}">${item.material_name}</option>`;
@@ -306,7 +343,7 @@ $(document).ready(function () {
 
           let res = items.find(item => item.PK_raw_materials_id == item_id)
 
-          let i_units = "";
+          let i_units = "<option value=''> - </option>";
 
           all_units.map(unit => {
                i_units += `<option value="${unit.PK_unit_id}">${unit.unit_name}</option>`
@@ -317,20 +354,105 @@ $(document).ready(function () {
                    <tr>
                       <td><span>${res.material_name}</span></td>
                       <td>${res.unit}</td>
-                      <td><input class="form-control uom_value" type="number"/></td>
+                      <td><input class="form-control uom_value" min="1" type="number"/></td>
                       <td>
-                         <select class="form-control ">
+                         <select class="form-control new_unit_select">
                               ${i_units}
                          </select>
                       </td>
-                      <td><input class="form-control new_value" type="number"/></td>
+                      <td><input class="form-control new_value" min="1" type="number"/></td>
                       <td>
-                         <a href="javascript:;" class="text-danger"><i class="fa fa-trash"></i></a>
+                         <a href="javascript:;" class="text-danger remove-unit-row"><i class="fa fa-trash"></i></a>
                       </td>
                    </tr>
                `;
                $(".table-unit-body").append(html)
           }
+     })
+
+
+     $(".btn-edit-item-unit").click(function () {
+          let item_id = $("#unit_item_id").val();
+
+          if (item_id == undefined || item_id == "" || item_id == 0) {
+               s_alert("Select an item first", "error")
+               return;
+          }
+
+          let res = items.find(item => item.PK_raw_materials_id == item_id)
+
+          let i_units = "<option value=''> - </option>";
+
+          all_units.map(unit => {
+               i_units += `<option value="${unit.PK_unit_id}">${unit.unit_name}</option>`
+          })
+
+          if (res != undefined) {
+               let html = `
+                   <tr>
+                      <td><span>${res.material_name}</span></td>
+                      <td>${res.unit}</td>
+                      <td><input class="form-control uom_value" min="1" type="number"/></td>
+                      <td>
+                         <select class="form-control new_unit_select_edit">
+                              ${i_units}
+                         </select>
+                      </td>
+                      <td><input class="form-control new_value" min="1" type="number"/></td>
+                      <td>
+                         <a href="javascript:;" class="text-danger remove-unit-row"><i class="fa fa-trash"></i></a>
+                      </td>
+                   </tr>
+               `;
+               $(".table-unit-body-edit").append(html)
+          }
+     })
+
+     $(document).on("click", ".btn-edit-unit", function () {
+          let item_id = $(this).data("id");
+          $("#unit_con_id").val(item_id);
+          
+
+          $(".table-unit-body-edit").html("")
+
+          axios.get(`${base_url}managerawmaterials/get_unit_data/${item_id}`).then(res => {
+               if (res.data.result) {
+                    let data = res.data.data[0];
+
+                    $(".unit_item_name").html(data.material_name)
+                    $("#unit_item_id").val(data.fk_item_id);
+
+                    data.items.map(item => {
+
+                         let i_units = "<option value=''> - </option>";
+
+                         all_units.map(unit => {
+                              i_units += `<option ${(item.fk_new_unit_id == unit.PK_unit_id) ? "selected" : ""} value="${unit.PK_unit_id}">${unit.unit_name}</option>`
+                         })
+
+                          let html = `
+                              <tr>
+                                   <td><span>${data.material_name}</span></td>
+                                   <td>${data.unit}</td>
+                                   <td><input class="form-control uom_value" value="${item.uom_value}" min="1" type="number"/></td>
+                                   <td>
+                                        <select class="form-control new_unit_select_edit">
+                                             ${i_units}
+                                        </select>
+                                   </td>
+                                   <td><input class="form-control new_value" value="${item.new_unit_value}" min="1" type="number"/></td>
+                                   <td>
+                                        <a href="javascript:;" class="text-danger remove-unit-row"><i class="fa fa-trash"></i></a>
+                                   </td>
+                              </tr>
+                              `;
+                         $(".table-unit-body-edit").append(html)
+                    })
+
+               }
+          })
+
+          $(".edit_unit_modal").modal();
 
 
      })
@@ -340,7 +462,7 @@ $(document).ready(function () {
 
           let res = items.find(item => item.PK_raw_materials_id == item_id)
 
-          let i_units = "";
+          let i_units = "<option value=''> - </option>";
           
           all_units.map(unit => {
                i_units += `<option value="${unit.PK_unit_id}">${unit.unit_name}</option>`    
@@ -351,23 +473,178 @@ $(document).ready(function () {
                    <tr>
                       <td><span>${res.material_name}</span></td>
                       <td>${res.unit}</td>
-                      <td><input class="form-control uom_value" type="number"/></td>
+                      <td><input class="form-control uom_value" min="1" required type="number"/></td>
                       <td>
-                         <select class="form-control ">
+                         <select class="form-control new_unit_select">
                               ${i_units}
                          </select>
                       </td>
-                      <td><input class="form-control new_value" type="number"/></td>
+                      <td><input class="form-control new_value" required min="1" type="number"/></td>
                       <td>
-                         <a href="javascript:;" class="text-danger"><i class="fa fa-trash"></i></a>
+                         <a href="javascript:;" class="text-danger remove-unit-row"><i class="fa fa-trash"></i></a>
                       </td>
                    </tr>
                `;
                $(".table-unit-body").html(html)
           }
-
-
           
+     })
+
+     $(document).on("click", ".remove-unit-row", function () {
+          $(this).closest("tr").remove();
+     })
+
+     $(document).on("change", ".new_unit_select", function (e) {
+          let unit_val = $(this).val();
+          
+          let counts = 0;
+          $(".table-unit-body tr").each(function () {
+               let r_val = $(this).find(".new_unit_select").val();
+               if (r_val == unit_val) {
+                    counts += 1;
+               }
+          })
+
+          if (counts > 1) {
+               s_alert("Unit already exists", "error")
+               $(this).val("")
+          }
+     })
+
+     $(document).on("change", ".new_unit_select_edit", function (e) {
+          let unit_val = $(this).val();
+
+          let counts = 0;
+          $(".table-unit-body-edit tr").each(function () {
+               let r_val = $(this).find(".new_unit_select_edit").val();
+               if (r_val == unit_val) {
+                    counts += 1;
+               }
+          })
+
+          if (counts > 1) {
+               s_alert("Unit already exists", "error")
+               $(this).val("")
+          }
+     })
+
+     $("#unit_modal_form").submit(function (e) {
+          e.preventDefault();
+          let unit_items = [];
+          let has_err = false;     
+          let idx = 0;
+          $(".table-unit-body tr").each(function () {
+               idx += 1;
+               
+               let uom_val = $(this).find(".uom_value").val();
+               let new_unit_val = $(this).find(".new_value").val();
+               let selected_unit = $(this).find(".new_unit_select").val();
+               let item_id = $(".item_dropdown").val();
+               
+
+               if (uom_val == "" || uom_val == undefined) {
+                    s_alert("Please add the required fields", "error")
+                    has_err = true;
+               } else if (new_unit_val == "" || new_unit_val == undefined){
+                    s_alert("Please add the required fields", "error")
+                    has_err = true;
+               } else if (new_unit_val == uom_val) {
+                    s_alert("Values must not equal", "error")
+                    has_err = true;
+               } else if (selected_unit == "" || selected_unit == undefined) {
+                    s_alert("Please add the required fields", "error")
+                    has_err = true;
+               }    
+               unit_items.push({
+                    item_id        : item_id,
+                    uom_value      : uom_val,
+                    new_unit       : selected_unit,
+                    new_unit_value : new_unit_val,
+               })
+
+          })
+
+          if (idx == 0) { 
+               s_alert("Please add at least 1 item!", "error")
+               return;
+          }
+        
+          if (!has_err) {
+
+               
+               confirm_alert("Are you sure to add these units?").then(res => {
+                    let frmdata = new FormData();
+                    frmdata.append("unit_items", JSON.stringify(unit_items));
+                    axios.post(`${base_url}Managerawmaterials/save_unit_conversion`, frmdata).then(res => {
+                         if (res.data.result) {
+                              s_alert("Saved successfully!", "success");
+                              $(".add_unit_modal").modal("hide");
+                              unit_conversion_table.ajax.reload();
+                         }
+                    })
+               }) 
+          }
+
+     })
+
+     $("#unit_modal_edit_form").submit(function (e) {
+          e.preventDefault();
+          let unit_items = [];
+          let has_err = false;
+          let idx = 0;
+          $(".table-unit-body-edit tr").each(function () {
+               idx += 1;
+
+               let uom_val = $(this).find(".uom_value").val();
+               let new_unit_val = $(this).find(".new_value").val();
+               let selected_unit = $(this).find(".new_unit_select_edit ").val();
+               let item_id = $(".item_dropdown").val();
+               let unit_con_id = $("#unit_con_id").val();
+
+               if (uom_val == "" || uom_val == undefined) {
+                    s_alert("Please add the required fields", "error")
+                    has_err = true;
+               } else if (new_unit_val == "" || new_unit_val == undefined) {
+                    s_alert("Please add the required fields", "error")
+                    has_err = true;
+               } else if (new_unit_val == uom_val) {
+                    s_alert("Values must not equal", "error")
+                    has_err = true;
+               } else if (selected_unit == "" || selected_unit == undefined) {
+                    s_alert("Please add the required fields", "error")
+                    has_err = true;
+               }
+               unit_items.push({
+                    unit_con_id: unit_con_id,
+                    item_id: item_id,
+                    uom_value: uom_val,
+                    new_unit: selected_unit,
+                    new_unit_value: new_unit_val,
+               })
+
+          })
+
+          if (idx == 0) {
+               s_alert("Please add at least 1 item!", "error")
+               return;
+          }
+
+          if (!has_err) {
+
+
+               confirm_alert("Are you sure to update these units?").then(res => {
+                    let frmdata = new FormData();
+                    frmdata.append("unit_items", JSON.stringify(unit_items));
+                    axios.post(`${base_url}Managerawmaterials/update_unit_conversion`, frmdata).then(res => {
+                         if (res.data.result) {
+                              s_alert("Updated successfully!", "success");
+                              $(".edit_unit_modal").modal("hide");
+                              unit_conversion_table.ajax.reload();
+                         }
+                    })
+               })
+          }
+
      })
 
 })

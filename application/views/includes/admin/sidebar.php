@@ -15,6 +15,7 @@
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="<?= base_url('Managerawmaterials/') ?>">List of Raw Materials</a></li>
                         <li><a href="<?= base_url('Managerawmaterials/Categories') ?>">Categories</a></li>
+                        <li><a href="<?= base_url('Managerawmaterials/unit_conversion') ?>">Units</a></li>
                         <li><a href="<?= base_url('Managerawmaterials/unit_conversion') ?>">Item Unit Conversion</a></li>
                     </ul>
                 </li>
