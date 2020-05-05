@@ -4,9 +4,10 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
-
-                <li> <a class="waves-effect waves-dark" href="<?= base_url('Manageemployees') ?>" aria-expanded="false"><i class="icon-User "></i><span class="hide-menu">Manage Users</span></a>
-                </li>
+                <?php if ($this->session->userdata('user_type') == 1) { ?>
+                  <li> <a class="waves-effect waves-dark" href="<?= base_url('Manageemployees') ?>" aria-expanded="false"><i class="icon-User "></i><span class="hide-menu">Manage Users</span></a>
+                  </li>
+                <?php } ?>
                 <li> <a class="waves-effect waves-dark" href="<?= base_url('Managepurchaseorders') ?>" aria-expanded="false"><i class="icon-Remove-Cart "></i><span class="hide-menu">Purchase Order</span></a>
                 </li>
                 <li> <a class="waves-effect waves-dark" href="<?= base_url('Managesuppliers/') ?>" aria-expanded="false"><i class="icon-Truck"></i><span class="hide-menu">Supplier</span></a>
@@ -15,6 +16,7 @@
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="<?= base_url('Managerawmaterials/') ?>">List of Raw Materials</a></li>
                         <li><a href="<?= base_url('Managerawmaterials/Categories') ?>">Categories</a></li>
+                        <li><a href="<?= base_url('Managerawmaterials/Units') ?>">Units</a></li>
                     </ul>
                 </li>
                 <li> <a class="waves-effect waves-dark" href="<?= base_url('Manageiteminventory/') ?>" aria-expanded="false"><i class="icon-Bar-Chart  "></i><span class="hide-menu">Item Inventory </span></a>

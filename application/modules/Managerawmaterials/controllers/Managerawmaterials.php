@@ -218,4 +218,99 @@ class ManageRawMaterials extends MY_Controller {
 			echo json_encode($response);
 		}
 
+		public function Units(){
+			$data["title"] 		  = "Units";
+			$data["page_name"]  = "Raw Materials > Units";
+			$data['has_header'] = "includes/admin/header";
+			$data['has_footer']	= "includes/index_footer";
+
+			$this->load_page('units',$data);
+		}
+
+		public function getUnits() {
+			$limit        = $this->input->post('length');
+			$offset       = $this->input->post('start');
+			$search       = $this->input->post('search');
+			$order        = $this->input->post('order');
+			$draw         = $this->input->post('draw');
+			$column_order = array(
+												'PK_unit_id',
+												'unit_name',
+												'unit_abbr',
+												'date_added',
+											);
+			$join         = array();
+			$select       = "*";
+			$where        = array(
+													'status'	=> 1
+											);
+			$group        = array();
+			$list         = $this->MY_Model->get_datatables('eb_raw_materials_units',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
+
+			$list_of_units = array(
+												"draw" => $draw,
+												"recordsTotal" => $list['count_all'],
+												"recordsFiltered" => $list['count'],
+												"data" => $list['data']
+											);
+			echo json_encode($list_of_units);
+		}
+
+		public function addUnit() {
+			$category         = $this->input->post();
+
+			$insert_data  = $this->MY_Model->insert('eb_raw_materials_units',$category);
+
+			if ($insert_data) {
+				$response = array(
+											'result' => 'success',
+										);
+			} else {
+				$response = array(
+											'result' => 'error',
+										);
+			}
+			echo json_encode($response);
+		}
+
+		public function viewUnitDetails() {
+			$data_id          = $this->input->post('id');
+			$options['where'] = array(
+														'PK_unit_id' => $data_id
+													);
+			$data             = $this->MY_Model->getRows('eb_raw_materials_units', $options, 'row');
+
+			echo json_encode($data);
+		}
+
+		public function updateUnitDetails() {
+			$data         = $this->input->post();
+			if ($data['delete']) {
+				$set          = array(
+													'status' => 0,
+												);
+			} else {
+				$set          = array(
+													'unit_name' => $data['unit_name'],
+													'unit_abbr' => $data['unit_abbr'],
+												);
+			}
+
+			$where        = array(
+												'PK_unit_id' => $data['id']
+											);
+			$update_data  = $this->MY_Model->update('eb_raw_materials_units',$set,$where);
+
+			if ($update_data) {
+				$response = array(
+											'result' => 'success',
+										);
+			} else {
+				$response = array(
+											'result' => 'error',
+										);
+			}
+			echo json_encode($response);
+		}
+
 }

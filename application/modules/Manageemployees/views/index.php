@@ -183,24 +183,90 @@
                         <form action="#">
                                 <div class="form-body">
                                     <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-12 ">
-                                                <div class="form-group">
-                                                    <label>Employee Name</label>
-                                                    <input type="text" class="form-control" name="employee_name">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                              <div class="col-md-6">
-                                                  <div class="form-group">
-                                                      <label>Assigned Outlet:</label>
-                                                      <select class="form-control" name="outlet_id">
-                                                          <option value="">Test</option>
-                                                      </select>
-                                                  </div>
+                                      <div class="row">
+                                          <div class="col-md-6 ">
+                                              <div class="form-group">
+                                                  <label>First Name</label>
+                                                  <input type="text" class="form-control" name="first_name">
                                               </div>
-                                        </div>
+                                          </div>
+                                          <div class="col-md-6 ">
+                                              <div class="form-group">
+                                                  <label>Last Name</label>
+                                                  <input type="text" class="form-control" name="last_name">
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="row">
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <label>Age:</label>
+                                                  <input type="text" class="form-control" name="age">
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                <label>Gender:</label><br>
+                                                <input type="radio" id="male" name="gender" value="male">
+                                                <label for="male">Male</label><br>
+                                                <input type="radio" id="female" name="gender" value="female">
+                                                <label for="female">Female</label><br>
+
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="row">
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <label>Email Address:</label>
+                                                  <input type="text" class="form-control" name="email_address">
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <label>Assigned Outlet:</label>
+                                                  <select class="form-control custom-select" name="outlet_id">
+                                                    <option value="" selected>Select Outlet</option>
+                                                      <?php foreach ($outlets as $outlet): ?>
+                                                                <option value="<?= $outlet['PK_branch_id'] ?>"><?= $outlet['outlet_name'] ?></option>
+                                                      <?php endforeach; ?>
+                                                  </select>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="row">
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <label>Username:</label>
+                                                  <input type="text" class="form-control" name="username">
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <label>Password:</label>
+                                                  <input type="password" class="form-control" name="password">
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="row">
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <label>Address:</label>
+                                                  <input type="text" class="form-control" name="address">
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <label>Position:</label>
+                                                  <select class="form-control custom-select" name="user_type">
+                                                    <option value="" selected>Select Outlet</option>
+                                                    <option value="1" >Outlet Admin</option>
+                                                    <option value="2" >Purchaser</option>
+                                                    <option value="3" >Supervisor</option>
+                                                  </select>
+                                              </div>
+                                          </div>
+                                      </div>
                                         <!--/row-->
                                     </div>
                                 </div>
@@ -221,22 +287,89 @@
                       </div>
                       <div class="modal-body">
                         <form id="Employee_Edit" action="#">
+                                <input type="hidden" name="user_id" value="">
                                 <div class="form-body">
                                     <div class="card-body">
                                       <div class="row">
-                                          <div class="col-md-12 ">
+                                          <div class="col-md-6 ">
                                               <div class="form-group">
-                                                  <label>Employee Name</label>
-                                                  <input type="text" class="form-control" name="employee_name">
+                                                  <label>First Name</label>
+                                                  <input type="text" class="form-control" name="first_name">
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6 ">
+                                              <div class="form-group">
+                                                  <label>Last Name</label>
+                                                  <input type="text" class="form-control" name="last_name">
                                               </div>
                                           </div>
                                       </div>
                                       <div class="row">
                                           <div class="col-md-6">
                                               <div class="form-group">
+                                                  <label>Age:</label>
+                                                  <input type="text" class="form-control" name="age">
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                <label>Gender:</label><br>
+                                                <input type="radio" id="male" name="gender" value="male">
+                                                <label for="male">Male</label><br>
+                                                <input type="radio" id="female" name="gender" value="female">
+                                                <label for="female">Female</label><br>
+
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="row">
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <label>Email Address:</label>
+                                                  <input type="text" class="form-control" name="email_address">
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                              <div class="form-group">
                                                   <label>Assigned Outlet:</label>
-                                                  <select class="form-control" name="outlet_id">
-                                                      <option value="">Test</option>
+                                                  <select class="form-control custom-select" name="outlet_id">
+                                                    <option value="" selected>Select Outlet</option>
+                                                      <?php foreach ($outlets as $outlet): ?>
+                                                                <option value="<?= $outlet['PK_branch_id'] ?>"><?= $outlet['outlet_name'] ?></option>
+                                                      <?php endforeach; ?>
+                                                  </select>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="row">
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <label>Username:</label>
+                                                  <input type="text" class="form-control" name="username">
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <label>Password:</label>
+                                                  <input type="password" class="form-control" name="password">
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="row">
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <label>Address:</label>
+                                                  <input type="text" class="form-control" name="address">
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <label>Position:</label>
+                                                  <select class="form-control custom-select" name="user_type">
+                                                    <option value="" selected>Select Outlet</option>
+                                                    <option value="1" >Outlet Admin</option>
+                                                    <option value="2" >Purchaser</option>
+                                                    <option value="3" >Supervisor</option>
                                                   </select>
                                               </div>
                                           </div>
