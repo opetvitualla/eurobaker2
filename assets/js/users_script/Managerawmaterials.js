@@ -277,11 +277,11 @@ $(document).ready(function () {
               }
          });
     });
-     
-     
+
+
      // units
      $(".show-add_unit-modal").click(function () {
-          
+
 
           let item_option = "<option value=''>Please select</option>";
           items.map(item => {
@@ -290,7 +290,7 @@ $(document).ready(function () {
 
           $(".item_dropdown").html(item_option);
           $(".item_dropdown").select2();
-         
+
           $(".add_unit_modal").modal();
      })
 
@@ -341,9 +341,9 @@ $(document).ready(function () {
           let res = items.find(item => item.PK_raw_materials_id == item_id)
 
           let i_units = "";
-          
+
           all_units.map(unit => {
-               i_units += `<option value="${unit.PK_unit_id}">${unit.unit_name}</option>`    
+               i_units += `<option value="${unit.PK_unit_id}">${unit.unit_name}</option>`
           })
 
           if (res != undefined) {
@@ -367,7 +367,7 @@ $(document).ready(function () {
           }
 
 
-          
+
      })
 
      var table_raw_materials_unit = $('#raw_Materials_Unit').DataTable({
@@ -501,6 +501,30 @@ $(document).ready(function () {
                    $('.edit_unit_details_modal').modal('hide');
               }
          });
+    });
+
+    var table_raw_materials_price_logs = $('#raw_Materials_Price_Logs').DataTable({
+         "language": { "infoFiltered": "" },
+         "processing": true, //Feature control the processing indicator.
+         "serverSide": true, //Feature control DataTables' server-side processing mode.
+         "responsive": true,
+         "order": [[0, 'desc']], //Initial no order.
+         "columns": [
+              {
+                   "data": "PK_log_id", "render": function (data, type, row, meta) {
+                        var str = 'PR-' + row.PK_log_id;
+                        return str;
+                   }
+              },
+              { "data": "material_name" },
+              { "data": "previous_price" },
+              { "data": "current_price" },
+              { "data": "date_added" },
+         ],
+         "ajax": {
+              "url": base_url + "Managerawmaterials/getPriceLogs",
+              "type": "POST"
+         },
     });
 
 })

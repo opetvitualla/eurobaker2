@@ -148,9 +148,9 @@
                                                   <label>Position:</label>
                                                   <select class="form-control custom-select" name="user_type">
                                                     <option value="" selected>Select Outlet</option>
-                                                    <option value="1" >Outlet Admin</option>
-                                                    <option value="2" >Purchaser</option>
-                                                    <option value="3" >Supervisor</option>
+                                                    <option value="2" >Outlet Admin</option>
+                                                    <option value="3" >Purchaser</option>
+                                                    <option value="4" >Supervisor</option>
                                                   </select>
                                               </div>
                                           </div>
@@ -260,9 +260,9 @@
                                                   <label>Position:</label>
                                                   <select class="form-control custom-select" name="user_type">
                                                     <option value="" selected>Select Outlet</option>
-                                                    <option value="1" >Outlet Admin</option>
-                                                    <option value="2" >Purchaser</option>
-                                                    <option value="3" >Supervisor</option>
+                                                    <option value="2" >Outlet Admin</option>
+                                                    <option value="3" >Purchaser</option>
+                                                    <option value="4" >Supervisor</option>
                                                   </select>
                                               </div>
                                           </div>
@@ -367,9 +367,9 @@
                                                   <label>Position:</label>
                                                   <select class="form-control custom-select" name="user_type">
                                                     <option value="" selected>Select Outlet</option>
-                                                    <option value="1" >Outlet Admin</option>
-                                                    <option value="2" >Purchaser</option>
-                                                    <option value="3" >Supervisor</option>
+                                                    <option value="2" >Outlet Admin</option>
+                                                    <option value="3" >Purchaser</option>
+                                                    <option value="4" >Supervisor</option>
                                                   </select>
                                               </div>
                                           </div>

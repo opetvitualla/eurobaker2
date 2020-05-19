@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 05, 2020 at 08:30 AM
+-- Generation Time: May 19, 2020 at 07:41 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -80,7 +80,8 @@ INSERT INTO `eb_item_inventory` (`PK_inventory_id`, `FK_raw_material_id`, `FK_ou
 (14, 1, 2, 863.61, 4, '5', 5, 1, 'Stock Transfer', 0, '2020-04-09 14:28:52', '0000-00-00 00:00:00'),
 (15, 2, 2, 311.85, 5, '6', 6, 1, 'Stock Transfer', 0, '2020-04-09 15:00:30', '0000-00-00 00:00:00'),
 (16, 1, 2, 575.74, 5, '7', 7, 1, 'Stock Transfer', 0, '2020-04-09 15:23:24', '0000-00-00 00:00:00'),
-(17, 1, 2, 575.74, 12, '10', 10, 1, 'Stock Transfer', 0, '2020-03-03 20:25:36', '0000-00-00 00:00:00');
+(17, 1, 2, 575.74, 12, '10', 10, 1, 'Stock Transfer', 0, '2020-03-03 20:25:36', '0000-00-00 00:00:00'),
+(18, 3, 2, 0, 0, '1', 0, 1, 'Stock Transfer', 1, '2020-05-18 19:44:43', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -118,7 +119,7 @@ INSERT INTO `eb_outlets` (`PK_branch_id`, `outlet_name`, `status`, `date_added`)
 (1, 'Bajada', 1, '2020-03-20 10:28:17'),
 (2, 'Tagum', 1, '2020-03-20 10:28:17'),
 (3, 'Toril', 1, '2020-03-20 10:28:23'),
-(4, 'test', 1, '2020-04-06 13:30:51');
+(4, 'Commisary', 1, '2020-04-06 13:30:51');
 
 -- --------------------------------------------------------
 
@@ -3246,6 +3247,29 @@ INSERT INTO `eb_raw_materials_list` (`PK_raw_materials_id`, `FK_outlet_id`, `FK_
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `eb_raw_materials_price_logs`
+--
+
+CREATE TABLE `eb_raw_materials_price_logs` (
+  `PK_log_id` int(11) NOT NULL,
+  `FK_raw_material_id` int(11) NOT NULL,
+  `previous_price` varchar(10) NOT NULL,
+  `current_price` varchar(10) NOT NULL,
+  `date_added` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `eb_raw_materials_price_logs`
+--
+
+INSERT INTO `eb_raw_materials_price_logs` (`PK_log_id`, `FK_raw_material_id`, `previous_price`, `current_price`, `date_added`) VALUES
+(1, 1, '287.87', '287.87', '2020-05-13 18:26:32'),
+(2, 2, '311.85', '311.85', '2020-05-13 18:26:32'),
+(3, 3, '10.71', '12.21', '2020-05-13 18:27:02');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `eb_raw_materials_units`
 --
 
@@ -3301,7 +3325,9 @@ INSERT INTO `eb_stock_transfer` (`PK_stock_transfer_id`, `FK_user_id`, `FK_origi
 (18, 1, 1, 2, 3, 1, '', '2020-04-09 15:23:16'),
 (19, 1, 2, 1, 2, 0, '', '2020-04-09 15:37:21'),
 (20, 1, 1, 2, 2, 0, '', '2020-04-13 20:09:30'),
-(21, 1, 1, 2, 2, 0, '123', '2020-04-20 18:37:46');
+(21, 1, 1, 2, 2, 1, '123', '2020-04-20 18:37:46'),
+(22, 1, 1, 4, 1, 0, '12', '2020-05-18 19:31:49'),
+(23, 1, 1, 3, 2, 0, '098', '2020-05-18 19:47:24');
 
 -- --------------------------------------------------------
 
@@ -3339,7 +3365,9 @@ INSERT INTO `eb_stock_transfer_items` (`PK_transfer_item_id`, `FK_stock_transfer
 (17, 18, 1, 2, 0, '2020-04-09 15:23:16'),
 (18, 19, 1, 1, 0, '2020-04-09 15:37:21'),
 (19, 20, 7, 1, 0, '2020-04-13 20:09:30'),
-(20, 21, 3, 1, 0, '2020-04-20 18:37:46');
+(20, 21, 3, 1, 0, '2020-04-20 18:37:46'),
+(21, 22, 1, 1, 0, '2020-05-18 19:31:49'),
+(22, 23, 3, 2, 0, '2020-05-18 19:47:24');
 
 -- --------------------------------------------------------
 
@@ -3388,11 +3416,12 @@ CREATE TABLE `eb_users` (
 --
 
 INSERT INTO `eb_users` (`PK_user_id`, `username`, `password`, `user_type`, `user_status`, `branch_assigned`, `date_added`) VALUES
-(1, 'admin', '123456', 1, 1, '[1]', '2020-03-30 00:00:00'),
+(1, 'admin', '123456', 1, 1, '', '2020-03-30 00:00:00'),
 (2, 'test2', 'password', 2, 1, '[1]', '2020-03-31 00:00:00'),
 (8, 'Matt', 'password', 3, 1, '1', '2020-04-24 17:58:30'),
-(9, 'Frank', 'password', 2, 1, '3', '2020-04-24 18:42:22'),
-(10, 'Frank', 'password', 2, 1, '4', '2020-04-24 18:58:45');
+(9, 'Frank', 'password', 3, 1, '3', '2020-04-24 18:42:22'),
+(10, 'Frank1', 'password', 1, 1, '4', '2020-04-24 18:58:45'),
+(11, 'Brock', 'password', 2, 1, '1', '2020-05-05 18:54:09');
 
 -- --------------------------------------------------------
 
@@ -3416,11 +3445,12 @@ CREATE TABLE `eb_users_meta` (
 --
 
 INSERT INTO `eb_users_meta` (`PK_user_meta_id`, `FK_user_id`, `firstname`, `lastname`, `email_address`, `age`, `gender`, `address`) VALUES
-(1, 1, 'opet', 'vitualla', 'web2.juphetvitualla@gmail.com', '21', 'male', 'cebu'),
+(1, 1, 'opet', 'vitualla', 'web2.juphetvitualla@gmail.com', '21', 'male', ''),
 (2, 2, 'John', 'Doe', 'sample@sample.com', '21', 'male', 'cebu'),
 (4, 8, 'Cruiser', 'Marion', 'proweaver@example.com', '0', 'female', '9170 N. Summerhouse St.'),
 (5, 9, 'Uy', 'Marion', 'example@proweaver.com', '76', 'female', '7669 Gulf Drive'),
-(6, 10, 'Cory', 'Cliff', 'example@proweaver.com', '14', 'female', '9170 N. Summerhouse St.');
+(6, 10, 'Cory', 'Cliff', 'example@proweaver.com', '14', 'female', '9170 N. Summerhouse St.'),
+(7, 11, 'Petey', 'Holly', 'proweaver@example.com', 'Mull', 'female', '162 Little Embers Court');
 
 --
 -- Indexes for dumped tables
@@ -3487,6 +3517,12 @@ ALTER TABLE `eb_raw_materials_list`
   ADD PRIMARY KEY (`PK_raw_materials_id`);
 
 --
+-- Indexes for table `eb_raw_materials_price_logs`
+--
+ALTER TABLE `eb_raw_materials_price_logs`
+  ADD PRIMARY KEY (`PK_log_id`);
+
+--
 -- Indexes for table `eb_raw_materials_units`
 --
 ALTER TABLE `eb_raw_materials_units`
@@ -3536,7 +3572,7 @@ ALTER TABLE `eb_forgot_password_keys`
 -- AUTO_INCREMENT for table `eb_item_inventory`
 --
 ALTER TABLE `eb_item_inventory`
-  MODIFY `PK_inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `PK_inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `eb_outlet`
@@ -3587,6 +3623,12 @@ ALTER TABLE `eb_raw_materials_list`
   MODIFY `PK_raw_materials_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT for table `eb_raw_materials_price_logs`
+--
+ALTER TABLE `eb_raw_materials_price_logs`
+  MODIFY `PK_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `eb_raw_materials_units`
 --
 ALTER TABLE `eb_raw_materials_units`
@@ -3596,13 +3638,13 @@ ALTER TABLE `eb_raw_materials_units`
 -- AUTO_INCREMENT for table `eb_stock_transfer`
 --
 ALTER TABLE `eb_stock_transfer`
-  MODIFY `PK_stock_transfer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `PK_stock_transfer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `eb_stock_transfer_items`
 --
 ALTER TABLE `eb_stock_transfer_items`
-  MODIFY `PK_transfer_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `PK_transfer_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `eb_suppliers`
@@ -3614,13 +3656,13 @@ ALTER TABLE `eb_suppliers`
 -- AUTO_INCREMENT for table `eb_users`
 --
 ALTER TABLE `eb_users`
-  MODIFY `PK_user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `PK_user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `eb_users_meta`
 --
 ALTER TABLE `eb_users_meta`
-  MODIFY `PK_user_meta_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `PK_user_meta_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

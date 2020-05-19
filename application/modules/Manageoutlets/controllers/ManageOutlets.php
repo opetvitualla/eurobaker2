@@ -13,7 +13,7 @@ class ManageOutlets extends MY_Controller {
 			$data['has_header'] = "includes/admin/header";
 			$data['has_footer']	= "includes/index_footer";
 
-			if (get_user_type() == 1) {
+			if (get_user_type() == 1 || get_user_type() == 2) {
 				$this->load_page('index',$data);
 			} else {
 				$this->load_purchaser_page('index',$data);

@@ -60,7 +60,7 @@ class Managestocks extends MY_Controller {
 				$data = array(
 					"FK_user_id" 	  => 1, // change if naa nay user
 					"FK_origin_branch_id" 	  => 1,
-					"FK_destination_branch_id" 	  => 2,
+					"FK_destination_branch_id" 	  => $transfer['destination_branch_id'],
 					"stock_out" 	  => $transfer['total_items'],
 					'str_no'			=>	$transfer['str_no'],
 					"status"		  => 0,
@@ -107,9 +107,16 @@ class Managestocks extends MY_Controller {
 													"eb_stock_transfer_items" => "eb_stock_transfer_items.FK_stock_transfer_id = eb_stock_transfer.PK_stock_transfer_id",
 												);
 
-				$get_data = getData("eb_stock_transfer", $par, "obj");
+				$transferred_data = getData("eb_stock_transfer", $par, "obj");
 
-				if(!empty($get_data)){
+				if(!empty($transferred_data)){
+
+					$destination_id          = $this->input->post('id');
+					$options['where'] = array(
+																'PK_branch_id' => $transferred_data[0]->FK_destination_branch_id
+															);
+					$destination    = $this->MY_Model->getRows('eb_outlets', $options, 'row');
+					// echo "<pre>";print_r($destination['outlet_name']);exit;
 
 					$par["select"] 	= "*";
 					$par["where"]	= "eb_stock_transfer_items.FK_stock_transfer_id = {$transferred_id}";
@@ -121,12 +128,12 @@ class Managestocks extends MY_Controller {
 
 					if(!empty($transferred_items)){
 						$transferred_data[0]->{"po_items"} = $transferred_items;
+						$transferred_data[0]->destination  = $destination->outlet_name;
 					}
 				}
 
 				$response = array("result" => "success", "data" =>$transferred_data );
 			}
-
 			echo json_encode($response);
 		}
 
