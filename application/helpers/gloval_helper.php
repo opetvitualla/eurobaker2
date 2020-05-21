@@ -69,6 +69,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     
     }
 
+    function my_user_id(){
+        $ci = & get_instance();
+        if($ci->session->has_userdata("PK_user_id")){
+            return $ci->session->userdata("PK_user_id");
+        }
+    
+    }
+
     function get_post(){
         $ci = & get_instance();
         return $ci->input->post();

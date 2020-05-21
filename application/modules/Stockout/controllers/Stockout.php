@@ -81,7 +81,7 @@ class Stockout extends MY_Controller {
 		if(!empty($post)){
 			
 			$data = array(
-				"FK_user_id" 	 	=> get_user_id(), // change if naa nay useer
+				"FK_user_id" 	 	=> my_user_id(), // change if naa nay useer
 				"FK_outlet_id"  	=>  _get_branch_assigned(),
 				"FK_segment_id" 	=> $post["segment_id"],
 				"total_items"	  	=> $post["total_items"],
@@ -124,7 +124,7 @@ class Stockout extends MY_Controller {
 			$where = array( "PK_stock_out_id" => $so_id );
 
 			$set = array(
-				"FK_user_id" 	 	=> get_user_id(), // change if naa nay useer
+				"FK_user_id" 	 	=> my_user_id(), // change if naa nay useer
 				"FK_outlet_id"  	=>  _get_branch_assigned(),
 				"FK_segment_id" 	=> $post["segment_id"],
 				"total_items"	  	=> $post["total_items"],
@@ -167,12 +167,21 @@ class Stockout extends MY_Controller {
 			$par["where"]	= "so.PK_stock_out_id = {$so_id}";
 			$par["join"] 	= array(
 				"eb_segment seg" => "so.FK_segment_id = seg.PK_segment_id",
+				"eb_users_meta user_meta" => "user_meta.FK_user_id = so.FK_user_id",
 			);
-
+			
 			$so_data = getData("eb_stock_out so", $par, "obj");
 			
 			if(!empty($so_data)){
 			
+				$par['select'] = 'firstname, lastname';
+				$par['where']  = array('fk_stockout_id' => $so_id);
+				$par["join"] 	= array(
+					"eb_users_meta user_meta" => "user_meta.FK_user_id = so_app.fk_approve_user_id",
+				);
+				$app_data       = getData('eb_stock_out_approved so_app', $par, 'obj');
+				$so_data[0]->{"approved_data"} = $app_data;
+
 				$par["select"] 	= "*";
 				$par["where"]	= "so_item.FK_stock_out_id = {$so_id}";
 				$par["join"] 	= array(
@@ -204,7 +213,7 @@ class Stockout extends MY_Controller {
 			
 			$data = array(
 				"fk_stockout_id" => $so_id,
-				"fk_approve_user_id" => get_user_id(),
+				"fk_approve_user_id" => my_user_id(),
 				"status" => 1,
 				"date_approved" => date("Y-m-d h:i:s")
 			);

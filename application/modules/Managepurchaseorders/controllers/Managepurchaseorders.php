@@ -240,7 +240,7 @@ class Managepurchaseorders extends MY_Controller {
 		if(!empty($po_id)){
 			$data = array(
 				"FK_purchase_id" => $po_id,
-				"FK_received_user_id" => get_user_id(),
+				"FK_received_user_id" => my_user_id(),
 				"status" => 1,
 				"date_received" => date("Y-m-d h:i:s")
 			);

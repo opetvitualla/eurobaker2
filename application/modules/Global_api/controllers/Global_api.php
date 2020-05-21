@@ -32,5 +32,24 @@ class Global_api extends MY_Controller {
 			echo json_encode($response);
 		}
 		
+		public function get_all_purchase_order_processing(){
+
+			$response = array( "result" => false, );
+
+			$par['select'] = '*';
+			$par['where']  = array(
+				'status' => 'processing',
+				"FK_branch_id !=" => _get_branch_assigned()
+			);
+			
+			$getdata       = getData('eb_purchase_order po', $par, 'obj');
+
+			$response = array( "result" => true, "data" => $getdata, );
+
+			echo json_encode($response);
+
+
+
+		}
 
 }

@@ -29,6 +29,8 @@
                         <li><a href="<?= base_url('Managestocks/StockAdjustments') ?>">Stock Adjustment</a></li>
                     </ul>
                 </li>
+                <li> <a class="waves-effect waves-dark" href="<?= base_url('other_outlet_deliveries/') ?>" aria-expanded="false"><i class="icon-Truck"></i><span class="hide-menu">Other Outlet Deliveries</span></a>
+                </li>
                 <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="icon-File-HorizontalText "></i><span class="hide-menu">Reports</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="<?= base_url('total_purchase_order') ?>">Total Purchases</a></li>
