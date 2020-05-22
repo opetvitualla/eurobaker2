@@ -316,6 +316,7 @@ $(document).ready(function() {
 					item_id: item_ids,
 					quantity: row.find(".item-qty").val(),
 					unit: row.find(".item-unit").val(),
+					price: row.find(".item-price").val(),
 				})
 			})
 

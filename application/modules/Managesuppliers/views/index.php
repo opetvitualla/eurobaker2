@@ -38,7 +38,7 @@
                                             <tr>
                                                 <th class="text-center">Supplier ID</th>
                                                 <th class="text-center">Supplier Name</th>
-                                                <th class="text-center">Contact #</th>
+                                                <th class="text-center">Terms</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -72,20 +72,29 @@
                                           </div>
                                       </div>
                                       <div class="row">
+                                          <!--/span-->
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <label>Terms</label>
+                                                  <input type="text" class="form-control" name="terms">
+                                              </div>
+                                          </div>
+                                          <!--/span-->
                                           <div class="col-md-6">
                                               <div class="form-group">
                                                   <label>Address</label>
                                                   <input type="text" class="form-control" name="address">
                                               </div>
                                           </div>
-                                          <!--/span-->
-                                          <div class="col-md-6">
-                                              <div class="form-group">
-                                                  <label>Contact #</label>
-                                                  <input type="text" class="form-control" name="contact_number">
-                                              </div>
+
+                                      </div>
+                                      <div class="row">
+                                        <div class="col-md-12">
+                                          <div class="form-group">
+                                            <label>Products</label>
+                                            <textarea type="text" class="form-control" name="products"></textarea>
                                           </div>
-                                          <!--/span-->
+                                        </div>
                                       </div>
                                         <!--/row-->
                                         <div class="form-actions">
@@ -124,20 +133,29 @@
                                             </div>
                                         </div>
                                         <div class="row">
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Terms</label>
+                                                    <input type="text" class="form-control" name="terms">
+                                                </div>
+                                            </div>
+                                            <!--/span-->
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Address</label>
                                                     <input type="text" class="form-control" name="address">
                                                 </div>
                                             </div>
-                                            <!--/span-->
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Contact #</label>
-                                                    <input type="text" class="form-control" name="contact_number">
-                                                </div>
+
+                                        </div>
+                                        <div class="row">
+                                          <div class="col-md-12">
+                                            <div class="form-group">
+                                              <label>Products</label>
+                                              <textarea type="text" class="form-control" name="products"></textarea>
                                             </div>
-                                            <!--/span-->
+                                          </div>
                                         </div>
                                         <!--/row-->
                                     </div>
@@ -170,20 +188,29 @@
                                           </div>
                                       </div>
                                       <div class="row">
+                                          <!--/span-->
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <label>Terms</label>
+                                                  <input type="text" class="form-control" name="terms">
+                                              </div>
+                                          </div>
+                                          <!--/span-->
                                           <div class="col-md-6">
                                               <div class="form-group">
                                                   <label>Address</label>
                                                   <input type="text" class="form-control" name="address">
                                               </div>
                                           </div>
-                                          <!--/span-->
-                                          <div class="col-md-6">
-                                              <div class="form-group">
-                                                  <label>Contact #</label>
-                                                  <input type="text" class="form-control" name="contact_number">
-                                              </div>
+
+                                      </div>
+                                      <div class="row">
+                                        <div class="col-md-12">
+                                          <div class="form-group">
+                                            <label>Products</label>
+                                            <textarea type="text" class="form-control" name="products"></textarea>
                                           </div>
-                                          <!--/span-->
+                                        </div>
                                       </div>
                                         <!--/row-->
                                         <div class="form-actions">

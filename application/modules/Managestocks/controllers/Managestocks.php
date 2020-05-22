@@ -79,6 +79,22 @@ class Managestocks extends MY_Controller {
 							"status" 				=> 0,
 						);
 
+						$options['select']= 'sales_price'; //get price
+						$options['where'] = array('PK_raw_materials_id'=>$item->item_id); //check price
+						$prev_price 			= $this->MY_Model->getRows('eb_raw_materials_list', $options , 'row');
+						$current_price		=	$item->price;
+
+						if ($prev_price->sales_price != $current_price) {
+							$data_price = array(
+								"FK_raw_material_id"=> $item->item_id,
+								"previous_price" 	  => $prev_price->sales_price,
+								"current_price" 	  => $current_price,
+							);
+							$insert_price = insertData("eb_raw_materials_price_logs", $data_price);
+
+
+						}
+
 						$insert_items = insertData("eb_stock_transfer_items", $data);
 						if ($insert_items) {
 							$response = array( "result" => "success" );
