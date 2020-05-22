@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 19, 2020 at 07:41 AM
+-- Generation Time: May 22, 2020 at 12:41 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -3265,7 +3265,9 @@ CREATE TABLE `eb_raw_materials_price_logs` (
 INSERT INTO `eb_raw_materials_price_logs` (`PK_log_id`, `FK_raw_material_id`, `previous_price`, `current_price`, `date_added`) VALUES
 (1, 1, '287.87', '287.87', '2020-05-13 18:26:32'),
 (2, 2, '311.85', '311.85', '2020-05-13 18:26:32'),
-(3, 3, '10.71', '12.21', '2020-05-13 18:27:02');
+(3, 3, '10.71', '12.21', '2020-05-13 18:27:02'),
+(4, 1, '287.87', '300', '2020-05-22 18:40:14'),
+(5, 1, '287.87', '300', '2020-05-22 18:40:55');
 
 -- --------------------------------------------------------
 
@@ -3327,7 +3329,18 @@ INSERT INTO `eb_stock_transfer` (`PK_stock_transfer_id`, `FK_user_id`, `FK_origi
 (20, 1, 1, 2, 2, 0, '', '2020-04-13 20:09:30'),
 (21, 1, 1, 2, 2, 1, '123', '2020-04-20 18:37:46'),
 (22, 1, 1, 4, 1, 0, '12', '2020-05-18 19:31:49'),
-(23, 1, 1, 3, 2, 0, '098', '2020-05-18 19:47:24');
+(23, 1, 1, 3, 2, 0, '098', '2020-05-18 19:47:24'),
+(24, 1, 1, 3, 1, 0, '-26', '2020-05-22 18:19:52'),
+(25, 1, 1, 3, 1, 0, '-26', '2020-05-22 18:20:06'),
+(26, 1, 1, 3, 1, 0, '-26', '2020-05-22 18:22:31'),
+(27, 1, 1, 3, 1, 0, '-26', '2020-05-22 18:24:22'),
+(28, 1, 1, 3, 1, 0, '-26', '2020-05-22 18:24:51'),
+(29, 1, 1, 3, 1, 0, '-26', '2020-05-22 18:25:26'),
+(30, 1, 1, 3, 1, 0, '-26', '2020-05-22 18:25:39'),
+(31, 1, 1, 3, 1, 0, '-26', '2020-05-22 18:26:21'),
+(32, 1, 1, 3, 1, 0, '-26', '2020-05-22 18:31:50'),
+(33, 1, 1, 3, 1, 0, '-26', '2020-05-22 18:40:14'),
+(34, 1, 1, 3, 1, 0, '-26', '2020-05-22 18:40:55');
 
 -- --------------------------------------------------------
 
@@ -3367,7 +3380,8 @@ INSERT INTO `eb_stock_transfer_items` (`PK_transfer_item_id`, `FK_stock_transfer
 (19, 20, 7, 1, 0, '2020-04-13 20:09:30'),
 (20, 21, 3, 1, 0, '2020-04-20 18:37:46'),
 (21, 22, 1, 1, 0, '2020-05-18 19:31:49'),
-(22, 23, 3, 2, 0, '2020-05-18 19:47:24');
+(22, 23, 3, 2, 0, '2020-05-18 19:47:24'),
+(23, 34, 1, 1, 0, '2020-05-22 18:40:55');
 
 -- --------------------------------------------------------
 
@@ -3378,6 +3392,8 @@ INSERT INTO `eb_stock_transfer_items` (`PK_transfer_item_id`, `FK_stock_transfer
 CREATE TABLE `eb_suppliers` (
   `PK_supplier_id` tinyint(4) NOT NULL,
   `supplier_name` varchar(200) NOT NULL,
+  `products` text NOT NULL,
+  `terms` varchar(20) NOT NULL,
   `address` varchar(200) NOT NULL,
   `contact_number` varchar(20) NOT NULL,
   `status` tinyint(4) NOT NULL COMMENT '1- Active 0-Inactive',
@@ -3388,12 +3404,73 @@ CREATE TABLE `eb_suppliers` (
 -- Dumping data for table `eb_suppliers`
 --
 
-INSERT INTO `eb_suppliers` (`PK_supplier_id`, `supplier_name`, `address`, `contact_number`, `status`, `date_added`) VALUES
-(1, 'Proweaver Supplier', 'Cebu City, Philippines', '09123456781', 1, '2020-03-20 07:17:39'),
-(2, 'Web2 Supplier', 'Cebu CIty, Philippines', '09123456782', 1, '2020-03-20 07:17:39'),
-(3, 'test1', 'test1', 'test', 1, '2020-03-23 04:04:20'),
-(4, 'test', 'test', '091234567891', 1, '2020-03-23 04:05:46'),
-(5, 'asdasd1', 'asd', 'asdasd', 1, '2020-03-23 15:30:34');
+INSERT INTO `eb_suppliers` (`PK_supplier_id`, `supplier_name`, `products`, `terms`, `address`, `contact_number`, `status`, `date_added`) VALUES
+(1, 'Proweaver Supplier', 'test', '15 days', 'Cebu City, Philippines', '09123456781', 1, '2020-03-20 07:17:39'),
+(2, 'Web2 Supplier', 'test', '15 days', 'Cebu CIty, Philippines', '09123456782', 1, '2020-03-20 07:17:39'),
+(3, 'test1', 'test', '14 days', 'test1', 'test', 1, '2020-03-23 04:04:20'),
+(4, 'test', 'test', 'DATED', 'test', '091234567891', 1, '2020-03-23 04:05:46'),
+(5, 'asdasd1', 'test', '30 days', 'asd', 'asdasd', 1, '2020-03-23 15:30:34'),
+(6, 'tessss', 'jhaskjashf', '12 days', '162 Little Embers Court', '091234567891', 1, '2020-05-22 17:11:33'),
+(7, 'Isla Mindanao', 'centralized gasul', '30 days', 'R.Castillo St. ( at the back of Jetti station )', '', 1, '2020-05-22 17:17:59'),
+(8, 'Supplier test1', 'da', '14 dayssss', '162 Little Embers Court', '', 1, '2020-05-22 17:37:36'),
+(9, '116 Marketing', 'micram / bagutte / creamfil / freshmilk / french fries', '15 days', 'Obrero Davao City', '', 1, '2020-05-22 17:38:16'),
+(10, '1st Pinacle', 'bread crates', 'DATED', 'SJRDC Bldg. Dorr 1,3,4 Insular Village Lanang', '', 1, '2020-05-22 17:39:21'),
+(11, 'Adoy Ent.', 'cake accessories', '30 days', '#34 Magsaysay Ave.Poblacion District', '', 1, '2020-05-22 17:39:46'),
+(12, 'Adsia Eurobakers', 'credo bread improver', '30 days', 'Garcia Highway Davao City', '', 1, '2020-05-22 17:40:09'),
+(13, 'JCT ', 'Bakels Phils. Inc. products : fino meal and chocolate glaze', '30 days', '108 Sta.Ana Poblacion District Davao city', '', 1, '2020-05-22 17:40:29'),
+(14, 'Baker\'s Basket', 'boxes for happy cake / powder sugar / glaze fruit', '30 days', 'Quirino Ave,Bajada Davao City ( infront Penongs )', '', 1, '2020-05-22 17:40:50'),
+(15, 'Baking & Pantry', 'other options for cake accessories', '15 days', 'Acacia St. Bajada', '', 1, '2020-05-22 17:41:14'),
+(16, 'Best Buy', 'all bakery equipment and kitchen equipment', 'DATED', 'Obrero infront Ritz Hotel', '', 1, '2020-05-22 17:41:38'),
+(17, 'Besterm', 'kitchen and bread equipment', 'DATED', 'Mabini St. Corner avancenia st.', '', 1, '2020-05-22 17:41:57'),
+(18, 'Christopher Singcol', 'mascara / ground pork', '30 days', 'Bangkal Davao City', '', 1, '2020-05-22 17:42:21'),
+(19, 'Cody Mktg', 'C302  / take out meal box and other packaging supplies', '15 days', 'Door 5,6,7 Alejandra Building Porras St. ', '', 1, '2020-05-22 17:42:47'),
+(20, 'D Unibuenas', 'solane - 50kg and 11 kg', '30 days', 'Sobrecary Corner Vinsons st. Obrero', '', 1, '2020-05-22 17:43:28'),
+(21, 'D Paragon', 'magic sarap / nestle products', '15 days', 'Sobrecary Corner Vinsons st. Obrero', '', 1, '2020-05-22 17:43:50'),
+(22, 'Denchel Ent.', 'flour / bakery raw materials', '30 days', '#42 Monteverde st. Poblacion Davao City', '', 1, '2020-05-22 17:44:12'),
+(23, 'Dimdi', 'kitchen and bread equipment', 'DATED', 'Asaje 11 Bldg. San Pedro St. Davao City', '', 1, '2020-05-22 17:44:33'),
+(24, 'DSG Grocery ', 'assorted grocery', '14 days', 'Gaisano Mall of Davao - JP Laurel Ave.Bajada', '', 1, '2020-05-22 17:44:54'),
+(25, 'Dvo. Asian Dist.', 'alaska condensed and evap', '15 days', 'Asian st. Maa Road  ( at the back of St.Francis Assassi Church )', '', 1, '2020-05-22 17:45:15'),
+(26, 'Davao Synthetic', 'shrinkable cellophane', '30 days', '2 ATP Building Km.7 Lanang Angliongto Buhangin Davao City', '', 1, '2020-05-22 17:45:41'),
+(27, 'Eblue / Equilibirium', 'Torani products / Tea bag / coffee ', '30 days', 'SRC Bldg.Door 2 and 3 Dacudao ave.(beside yamaha)', '', 1, '2020-05-22 17:45:59'),
+(28, 'Integral', 'all computer equipment', '30 days', 'Door 1 Junsay Bldg.71 E.Quirino Avenue', '', 1, '2020-05-22 17:46:17'),
+(29, 'GLL Printing Press', 'riso / tarp supplies printing', 'DATED / cash', 'Imperial Bldg. ( infront UM school )', '', 1, '2020-05-22 17:46:38'),
+(30, 'IPI ', 'sun valley vegetable oil', '30 days', 'Malagamot road Panacan', '', 1, '2020-05-22 17:46:58'),
+(31, 'JNS Global Ent.', 'whole wheat', '30 days', '28 A.T. Monteverde Ave. Davao city', '', 1, '2020-05-22 17:47:15'),
+(32, 'Judith Farms ', 'eggs', '23 days', 'Aquino St.Agdao Davao City ( outlet ) / Sirawan Toril (farm)', '', 1, '2020-05-22 17:47:38'),
+(33, 'JBBS', 'whole wheat', '30 days', 'Villa Abrille St. Poblacion District Davao city', '', 1, '2020-05-22 17:48:02'),
+(34, 'Kitchen & Pantry', 'other options for cake accessories', '30 days', 'Lapu-Lapu St. Agdao Davao City', '', 1, '2020-05-22 17:48:16'),
+(35, 'KLG-mop heads', 'mop head', '30 days', 'Door 8 Angliongto Commercial Complex A.Alingiongto Lanang  ', '', 1, '2020-05-22 17:48:40'),
+(36, 'Lisa\'s Meat', 'frozen products', '15 days', 'Gaisano Mall of Davao - JP Laurel Ave.Bajada', '', 1, '2020-05-22 17:49:07'),
+(37, 'Lui Ent.', 'office supplies', '30 days', 'Gempesaw St. Davao City', '', 1, '2020-05-22 17:49:28'),
+(38, 'Metro Plaza', 'kitchen and bread equipment', 'DATED', 'JP Laurel Ave.Bajada Davao City', '', 1, '2020-05-22 17:49:46'),
+(39, 'Mindanao Daltan Ent.', 'mongo paste / ube paste / supot / freshmilk / filled cheese / unsalted butter / super syrup / trash bag / rainbow and choco sprinkles / BOS / precut tissue  / cocktail tissue / marca corn oil / cream cheese / spaghetti pasta', '15 days', '#888 Sobrecarey St. cor.Villamor St. Bo. Obrero', '', 1, '2020-05-22 17:50:04'),
+(40, 'MJAG', 'all knorr products  ', '30 days', 'Door 19 & 20 Joyfull Village Brgy Cabantian', '', 1, '2020-05-22 17:50:33'),
+(41, 'New Lucky Star', 'kitchen and bread equipment', '30 days', 'Ramon Magsaysay Ave. brgy.sta.ana 27-c', '', 1, '2020-05-22 17:50:49'),
+(42, 'RM Legacy', 'organica peanut butter ', '30 days', 'Dapitan St.Kalawag 1 Isulan Sultan Kudarat', '', 1, '2020-05-22 17:51:07'),
+(43, 'Pantua', 'macapuno preserved', '30 days', '#53 Tulip Drive St. Juna Subd. Matina', '', 1, '2020-05-22 17:51:25'),
+(44, 'Press CN', 'accountability forms', '30 days', 'Nissan St.Purok Alicia Pelayo Brgy.Centro Agdao District', '', 1, '2020-05-22 17:51:40'),
+(45, 'Rigel Laser Mktg', 'toner', '30 days', 'Door 2 Basa  Building Jose Palma Gil St. Poblacion district', '', 1, '2020-05-22 17:51:58'),
+(46, 'Rodsy Mktg', 'all delmonte products  / tuna chunks / Angel condensed', '15 days', '#8 Ruby St. RGA Village Dacudao ', '', 1, '2020-05-22 17:52:21'),
+(47, 'Rookies Fruit Preserves', 'ube jam', '15 days', 'Talomo Davao City', '', 1, '2020-05-22 17:52:44'),
+(48, 'RPE Printing Press', 'alll accountable forms', '30 days', 'NHA Buhangin', '', 1, '2020-05-22 17:52:53'),
+(49, 'Isla Mindanao', 'centralized gasul', '30 days', 'R.Castillo St. ( at the back of Jetti station )', '', 1, '2020-05-22 17:55:47'),
+(50, 'Super Savings', 'all coca cola products', '15 days', 'Sobrecary Corner Vinsons st. Obrero', '', 1, '2020-05-22 17:56:08'),
+(51, 'Swiss Deli', ' / hungarian sausages / pork knuckles / smoked farmers ham', '15 days', 'RS Compound Km.7 Lanang Davao City', '', 1, '2020-05-22 17:56:22'),
+(52, 'TP Foods', 'semi sweet  and unswetened chocolate', 'DATED', '#34 Arturo Drive Bagumbayan Taguig City', '', 1, '2020-05-22 17:56:42'),
+(53, 'Durian Marketing', 'nagarosa flour / asstd bakery suppliers', '30 days', 'Purok Mansanitas Gante Road  Magugpo west Tagum city', '', 1, '2020-05-22 17:57:09'),
+(54, 'Wealthy Unisavers', 'other alternate if no stock current supplier for cheese', '30 days', 'Panabo City  Road , B/uhangin Davao City', '', 1, '2020-05-22 17:57:27'),
+(55, 'Werdenberg', 'saurkraut / parmesan cheese / mustard', '15 days', 'Unit 101 and 102 Two via Condotti JP Laurel Ave. Bajada ', '', 1, '2020-05-22 17:57:44'),
+(56, 'WGV Mktg', 'lard / margarine / cocoa / whip crème', '30 days', '#28 Bicol St. Rivera Village Bjada', '', 1, '2020-05-22 17:58:04'),
+(57, 'BuyersLink', 'comstock blueberry and red cherry', '30 days', 'Del Pilar St. Poblacion District Davao City', '', 1, '2020-05-22 17:58:20'),
+(58, '4U Commercial', 'sando bag generic / bending straw white / disposable gloves ', '30 days', 'SM Village Bangkal Davao City', '', 1, '2020-05-22 17:58:35'),
+(59, '3 Apples', 'rice / artistic straw / plastic cup 12oz and 3.5 oz / rippled for coffee / cocktail picks / umbrella picks', '30 days', '#12 Guerero St, Davao City', '', 1, '2020-05-22 17:59:37'),
+(60, 'DC Pharma', ' mx3 cooffee and capsule', '15 days', '#777 Kalamansi St. Juna Subdivision Matina', '', 1, '2020-05-22 17:59:56'),
+(61, 'KMI', 'bacon / dory fish / ', '15 days', 'Landmark Vista Verde ( at the back of 711 )', '', 1, '2020-05-22 18:00:11'),
+(62, 'MERRIAN REFRIGERATION', 'chiller equipment / emergency light', 'DATED', 'Acacia St. Bajada', '', 1, '2020-05-22 18:00:30'),
+(63, 'Bloomy Ice cubes', 'dealer for ice cubes . Crushed ice', 'cash basis', 'E11 Lot 38 Saint Barts St. Solariega Talomo ', '', 1, '2020-05-22 18:00:50'),
+(64, 'Clean Up', 'diswashing liquid/ hand sanitizer', 'DATED', 'Panabo City', '', 1, '2020-05-22 18:01:10'),
+(65, 'Southern synergy', 'journal / other office supplies', '30 days', '#10 Blue Jay St. Belisario Subd.Lanang', '', 1, '2020-05-22 18:01:27'),
+(66, 'Flex Solutions', 'packaging materials', '30 days', 'Km.14 Malagamot Road Davao City', '', 1, '2020-05-22 18:01:45');
 
 -- --------------------------------------------------------
 
@@ -3626,7 +3703,7 @@ ALTER TABLE `eb_raw_materials_list`
 -- AUTO_INCREMENT for table `eb_raw_materials_price_logs`
 --
 ALTER TABLE `eb_raw_materials_price_logs`
-  MODIFY `PK_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `PK_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `eb_raw_materials_units`
@@ -3638,19 +3715,19 @@ ALTER TABLE `eb_raw_materials_units`
 -- AUTO_INCREMENT for table `eb_stock_transfer`
 --
 ALTER TABLE `eb_stock_transfer`
-  MODIFY `PK_stock_transfer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `PK_stock_transfer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `eb_stock_transfer_items`
 --
 ALTER TABLE `eb_stock_transfer_items`
-  MODIFY `PK_transfer_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `PK_transfer_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `eb_suppliers`
 --
 ALTER TABLE `eb_suppliers`
-  MODIFY `PK_supplier_id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `PK_supplier_id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `eb_users`
