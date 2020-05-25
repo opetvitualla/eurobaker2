@@ -33,6 +33,7 @@
                                             <td>Quantity</td>
                                             <td style="width: 122px;">Item Unit</td>
                                             <td>Price</td>
+                                            <td>Total</td>
                                             <td>Received Qty.</td>
                                         </tr>
                                     </thead>

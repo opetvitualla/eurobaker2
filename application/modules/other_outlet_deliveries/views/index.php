@@ -17,6 +17,7 @@
                         </ol>
                     </div>
                     <div class="col-md-7 align-self-center text-right d-none d-md-block">
+                        <a href="<?= base_url("other_outlet_discrepancies")?>" type="button" class="btn btn-success ">Discrepancy</a>
                         <button type="button" class="btn btn-info theme-bg show-add-modal" ><i class="fa fa-plus"></i> New Deliveries</button>
                     </div>
                     <div class="">

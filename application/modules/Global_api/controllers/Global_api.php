@@ -39,17 +39,41 @@ class Global_api extends MY_Controller {
 			$par['select'] = '*';
 			$par['where']  = array(
 				'status' => 'processing',
-				"FK_branch_id !=" => _get_branch_assigned()
+				"FK_branch_id !=" => _get_branch_assigned(),
 			);
 			
 			$getdata       = getData('eb_purchase_order po', $par, 'obj');
 
-			$response = array( "result" => true, "data" => $getdata, );
+			$result = [];
+
+			$c =0;
+			foreach ($getdata as $key) {
+				
+				$po_id = $key->PK_purchase_order_id;
+
+				if($this->is_exist_others($po_id)){
+					unset($getdata[$c]);
+				}
+
+				$c++;
+			}
+
+			$result = array_values($getdata);
+
+			$response = array( "result" => true, "data" => $result );
 
 			echo json_encode($response);
 
-
-
 		}
 
+
+		private function is_exist_others($po_id){
+			$par['select'] = '*';
+			$par['where']  = array('fk_po_id' => $po_id);
+			
+			$getdata       = getData('eb_other_outlet_delivery', $par, 'obj');
+
+			return !empty($getdata);
+
+		}
 }

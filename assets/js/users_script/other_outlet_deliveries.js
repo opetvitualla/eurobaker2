@@ -10,6 +10,11 @@ $(document).ready(function () {
 
     $(".show-add-modal").click(function () {
 
+        $(".table-po-body-other").html("");
+
+        $(".total-item").val("");
+        $(".over-total").val("");
+
         axios.get(`${base_url}Global_api/get_all_purchase_order_processing`).then(res => {
             //  suppliers = JSON.parse(res.data.data);
             if (res.data.result) {
@@ -93,6 +98,14 @@ $(document).ready(function () {
 
     $(document).on('change', '.po_select', function () {
         let id = $(this).val();
+
+        if (id == "") {
+            $(".total-item").html("0")
+            $(".over-total").html("0")
+            $(".table-po-body-other").html("")
+            return;
+        }
+
         if (id != 0) {
 
             axios.get(`${base_url}other_outlet_deliveries/get_po_details/${id}`).then(res => {
@@ -103,6 +116,9 @@ $(document).ready(function () {
                     let items = data[0].po_items;
 
                     items.map(item => {
+
+                        let tot = item.quantity * item.average_cost;
+
                         let html = `
 							<tr>
 								<td class="item-data" data-id="${item.FK_raw_material_id}"> ${item.material_name} </td>
@@ -113,7 +129,10 @@ $(document).ready(function () {
 								${item.item_unit}
 							</td>
 							<td>
-                                <input class="form-control" required type="text" name="item_price" value="${item.average_cost}">
+                                <input class="form-control item_price" required type="text"  value="${item.average_cost}">
+                            </td>
+                            <td>
+                                <span class="row_total">${tot.toFixed(2)}</span>
 							</td>
 							<td>
 								<input type="number" min="0" max="${item.quantity}" value="${item.quantity}" class="form-control received-qty">
@@ -157,11 +176,10 @@ $(document).ready(function () {
             let dreason = $("#discrepancy_reason").val();
 
             frmdata.append("po_id", po_id);
-            frmdata.append("po_no", po_no);
             frmdata.append("disc_item", JSON.stringify(disc_items));
             frmdata.append("reason", dreason);
 
-            axios.post(`${base_url}Managepurchaseorders/receive_purchase_order`, frmdata).then(res => {
+            axios.post(`${base_url}other_outlet_deliveries/receive_purchase_order`, frmdata).then(res => {
                 if (res.data.result == "success") {
                     s_alert("Received Successfully!", "success");
                     table_purchase_order.ajax.reload();
@@ -169,6 +187,28 @@ $(document).ready(function () {
             })
 
         })
+
+    })
+
+
+    $(document).on("change", ".item_price", function () {
+
+        let price = Number($(this).val());
+
+        if (isNaN(price)) {
+            $(this).val(1)
+            price = 1;
+        }
+        let row = $(this).closest('tr');
+       
+        let qty = row.find(".process-qty").html();
+
+        let total = calculateTotal(price, qty)
+
+        row.find(".row_total").html(total)
+
+        generateOverTotal();
+        
 
     })
 
@@ -185,4 +225,26 @@ $(document).ready(function () {
         }
 
     })
+
+    function calculateTotal(price, qty) {
+        return Number(price) * Number(qty);
+    }
+
+    function generateOverTotal() {
+        let over_total = 0;
+        let count = 0;
+        let mod = "new_deliver_modal";
+
+        $(".table-po-body-other .row_total").each(function (e) {
+
+            over_total += Number($(this).html());
+            count++;
+
+            console.log(over_total)
+        })
+
+        $(".total-item").html(count)
+        $(".over-total").html(over_total.toFixed(2))
+    }
+
 })

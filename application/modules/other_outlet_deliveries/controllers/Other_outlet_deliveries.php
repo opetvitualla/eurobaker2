@@ -122,4 +122,15 @@ class Other_outlet_deliveries extends MY_Controller {
 
 		echo json_encode($response);
 	}
+
+	public function receive_purchase_order(){
+		
+		$post = $this->input->post();
+
+		echo '<pre>';
+		print_r($post);
+		echo '</pre>';
+		exit;
+
+	}
 }
