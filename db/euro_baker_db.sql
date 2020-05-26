@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: May 26, 2020 at 07:23 AM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.1
+-- Host: 127.0.0.1
+-- Generation Time: May 26, 2020 at 08:32 AM
+-- Server version: 10.1.25-MariaDB
+-- PHP Version: 5.6.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -55,7 +55,7 @@ CREATE TABLE `eb_item_inventory` (
   `status` int(11) NOT NULL,
   `type` varchar(150) NOT NULL,
   `discrepancy` tinyint(4) NOT NULL COMMENT '0-no 1-yes',
-  `date_added` datetime NOT NULL DEFAULT current_timestamp(),
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_updated` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -80,8 +80,29 @@ INSERT INTO `eb_item_inventory` (`PK_inventory_id`, `FK_raw_material_id`, `FK_ou
 (14, 1, 2, 863.61, 4, '5', 5, 1, 'Stock Transfer', 0, '2020-04-09 14:28:52', '0000-00-00 00:00:00'),
 (15, 2, 2, 311.85, 5, '6', 6, 1, 'Stock Transfer', 0, '2020-04-09 15:00:30', '0000-00-00 00:00:00'),
 (16, 1, 2, 575.74, 5, '7', 7, 1, 'Stock Transfer', 0, '2020-04-09 15:23:24', '0000-00-00 00:00:00'),
-(17, 1, 2, 575.74, 12, '10', 10, 1, 'Stock Transfer', 0, '2020-03-03 20:25:36', '0000-00-00 00:00:00'),
-(18, 3, 2, 0, 0, '1', 0, 1, 'Stock Transfer', 1, '2020-05-18 19:44:43', '0000-00-00 00:00:00');
+(17, 1, 2, 575.74, 12, '10', 10, 1, 'Stock Transfer', 0, '2020-03-03 20:25:36', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eb_other_outlet_delivery`
+--
+
+CREATE TABLE `eb_other_outlet_delivery` (
+  `pk_other_deliver_id` int(11) NOT NULL,
+  `fk_po_id` int(11) NOT NULL,
+  `fk_receiver_id` int(11) NOT NULL,
+  `checked_by` varchar(55) NOT NULL,
+  `fk_outlet_recieved_id` int(11) NOT NULL,
+  `fk_outlet_to_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `eb_other_outlet_delivery`
+--
+
+INSERT INTO `eb_other_outlet_delivery` (`pk_other_deliver_id`, `fk_po_id`, `fk_receiver_id`, `checked_by`, `fk_outlet_recieved_id`, `fk_outlet_to_id`) VALUES
+(1, 3, 1, 'test', 3, 2);
 
 -- --------------------------------------------------------
 
@@ -108,7 +129,7 @@ CREATE TABLE `eb_outlets` (
   `PK_branch_id` tinyint(4) NOT NULL,
   `outlet_name` varchar(50) NOT NULL,
   `status` int(11) NOT NULL,
-  `date_added` datetime NOT NULL DEFAULT current_timestamp()
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -119,7 +140,30 @@ INSERT INTO `eb_outlets` (`PK_branch_id`, `outlet_name`, `status`, `date_added`)
 (1, 'Bajada', 1, '2020-03-20 10:28:17'),
 (2, 'Tagum', 1, '2020-03-20 10:28:17'),
 (3, 'Toril', 1, '2020-03-20 10:28:23'),
-(4, 'Commisary', 1, '2020-04-06 13:30:51');
+(4, 'Commisary', 1, '2020-05-26 14:07:58');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eb_po_discrepancy_items`
+--
+
+CREATE TABLE `eb_po_discrepancy_items` (
+  `po_discrepancy_item_id` int(11) NOT NULL,
+  `fk_po_discrepancy_id` int(11) NOT NULL,
+  `fk_material_id` int(11) NOT NULL,
+  `material_name` varchar(100) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `received_qty` int(11) NOT NULL,
+  `date_added` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `eb_po_discrepancy_items`
+--
+
+INSERT INTO `eb_po_discrepancy_items` (`po_discrepancy_item_id`, `fk_po_discrepancy_id`, `fk_material_id`, `material_name`, `qty`, `received_qty`, `date_added`) VALUES
+(1, 2, 1, ' 12x12  spongecake plain (12x12 spongecake plain) ', 6, 5, '2020-05-06 04:04:47');
 
 -- --------------------------------------------------------
 
@@ -129,6 +173,7 @@ INSERT INTO `eb_outlets` (`PK_branch_id`, `outlet_name`, `status`, `date_added`)
 
 CREATE TABLE `eb_purchase_order` (
   `PK_purchase_order_id` int(11) NOT NULL,
+  `purchase_order_no` varchar(60) NOT NULL,
   `FK_supplier_id` int(11) NOT NULL,
   `FK_user_id` int(11) NOT NULL,
   `FK_branch_id` int(11) NOT NULL,
@@ -142,10 +187,32 @@ CREATE TABLE `eb_purchase_order` (
 -- Dumping data for table `eb_purchase_order`
 --
 
-INSERT INTO `eb_purchase_order` (`PK_purchase_order_id`, `FK_supplier_id`, `FK_user_id`, `FK_branch_id`, `status`, `date_added`, `total_amount`, `remarks`) VALUES
-(8, 3, 1, 1, 'pending', '2020-03-25 07:40:25', 1814.46, ''),
-(9, 3, 1, 1, 'received', '2020-03-25 07:48:24', 387.87, ''),
-(10, 3, 1, 1, 'received', '2020-03-26 03:52:27', 331.85, '');
+INSERT INTO `eb_purchase_order` (`PK_purchase_order_id`, `purchase_order_no`, `FK_supplier_id`, `FK_user_id`, `FK_branch_id`, `status`, `date_added`, `total_amount`, `remarks`) VALUES
+(1, '1234', 1, 1, 1, 'received', '2020-05-05 08:58:37', 1175.46, ''),
+(2, '111223', 2, 1, 1, 'received', '2020-05-06 04:03:24', 5675.07, ''),
+(3, 'N/A', 2, 1, 2, 'processing', '2020-05-06 04:30:51', 311.85, ''),
+(4, 'N/A', 3, 1, 2, 'processing', '2020-05-21 11:03:30', 1787.74, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eb_purchase_order_discrepancy`
+--
+
+CREATE TABLE `eb_purchase_order_discrepancy` (
+  `pk_po_discrepancy_id` int(11) NOT NULL,
+  `fk_purchase_id` int(11) NOT NULL,
+  `reason` text NOT NULL,
+  `status` int(11) NOT NULL,
+  `date_added` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `eb_purchase_order_discrepancy`
+--
+
+INSERT INTO `eb_purchase_order_discrepancy` (`pk_po_discrepancy_id`, `fk_purchase_id`, `reason`, `status`, `date_added`) VALUES
+(1, 2, 'test', 1, '2020-05-06 04:04:47');
 
 -- --------------------------------------------------------
 
@@ -158,6 +225,8 @@ CREATE TABLE `eb_purchase_order_item` (
   `FK_purchase_id` int(11) NOT NULL,
   `FK_raw_material_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
+  `total` float NOT NULL,
+  `price` float NOT NULL,
   `status` varchar(55) NOT NULL,
   `item_unit` varchar(50) NOT NULL,
   `date_added` datetime NOT NULL
@@ -167,14 +236,15 @@ CREATE TABLE `eb_purchase_order_item` (
 -- Dumping data for table `eb_purchase_order_item`
 --
 
-INSERT INTO `eb_purchase_order_item` (`PK_po_item_id`, `FK_purchase_id`, `FK_raw_material_id`, `quantity`, `status`, `item_unit`, `date_added`) VALUES
-(48, 10, 5, 2, '1', '', '2020-04-06 08:38:43'),
-(49, 10, 2, 1, '1', '', '2020-04-06 08:38:43'),
-(55, 8, 1, 3, '1', '', '2020-04-06 09:02:48'),
-(56, 8, 6, 4, '1', '', '2020-04-06 09:02:48'),
-(57, 9, 9, 1, '1', '', '2020-04-06 09:04:38'),
-(58, 9, 1, 1, '1', '', '2020-04-06 09:04:38'),
-(59, 9, 5, 1, '1', '', '2020-04-06 09:04:38');
+INSERT INTO `eb_purchase_order_item` (`PK_po_item_id`, `FK_purchase_id`, `FK_raw_material_id`, `quantity`, `total`, `price`, `status`, `item_unit`, `date_added`) VALUES
+(1, 1, 5, 1, 311.85, 311.85, '1', 'pc', '2020-05-05 08:58:37'),
+(2, 1, 1, 3, 863.61, 287.87, '1', 'kg', '2020-05-05 08:58:37'),
+(3, 2, 1, 6, 1727.22, 287.87, '1', 'Sack', '2020-05-06 04:03:24'),
+(4, 2, 7, 3, 3636, 1212, '1', 'pc', '2020-05-06 04:03:24'),
+(5, 2, 2, 1, 311.85, 311.85, '1', 'kg', '2020-05-06 04:03:24'),
+(6, 3, 2, 1, 311.85, 311.85, '1', 'kg', '2020-05-06 04:30:51'),
+(7, 4, 1, 2, 575.74, 287.87, '1', 'kg', '2020-05-21 11:03:30'),
+(8, 4, 7, 1, 1212, 1212, '1', 'box', '2020-05-21 11:03:30');
 
 -- --------------------------------------------------------
 
@@ -195,11 +265,8 @@ CREATE TABLE `eb_purchase_order_received` (
 --
 
 INSERT INTO `eb_purchase_order_received` (`PK_po_received_id`, `FK_purchase_id`, `FK_received_user_id`, `status`, `date_received`) VALUES
-(2, 8, 1, 1, '2020-03-25 07:40:46'),
-(3, 9, 1, 1, '2020-04-02 12:19:15'),
-(4, 8, 1, 1, '2020-04-06 09:42:20'),
-(5, 10, 1, 1, '2020-04-06 09:42:29'),
-(6, 9, 1, 1, '2020-04-08 01:22:43');
+(1, 1, 1, 1, '2020-05-05 09:02:08'),
+(2, 2, 1, 1, '2020-05-06 04:04:47');
 
 -- --------------------------------------------------------
 
@@ -220,7 +287,7 @@ CREATE TABLE `eb_raw_materials` (
   `sales_price` varchar(20) NOT NULL,
   `retail_value` varchar(20) NOT NULL,
   `total_retail_percent` varchar(20) NOT NULL,
-  `date_added` datetime NOT NULL DEFAULT current_timestamp()
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -228,8 +295,8 @@ CREATE TABLE `eb_raw_materials` (
 --
 
 INSERT INTO `eb_raw_materials` (`PK_raw_materials_id`, `FK_outlet_id`, `FK_category_id`, `status`, `material_name`, `unit`, `average_cost`, `asset_value`, `total_asset_percent`, `sales_price`, `retail_value`, `total_retail_percent`, `date_added`) VALUES
-(1, 1, 3, 1, '12x12  spongecake plain (12x12 spongecake plain  )', 'ea', '287.88', '0.00%', '0.00%', '287.87', '0', '0.00%', '2020-03-19 18:01:56'),
-(2, 1, 3, 1, '12x12 choco spongecake choco (12x12 choco spongecake choco  )', 'ea', '311.85', '0.00%', '0.00%', '311.85', '0', '0.00%', '2020-03-19 18:01:56'),
+(1, 1, 3, 1, '12x12  spongecake plain (12x12 spongecake plain)', 'ea', '287.88', '0.00%', '0.00%', '287.87', '0', '0.00%', '2020-03-19 18:01:56'),
+(2, 1, 3, 1, '12x12 choco spongecake choco (12x12 choco spongecake choco)', 'ea', '311.85', '0.00%', '0.00%', '311.85', '0', '0.00%', '2020-03-19 18:01:56'),
 (3, 1, 3, 1, '12x16x2 styro (12x16x2 styro)', 'ea', '150', '0.00%', '0.00%', '150', '0', '0.00%', '2020-03-19 18:01:56'),
 (4, 1, 3, 1, '12x4 Styro (12x4 Styro)', 'ea', '186', '0.00%', '0.00%', '186', '0', '0.00%', '2020-03-19 18:01:56'),
 (5, 1, 3, 1, '2D poster board for Spongebob (2D poster board for Spongebob)', 'ea', '20', '0.00%', '0.00%', '20', '0', '0.00%', '2020-03-19 18:01:56'),
@@ -3188,7 +3255,7 @@ INSERT INTO `eb_raw_materials` (`PK_raw_materials_id`, `FK_outlet_id`, `FK_categ
 CREATE TABLE `eb_raw_materials_cat` (
   `PK_category_id` tinyint(4) NOT NULL,
   `category_name` varchar(200) NOT NULL,
-  `date_added` datetime NOT NULL DEFAULT current_timestamp(),
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_updated` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -3208,8 +3275,7 @@ INSERT INTO `eb_raw_materials_cat` (`PK_category_id`, `category_name`, `date_add
 (9, 'PRODUCTION', '2020-03-19 00:00:00', '0000-00-00 00:00:00'),
 (10, 'SELLING AREA', '2020-03-19 00:00:00', '0000-00-00 00:00:00'),
 (11, 'MX3 Inventoriables', '2020-03-19 14:17:08', '0000-00-00 00:00:00'),
-(12, 'Organica Peanut Butter (Organica)', '2020-03-19 14:17:08', '0000-00-00 00:00:00'),
-(13, 'test1', '2020-04-20 18:13:26', '0000-00-00 00:00:00');
+(12, 'Organica Peanut Butter (Organica)', '2020-03-19 14:17:08', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -3226,7 +3292,7 @@ CREATE TABLE `eb_raw_materials_list` (
   `unit` varchar(11) NOT NULL,
   `sales_price` varchar(10) NOT NULL,
   `related_item_id` int(11) NOT NULL,
-  `date_added` datetime NOT NULL DEFAULT current_timestamp()
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -3255,7 +3321,7 @@ CREATE TABLE `eb_raw_materials_price_logs` (
   `FK_raw_material_id` int(11) NOT NULL,
   `previous_price` varchar(10) NOT NULL,
   `current_price` varchar(10) NOT NULL,
-  `date_added` datetime NOT NULL DEFAULT current_timestamp()
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -3280,7 +3346,7 @@ CREATE TABLE `eb_raw_materials_units` (
   `unit_name` varchar(15) NOT NULL,
   `unit_abbr` varchar(10) NOT NULL,
   `status` tinyint(4) NOT NULL COMMENT '0-deleted 1-Active',
-  `date_added` datetime NOT NULL DEFAULT current_timestamp()
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -3291,6 +3357,173 @@ INSERT INTO `eb_raw_materials_units` (`PK_unit_id`, `unit_name`, `unit_abbr`, `s
 (1, 'kilograms', 'kg', 1, '2020-04-28 17:17:36'),
 (2, 'grams', 'g', 1, '2020-04-28 17:17:36'),
 (3, 'testsss1', 'ts', 0, '2020-04-28 17:27:40');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eb_segment`
+--
+
+CREATE TABLE `eb_segment` (
+  `PK_segment_id` int(11) NOT NULL,
+  `FK_branch_id` int(11) NOT NULL,
+  `segment_name` varchar(100) NOT NULL,
+  `status` int(11) NOT NULL,
+  `date_added` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `eb_segment`
+--
+
+INSERT INTO `eb_segment` (`PK_segment_id`, `FK_branch_id`, `segment_name`, `status`, `date_added`) VALUES
+(1, 1, 'Kitchen', 1, '2020-04-03 00:19:00'),
+(2, 1, 'Hospital', 1, '2020-04-03 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eb_so_discrepancy_items`
+--
+
+CREATE TABLE `eb_so_discrepancy_items` (
+  `so_discrepancy_item_id` int(11) NOT NULL,
+  `fk_so_discrepancy_id` int(11) NOT NULL,
+  `fk_material_id` int(11) NOT NULL,
+  `material_name` varchar(100) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `received_qty` int(11) NOT NULL,
+  `date_added` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `eb_so_discrepancy_items`
+--
+
+INSERT INTO `eb_so_discrepancy_items` (`so_discrepancy_item_id`, `fk_so_discrepancy_id`, `fk_material_id`, `material_name`, `qty`, `received_qty`, `date_added`) VALUES
+(1, 3, 11, ' A1 Steak Sauce (A1 Steak Sauce 10oz) ', 3, 1, '2020-04-13 04:02:30'),
+(2, 3, 9, ' 8X12X2 Styro (8X12X2 Styro) ', 4, 2, '2020-04-13 04:02:30'),
+(3, 4, 7, ' 3D Board Castle (3D Board Castle) ', 1, 0, '2020-04-13 04:04:10'),
+(4, 2, 1, ' 12x12  spongecake plain (12x12 spongecake plain) ', 2, 1, '2020-04-13 04:05:09'),
+(5, 5, 5, ' 2D poster board for Spongebob (2D poster board for Spongebob) ', 2, 1, '2020-04-13 04:13:14');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eb_stock_out`
+--
+
+CREATE TABLE `eb_stock_out` (
+  `PK_stock_out_id` int(11) NOT NULL,
+  `FK_user_id` int(11) NOT NULL,
+  `FK_outlet_id` int(11) NOT NULL,
+  `FK_segment_id` int(11) NOT NULL,
+  `total_items` int(11) NOT NULL,
+  `total_amount` float NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `date_added` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `eb_stock_out`
+--
+
+INSERT INTO `eb_stock_out` (`PK_stock_out_id`, `FK_user_id`, `FK_outlet_id`, `FK_segment_id`, `total_items`, `total_amount`, `status`, `date_added`) VALUES
+(2, 1, 1, 2, 3, 1397.58, 'approved', '2020-04-05 07:35:43'),
+(3, 1, 1, 2, 4, 1227.68, 'approved', '2020-04-05 08:26:16'),
+(4, 1, 1, 2, 2, 211, 'approved', '2020-04-06 04:06:46'),
+(5, 1, 1, 2, 2, 336.43, 'approved', '2020-04-13 04:13:01'),
+(6, 3, 1, 2, 1, 287.87, 'approved', '2020-05-06 04:11:47'),
+(7, 1, 1, 2, 2, 887.61, 'approved', '2020-05-11 12:48:40'),
+(8, 1, 1, 2, 1, 287.87, 'pending', '2020-05-11 01:56:55');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eb_stock_out_approved`
+--
+
+CREATE TABLE `eb_stock_out_approved` (
+  `pk_stockout_approved_id` int(11) NOT NULL,
+  `fk_stockout_id` int(11) NOT NULL,
+  `fk_approve_user_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `date_approved` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `eb_stock_out_approved`
+--
+
+INSERT INTO `eb_stock_out_approved` (`pk_stockout_approved_id`, `fk_stockout_id`, `fk_approve_user_id`, `status`, `date_approved`) VALUES
+(2, 3, 1, 1, '2020-04-13 04:02:30'),
+(3, 4, 1, 1, '2020-04-13 04:04:10'),
+(4, 2, 1, 1, '2020-04-13 04:05:09'),
+(5, 5, 1, 1, '2020-04-13 04:13:14'),
+(6, 6, 1, 1, '2020-05-06 04:14:27'),
+(7, 7, 1, 1, '2020-05-11 01:37:53');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eb_stock_out_discrepancy`
+--
+
+CREATE TABLE `eb_stock_out_discrepancy` (
+  `pk_so_discrepancy_id` int(11) NOT NULL,
+  `fk_stock_out_id` int(11) NOT NULL,
+  `reason` text NOT NULL,
+  `status` int(11) NOT NULL,
+  `date_added` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `eb_stock_out_discrepancy`
+--
+
+INSERT INTO `eb_stock_out_discrepancy` (`pk_so_discrepancy_id`, `fk_stock_out_id`, `reason`, `status`, `date_added`) VALUES
+(1, 3, 'test asd', 1, '2020-04-13 04:00:50'),
+(2, 3, 'asd asd asd', 1, '2020-04-13 04:02:30'),
+(3, 4, '', 1, '2020-04-13 04:04:10'),
+(4, 2, '', 1, '2020-04-13 04:05:09'),
+(5, 5, '', 1, '2020-04-13 04:13:14');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eb_stock_out_items`
+--
+
+CREATE TABLE `eb_stock_out_items` (
+  `PK_stock_out_item_id` int(11) NOT NULL,
+  `FK_stock_out_id` int(11) NOT NULL,
+  `FK_raw_material_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `amount` float NOT NULL,
+  `item_unit` varchar(55) NOT NULL,
+  `date_added` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `eb_stock_out_items`
+--
+
+INSERT INTO `eb_stock_out_items` (`PK_stock_out_item_id`, `FK_stock_out_id`, `FK_raw_material_id`, `quantity`, `amount`, `item_unit`, `date_added`) VALUES
+(3, 3, 6, 3, 5.1, 'kg', '2020-04-05 08:26:16'),
+(4, 3, 11, 3, 296.44, 'Sack', '2020-04-05 08:26:16'),
+(5, 3, 9, 4, 80, 'pc', '2020-04-05 08:26:16'),
+(6, 3, 17, 3, 1.02, 'Sack', '2020-04-05 08:26:16'),
+(13, 2, 2, 1, 311.85, 'kg', '2020-04-05 09:25:35'),
+(14, 2, 1, 2, 287.88, 'kg', '2020-04-05 09:25:35'),
+(15, 2, 8, 3, 169.99, 'pc', '2020-04-05 09:25:35'),
+(16, 4, 4, 1, 186, 'kg', '2020-04-06 04:06:46'),
+(17, 4, 7, 1, 25, 'kg', '2020-04-06 04:06:46'),
+(20, 5, 5, 2, 20, 'Sack', '2020-04-13 04:13:08'),
+(21, 5, 11, 1, 296.43, 'kg', '2020-04-13 04:13:08'),
+(22, 6, 1, 1, 287.87, 'pc', '2020-05-06 04:11:47'),
+(24, 7, 1, 2, 287.88, 'kg', '2020-05-11 01:37:47'),
+(25, 7, 2, 1, 311.85, 'kg', '2020-05-11 01:37:47'),
+(26, 8, 1, 1, 287.87, 'kg', '2020-05-11 01:56:55');
 
 -- --------------------------------------------------------
 
@@ -3306,7 +3539,7 @@ CREATE TABLE `eb_stock_transfer` (
   `stock_out` int(11) NOT NULL,
   `status` tinyint(11) NOT NULL COMMENT '0-Pending 1-Delivered',
   `str_no` varchar(11) NOT NULL,
-  `date_added` datetime NOT NULL DEFAULT current_timestamp()
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -3354,7 +3587,7 @@ CREATE TABLE `eb_stock_transfer_items` (
   `FK_raw_material_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `status` tinyint(4) NOT NULL COMMENT '0-Pending 1-Delivered',
-  `date_added` datetime NOT NULL DEFAULT current_timestamp()
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -3397,7 +3630,7 @@ CREATE TABLE `eb_suppliers` (
   `address` varchar(200) NOT NULL,
   `contact_number` varchar(20) NOT NULL,
   `status` tinyint(4) NOT NULL COMMENT '1- Active 0-Inactive',
-  `date_added` datetime NOT NULL DEFAULT current_timestamp()
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -3475,6 +3708,82 @@ INSERT INTO `eb_suppliers` (`PK_supplier_id`, `supplier_name`, `products`, `term
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `eb_units`
+--
+
+CREATE TABLE `eb_units` (
+  `PK_unit_id` int(11) NOT NULL,
+  `unit_name` varchar(100) NOT NULL,
+  `status` int(11) NOT NULL,
+  `date_added` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `eb_units`
+--
+
+INSERT INTO `eb_units` (`PK_unit_id`, `unit_name`, `status`, `date_added`) VALUES
+(1, 'kg', 1, '2020-04-05 00:00:00'),
+(2, 'Sack', 1, '2020-04-05 00:00:00'),
+(3, 'pc', 1, '2020-04-05 00:00:00'),
+(4, 'box', 1, '2020-04-24 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eb_unit_converted`
+--
+
+CREATE TABLE `eb_unit_converted` (
+  `pk_unit_con_id` int(11) NOT NULL,
+  `fk_item_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `total_items` int(11) NOT NULL,
+  `date_added` date NOT NULL,
+  `date_updated` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `eb_unit_converted`
+--
+
+INSERT INTO `eb_unit_converted` (`pk_unit_con_id`, `fk_item_id`, `status`, `total_items`, `date_added`, `date_updated`) VALUES
+(4, 1, 1, 2, '2020-04-28', '2020-04-29'),
+(5, 7, 1, 3, '2020-04-28', '2020-04-29'),
+(6, 9, 1, 4, '2020-04-28', '2020-04-29');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eb_unit_coverted_item`
+--
+
+CREATE TABLE `eb_unit_coverted_item` (
+  `pk_unit_con_item_id` int(11) NOT NULL,
+  `fk_unit_con_id` int(11) NOT NULL,
+  `fk_new_unit_id` int(11) NOT NULL,
+  `uom_value` int(11) NOT NULL,
+  `new_unit_value` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `eb_unit_coverted_item`
+--
+
+INSERT INTO `eb_unit_coverted_item` (`pk_unit_con_item_id`, `fk_unit_con_id`, `fk_new_unit_id`, `uom_value`, `new_unit_value`) VALUES
+(15, 4, 2, 10, 1),
+(16, 4, 4, 65, 1),
+(17, 6, 2, 11, 1),
+(18, 6, 1, 22, 1),
+(19, 6, 4, 66, 1),
+(20, 6, 3, 666, 1),
+(21, 5, 2, 10, 1),
+(22, 5, 3, 11, 1),
+(23, 5, 4, 22, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `eb_users`
 --
 
@@ -3485,7 +3794,7 @@ CREATE TABLE `eb_users` (
   `user_type` int(11) NOT NULL,
   `user_status` int(11) NOT NULL,
   `branch_assigned` varchar(100) NOT NULL,
-  `date_added` datetime NOT NULL DEFAULT current_timestamp()
+  `date_added` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -3493,12 +3802,9 @@ CREATE TABLE `eb_users` (
 --
 
 INSERT INTO `eb_users` (`PK_user_id`, `username`, `password`, `user_type`, `user_status`, `branch_assigned`, `date_added`) VALUES
-(1, 'admin', '123456', 1, 1, '', '2020-03-30 00:00:00'),
+(1, 'admin', '123456', 1, 1, '[1]', '2020-03-30 00:00:00'),
 (2, 'test2', 'password', 2, 1, '[1]', '2020-03-31 00:00:00'),
-(8, 'Matt', 'password', 3, 1, '1', '2020-04-24 17:58:30'),
-(9, 'Frank', 'password', 3, 1, '3', '2020-04-24 18:42:22'),
-(10, 'Frank1', 'password', 1, 1, '4', '2020-04-24 18:58:45'),
-(11, 'Brock', 'password', 2, 1, '1', '2020-05-05 18:54:09');
+(3, 'test3', 'password', 3, 1, '[1]', '2020-04-07 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -3512,7 +3818,7 @@ CREATE TABLE `eb_users_meta` (
   `firstname` varchar(60) NOT NULL,
   `lastname` varchar(50) NOT NULL,
   `email_address` varchar(100) NOT NULL,
-  `age` varchar(11) NOT NULL,
+  `age` int(11) NOT NULL,
   `gender` varchar(20) NOT NULL,
   `address` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -3522,12 +3828,9 @@ CREATE TABLE `eb_users_meta` (
 --
 
 INSERT INTO `eb_users_meta` (`PK_user_meta_id`, `FK_user_id`, `firstname`, `lastname`, `email_address`, `age`, `gender`, `address`) VALUES
-(1, 1, 'opet', 'vitualla', 'web2.juphetvitualla@gmail.com', '21', 'male', ''),
-(2, 2, 'John', 'Doe', 'sample@sample.com', '21', 'male', 'cebu'),
-(4, 8, 'Cruiser', 'Marion', 'proweaver@example.com', '0', 'female', '9170 N. Summerhouse St.'),
-(5, 9, 'Uy', 'Marion', 'example@proweaver.com', '76', 'female', '7669 Gulf Drive'),
-(6, 10, 'Cory', 'Cliff', 'example@proweaver.com', '14', 'female', '9170 N. Summerhouse St.'),
-(7, 11, 'Petey', 'Holly', 'proweaver@example.com', 'Mull', 'female', '162 Little Embers Court');
+(1, 1, 'opet', 'vitualla', 'web2.juphetvitualla@gmail.com', 21, 'male', 'cebu'),
+(2, 2, 'John', 'Doe', 'sample@sample.com', 21, 'male', 'cebu'),
+(3, 3, 'James', 'Cruz', 'tests@test.com', 21, 'male', 'cebu');
 
 --
 -- Indexes for dumped tables
@@ -3546,6 +3849,12 @@ ALTER TABLE `eb_item_inventory`
   ADD PRIMARY KEY (`PK_inventory_id`);
 
 --
+-- Indexes for table `eb_other_outlet_delivery`
+--
+ALTER TABLE `eb_other_outlet_delivery`
+  ADD PRIMARY KEY (`pk_other_deliver_id`);
+
+--
 -- Indexes for table `eb_outlet`
 --
 ALTER TABLE `eb_outlet`
@@ -3558,10 +3867,22 @@ ALTER TABLE `eb_outlets`
   ADD PRIMARY KEY (`PK_branch_id`);
 
 --
+-- Indexes for table `eb_po_discrepancy_items`
+--
+ALTER TABLE `eb_po_discrepancy_items`
+  ADD PRIMARY KEY (`po_discrepancy_item_id`);
+
+--
 -- Indexes for table `eb_purchase_order`
 --
 ALTER TABLE `eb_purchase_order`
   ADD PRIMARY KEY (`PK_purchase_order_id`);
+
+--
+-- Indexes for table `eb_purchase_order_discrepancy`
+--
+ALTER TABLE `eb_purchase_order_discrepancy`
+  ADD PRIMARY KEY (`pk_po_discrepancy_id`);
 
 --
 -- Indexes for table `eb_purchase_order_item`
@@ -3600,10 +3921,40 @@ ALTER TABLE `eb_raw_materials_price_logs`
   ADD PRIMARY KEY (`PK_log_id`);
 
 --
--- Indexes for table `eb_raw_materials_units`
+-- Indexes for table `eb_segment`
 --
-ALTER TABLE `eb_raw_materials_units`
-  ADD PRIMARY KEY (`PK_unit_id`);
+ALTER TABLE `eb_segment`
+  ADD PRIMARY KEY (`PK_segment_id`);
+
+--
+-- Indexes for table `eb_so_discrepancy_items`
+--
+ALTER TABLE `eb_so_discrepancy_items`
+  ADD PRIMARY KEY (`so_discrepancy_item_id`);
+
+--
+-- Indexes for table `eb_stock_out`
+--
+ALTER TABLE `eb_stock_out`
+  ADD PRIMARY KEY (`PK_stock_out_id`);
+
+--
+-- Indexes for table `eb_stock_out_approved`
+--
+ALTER TABLE `eb_stock_out_approved`
+  ADD PRIMARY KEY (`pk_stockout_approved_id`);
+
+--
+-- Indexes for table `eb_stock_out_discrepancy`
+--
+ALTER TABLE `eb_stock_out_discrepancy`
+  ADD PRIMARY KEY (`pk_so_discrepancy_id`);
+
+--
+-- Indexes for table `eb_stock_out_items`
+--
+ALTER TABLE `eb_stock_out_items`
+  ADD PRIMARY KEY (`PK_stock_out_item_id`);
 
 --
 -- Indexes for table `eb_stock_transfer`
@@ -3622,6 +3973,24 @@ ALTER TABLE `eb_stock_transfer_items`
 --
 ALTER TABLE `eb_suppliers`
   ADD PRIMARY KEY (`PK_supplier_id`);
+
+--
+-- Indexes for table `eb_units`
+--
+ALTER TABLE `eb_units`
+  ADD PRIMARY KEY (`PK_unit_id`);
+
+--
+-- Indexes for table `eb_unit_converted`
+--
+ALTER TABLE `eb_unit_converted`
+  ADD PRIMARY KEY (`pk_unit_con_id`);
+
+--
+-- Indexes for table `eb_unit_coverted_item`
+--
+ALTER TABLE `eb_unit_coverted_item`
+  ADD PRIMARY KEY (`pk_unit_con_item_id`);
 
 --
 -- Indexes for table `eb_users`
@@ -3644,103 +4013,141 @@ ALTER TABLE `eb_users_meta`
 --
 ALTER TABLE `eb_forgot_password_keys`
   MODIFY `PK_forget_id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `eb_item_inventory`
 --
 ALTER TABLE `eb_item_inventory`
-  MODIFY `PK_inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
+  MODIFY `PK_inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+--
+-- AUTO_INCREMENT for table `eb_other_outlet_delivery`
+--
+ALTER TABLE `eb_other_outlet_delivery`
+  MODIFY `pk_other_deliver_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `eb_outlet`
 --
 ALTER TABLE `eb_outlet`
   MODIFY `PK_branch_id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `eb_outlets`
 --
 ALTER TABLE `eb_outlets`
   MODIFY `PK_branch_id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
+--
+-- AUTO_INCREMENT for table `eb_po_discrepancy_items`
+--
+ALTER TABLE `eb_po_discrepancy_items`
+  MODIFY `po_discrepancy_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `eb_purchase_order`
 --
 ALTER TABLE `eb_purchase_order`
-  MODIFY `PK_purchase_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
+  MODIFY `PK_purchase_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `eb_purchase_order_discrepancy`
+--
+ALTER TABLE `eb_purchase_order_discrepancy`
+  MODIFY `pk_po_discrepancy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `eb_purchase_order_item`
 --
 ALTER TABLE `eb_purchase_order_item`
-  MODIFY `PK_po_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
-
+  MODIFY `PK_po_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `eb_purchase_order_received`
 --
 ALTER TABLE `eb_purchase_order_received`
-  MODIFY `PK_po_received_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
+  MODIFY `PK_po_received_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `eb_raw_materials`
 --
 ALTER TABLE `eb_raw_materials`
   MODIFY `PK_raw_materials_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2954;
-
 --
 -- AUTO_INCREMENT for table `eb_raw_materials_cat`
 --
 ALTER TABLE `eb_raw_materials_cat`
-  MODIFY `PK_category_id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
+  MODIFY `PK_category_id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `eb_raw_materials_list`
 --
 ALTER TABLE `eb_raw_materials_list`
   MODIFY `PK_raw_materials_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
 --
 -- AUTO_INCREMENT for table `eb_raw_materials_price_logs`
 --
 ALTER TABLE `eb_raw_materials_price_logs`
   MODIFY `PK_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
 --
--- AUTO_INCREMENT for table `eb_raw_materials_units`
+-- AUTO_INCREMENT for table `eb_segment`
 --
-ALTER TABLE `eb_raw_materials_units`
-  MODIFY `PK_unit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
+ALTER TABLE `eb_segment`
+  MODIFY `PK_segment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `eb_so_discrepancy_items`
+--
+ALTER TABLE `eb_so_discrepancy_items`
+  MODIFY `so_discrepancy_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `eb_stock_out`
+--
+ALTER TABLE `eb_stock_out`
+  MODIFY `PK_stock_out_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT for table `eb_stock_out_approved`
+--
+ALTER TABLE `eb_stock_out_approved`
+  MODIFY `pk_stockout_approved_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `eb_stock_out_discrepancy`
+--
+ALTER TABLE `eb_stock_out_discrepancy`
+  MODIFY `pk_so_discrepancy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `eb_stock_out_items`
+--
+ALTER TABLE `eb_stock_out_items`
+  MODIFY `PK_stock_out_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `eb_stock_transfer`
 --
 ALTER TABLE `eb_stock_transfer`
   MODIFY `PK_stock_transfer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
-
 --
 -- AUTO_INCREMENT for table `eb_stock_transfer_items`
 --
 ALTER TABLE `eb_stock_transfer_items`
   MODIFY `PK_transfer_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
-
 --
 -- AUTO_INCREMENT for table `eb_suppliers`
 --
 ALTER TABLE `eb_suppliers`
   MODIFY `PK_supplier_id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
-
+--
+-- AUTO_INCREMENT for table `eb_units`
+--
+ALTER TABLE `eb_units`
+  MODIFY `PK_unit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `eb_unit_converted`
+--
+ALTER TABLE `eb_unit_converted`
+  MODIFY `pk_unit_con_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `eb_unit_coverted_item`
+--
+ALTER TABLE `eb_unit_coverted_item`
+  MODIFY `pk_unit_con_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `eb_users`
 --
 ALTER TABLE `eb_users`
-  MODIFY `PK_user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
+  MODIFY `PK_user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `eb_users_meta`
 --
 ALTER TABLE `eb_users_meta`
-  MODIFY `PK_user_meta_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-COMMIT;
+  MODIFY `PK_user_meta_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
