@@ -6,19 +6,18 @@ class Managepurchaseorders extends MY_Controller {
 		parent::__construct();
 
 	}
-	
-	public function index(){
 
+	public function index(){
 		$data["title"] 	 	= "Purchase Orders";
 		$data["page_name"]  = "Purchase Orders";
 		$data['has_header'] = "includes/admin/header";
 		$data['has_footer']	= "includes/index_footer";
 		$data["items"] 		= _get_items();
 		$data["suppliers"]  = _get_suppliers();
-		
+
 		if (get_user_type() == 1) {
 			$this->load_page('index',$data);
-		} 
+		}
 		else if (get_user_type() == 2) {
 			$this->load_purchaser_page('purchaserView',$data);
 		}
@@ -27,14 +26,14 @@ class Managepurchaseorders extends MY_Controller {
 		}
 
 	}
-	
+
 	public function getPurchaseOrder(){
 		$limit        = $this->input->post('length');
 		$offset       = $this->input->post('start');
 		$search       = $this->input->post('search');
 		$order        = $this->input->post('order');
 		$draw         = $this->input->post('draw');
-		
+
 		$column_order = array(
 			'PK_purchase_order_id',
 			'purchase_order_no',
@@ -54,7 +53,7 @@ class Managepurchaseorders extends MY_Controller {
 		);
 		$group        = array();
 		$list         = $this->MY_Model->get_datatables('eb_purchase_order po',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
-		
+
 		$list_purchase_order = array(
 			"draw" => $draw,
 			"recordsTotal" => $list['count_all'],
@@ -130,7 +129,7 @@ class Managepurchaseorders extends MY_Controller {
 			updateData("eb_purchase_order", $set, $where); // update po
 
 			$where = array( "FK_purchase_id" => $po_id );
-			deleteData("eb_purchase_order_item", $where); 
+			deleteData("eb_purchase_order_item", $where);
 
 			$items = json_decode($post["po_items"]);
 
@@ -155,7 +154,7 @@ class Managepurchaseorders extends MY_Controller {
 	public function get_po_details($po_id){
 
 		$response = array("result" => "error");
-		
+
 		if(!empty($po_id)){
 
 			$par["select"] 	= "*";
@@ -165,15 +164,15 @@ class Managepurchaseorders extends MY_Controller {
 			);
 
 			$po_data = getData("eb_purchase_order po", $par, "obj");
-			
+
 			if(!empty($po_data)){
-			
+
 				$par["select"] 	= "*";
 				$par["where"]	= "po_item.FK_purchase_id = {$po_id}";
 				$par["join"] 	= array(
 					"eb_raw_materials raw_mat" => "raw_mat.PK_raw_materials_id = po_item.FK_raw_material_id",
 				);
-				
+
 				$po_items = getData("eb_purchase_order_item po_item", $par, "obj");
 
 				if(!empty($po_items)){
@@ -188,9 +187,9 @@ class Managepurchaseorders extends MY_Controller {
 	}
 
 	public function get_received_po_details($po_id){
-		
+
 		$response = array("result" => "error");
-		
+
 		if(!empty($po_id)){
 
 			$par["select"] 	= "*";
@@ -201,15 +200,15 @@ class Managepurchaseorders extends MY_Controller {
 			);
 
 			$po_data = getData("eb_purchase_order po", $par, "obj");
-			
+
 			if(!empty($po_data)){
-			
+
 				$par["select"] 	= "*";
 				$par["where"]	= "po_item.FK_purchase_id = {$po_id}";
 				$par["join"] 	= array(
 					"eb_raw_materials raw_mat" => "raw_mat.PK_raw_materials_id = po_item.FK_raw_material_id",
 				);
-				
+
 				$po_items = getData("eb_purchase_order_item po_item", $par, "obj");
 
 				if(!empty($po_items)){
@@ -235,7 +234,7 @@ class Managepurchaseorders extends MY_Controller {
 		if(!empty($post["disc_item"])){
 			$disc_items = json_decode($post["disc_item"]);
 		}
-		
+
 
 		if(!empty($po_id)){
 			$data = array(
@@ -306,6 +305,6 @@ class Managepurchaseorders extends MY_Controller {
 		echo json_encode($response);
 
 	}
-	
+
 
 }

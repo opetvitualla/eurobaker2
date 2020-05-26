@@ -5,6 +5,13 @@ $(document).ready(function() {
 
 	let is_add_item = false;
 
+  $(".show-add-modal").click(function () {
+    $(".table-po-body").html("");
+    is_add_item = true;
+    $(".total-item").html(0)
+
+  })
+
 	axios.get(`${base_url}Global_api/get_items`).then(res => {
 		//  suppliers = JSON.parse(res.data.data);
 		items = res.data.data;
@@ -85,7 +92,7 @@ $(document).ready(function() {
         "data": "PK_stock_transfer_id", "render": function (data, type, row, meta) {
           var str = '';
           if (row.status == 0) {
-            str += '<div class="mx-auto action-btn-div"><a id ="transfer_edit_details" class="fa fa-edit transfer_edit_details text-success" data-id="' + row.PK_stock_transfer_id + '"></a>';
+            // str += '<div class="mx-auto action-btn-div"><a id ="transfer_edit_details" class="fa fa-edit transfer_edit_details text-success" data-id="' + row.PK_stock_transfer_id + '"></a>';
             str += '<a id ="transfer_view_details" title="Mark as Delivered" class="fa fa-check received_details text-success" data-id="' + row.PK_stock_transfer_id + '"></a></div>';
           } else {
             str += '<a id ="transfer_view_details" class="fa fa-eye transfer_view_details text-success" data-id="' + row.PK_stock_transfer_id + '"></a>';
@@ -114,6 +121,7 @@ $(document).ready(function() {
       console.log(res);
       if (res.data.result == "success") {
         let datas = res.data.data;
+        $('input[name="str_no"]').val(datas[0].str_no);
         let po_items = datas[0].po_items
         $(".po-table.transfer").html("")
         // $('.strno').html()
@@ -149,7 +157,7 @@ $(document).ready(function() {
               </tr>
             `
 
-          $(".po-table.transfer").append(html);
+          $(".po-table-edit.transfer").append(html);
           $(".itemselect").select2();
         })
         generateOverTotal()
@@ -167,6 +175,8 @@ $(document).ready(function() {
         let result = res.data.data;
         get_po_data = res.data.data;
         $(".transfer-view").html("")
+        $('p.destination').html(result[0].destination);
+        $('p.strno').html(result[0].str_no);
         // $(".po_received_date").html(result[0].date_received)
 
         let po_items = result[0].po_items
@@ -207,7 +217,7 @@ $(document).ready(function() {
     let item_id 	= selected.attr("data-id")
     let item 		= items.find(itm => itm.PK_raw_materials_id == item_id);
 
-    let total 	= calculateTotal(item.sales_price, qty)
+    // let total 	= calculateTotal(item.sales_price, qty)
 
     row.find(".item-total").val(total)
 
@@ -215,6 +225,7 @@ $(document).ready(function() {
   })
 
   $(".btn-add-item.transfer").click(function () {
+
 		let options = "<option  value=''>Please select an item<option>";
     items.map(item => {
 			options += `<option data-id="${item.PK_raw_materials_id}" value="${item.material_name}">${item.material_name}<option>`;
@@ -235,13 +246,16 @@ $(document).ready(function() {
 			<td>
         <input type="text" value=""  class="form-control item-unit" name="" readonly>
 			</td>
+      <td>
+				<input required type="text" class="form-control item-price">
+			</td>
 			<td>
 				<a style="font-size:16px;" href="javascript:;" class="mx-auto fa fa-trash text-danger remove-po-item"></a>
 			</td>
 
 			</tr>
 		`
-		$(".po-table.transfer").append(html);
+		$(".po-table.transfer tbody").append(html);
 		$(".itemselect").select2();
 	})
 
@@ -295,13 +309,14 @@ $(document).ready(function() {
 			let total_items = $(".total-item").html();
 			let over_total = $(".over-total").html();
 
-			$(".po-table.transfer tr").each(function () {
+			$("#Stock_Transfer_Add .po-table.transfer .table-po-body tr").each(function () {
 				let row 		= $(this);
 				let item_ids 	= row.find(".itemselect option:selected").attr("data-id")
 				po_items.push({
 					item_id: item_ids,
 					quantity: row.find(".item-qty").val(),
 					unit: row.find(".item-unit").val(),
+					price: row.find(".item-price").val(),
 				})
 			})
 
@@ -321,6 +336,53 @@ $(document).ready(function() {
 
 	})
 
+  // $("#Stock_Transfer_Edit").submit(function (e) {
+	// 	e.preventDefault();
+	// 	// let overTotal = $(".over-total").html();
+	// 	// let supplier_id = $(".supplier_select option:selected").val()
+  //   //
+	// 	// if (Number(overTotal) == 0) {
+	// 	// 	s_alert("Please add atleast one item", "error")
+	// 	// 	return
+	// 	// }
+	// 	// else if (!validated_table()) {
+	// 	// 	s_alert("Please input the required items", "error")
+	// 	// 	return
+	// 	// }
+  //
+	// 	confirm_alert("Are you sure to update these items?").then(res => {
+	// 		var frmdata = new FormData($(this)[0]);
+  //
+	// 		let po_items = [];
+	// 		let total_items = $(".total-item").html();
+	// 		let over_total = $(".over-total").html();
+  //
+	// 		$("#Stock_Transfer_Edit .po-table.transfer .table-po-body tr").each(function () {
+	// 			let row 		= $(this);
+	// 			let item_ids 	= row.find(".itemselect option:selected").attr("data-id")
+	// 			po_items.push({
+	// 				item_id: item_ids,
+	// 				quantity: row.find(".item-qty").val(),
+	// 				unit: row.find(".item-unit").val(),
+	// 			})
+	// 		})
+  //
+	// 		frmdata.append("over_total", 	over_total);
+	// 		frmdata.append("total_items", 	total_items);
+	// 		frmdata.append("po_items",		JSON.stringify(po_items));
+  //
+	// 		axios.post(`${base_url}Managestocks/save_stock_transfer`, frmdata).then(res => {
+  //       console.log('res', res);
+	// 			if (res.data.result == "success") {
+	// 				s_alert("Successfully Saved!", "success");
+	// 				stock_transfer.ajax.reload();
+	// 				setTimeout(() => { $('.add_stock_transfer_modal').modal('hide'); }, 1000);
+	// 			}
+	// 		})
+	// 	})
+  //
+	// })
+
   $(document).on("click",".received_details", function(){
     let transferred_id = $(this).data("id");
 
@@ -329,7 +391,9 @@ $(document).ready(function() {
       if (res.data.result == "success") {
         let result = res.data.data;
         get_po_data = res.data.data;
-        $(".transfer-view").html("")
+        $('p.destination').html(result[0].destination);
+        $('input[name="str_no"]').val(result[0].str_no);
+        $(".transfer-view > tbody").html(" ")
         // $(".po_received_date").html(result[0].date_received)
 
         let po_items = result[0].po_items
@@ -472,11 +536,15 @@ $(document).ready(function() {
     let qty = 0;
     let count = 0;
     let countqty = 0;
+    let mod = "add_stock_transfer_modal";
+		if (!is_add_item) {
+			mod = "edit_stock_transfer_modal";
+		}
     $(".item-total").each(function (e) {
       over_total += Number($(this).val());
       count++;
     })
-    $(".item-qty").each(function (e) {
+    $("." + mod + " .item-qty").each(function (e) {
       qty += Number($(this).val());
       countqty++;
     })

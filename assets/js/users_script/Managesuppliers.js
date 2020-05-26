@@ -1,6 +1,6 @@
 $(document).ready(function() {
   var base_url = $('.base_url').val();
-  
+
   var table_suppliers = $('#table_suppliers').DataTable({
        "language": { "infoFiltered": "" },
        "processing": true, //Feature control the processing indicator.
@@ -14,7 +14,7 @@ $(document).ready(function() {
                  }
             },
             {"data":"supplier_name"},
-            {"data":"contact_number"},
+            {"data":"terms"},
             {"data":"PK_supplier_id","render":function(data, type, row, meta){
                  var str = '<div class="mx-auto action-btn-div text-center"> <a href="javascript:;" id="edit_Supplier_Details" class="text-success" data-id="' + row.PK_supplier_id +'"><i class="fa fa-edit"></i></a>';
                  str += '<a href="javascript:;" id="view_Supplier_Details"  data-id="'+row.PK_supplier_id+'"><i class="fa fa-eye"></i></a></div>';
@@ -55,7 +55,7 @@ $(document).ready(function() {
   $(document).on('click', '#view_Supplier_Details', function() {
       var id = $(this).data('id');
       $('.view_supplier_details_modal').modal('show');
-      $('.view_supplier_details_modal input').prop('disabled', true);
+      $('.view_supplier_details_modal input, .view_supplier_details_modal textarea').prop('disabled', true);
 
       $.ajax({
            url: base_url + 'Managesuppliers/viewDetails',
@@ -65,7 +65,8 @@ $(document).ready(function() {
            success  :  function(data){
                         $('.view_supplier_details_modal input[name="supplier_name"]').val(data.supplier_name);
                         $('.view_supplier_details_modal input[name="address"]').val(data.address);
-                        $('.view_supplier_details_modal input[name="contact_number"]').val(data.contact_number);
+                        $('.view_supplier_details_modal input[name="terms"]').val(data.terms);
+                        $('.view_supplier_details_modal textarea[name="products"]').val(data.products);
            }
       });
   });
@@ -82,7 +83,8 @@ $(document).ready(function() {
            success  :  function(data){
                         $('.edit_supplier_details_modal input[name="supplier_name"]').val(data.supplier_name);
                         $('.edit_supplier_details_modal input[name="address"]').val(data.address);
-                        $('.edit_supplier_details_modal input[name="contact_number"]').val(data.contact_number);
+                        $('.edit_supplier_details_modal input[name="terms"]').val(data.terms);
+                        $('.edit_supplier_details_modal textarea[name="products"]').val(data.products);
                         $('.edit_supplier_details_modal .edit_Button').attr('data-id', data.PK_supplier_id);
            }
       });

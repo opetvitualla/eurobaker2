@@ -11,7 +11,7 @@ class Managesuppliers extends MY_Controller {
 
 			if (get_user_type() == 1) {
           $this->load_page('index',$data);
-      } 
+      }
       else {
           $this->load_purchaser_page('index',$data);
       }
@@ -28,12 +28,12 @@ class Managesuppliers extends MY_Controller {
                         'PK_supplier_id',
                         'supplier_name',
                         'address',
-                        'contact_number',
+                        'terms',
                         'status',
                         'date_added',
                       );
       $join         = array();
-      $select       = "PK_supplier_id, supplier_name, address, contact_number, status, date_added";
+      $select       = "PK_supplier_id, supplier_name, address, terms, status, date_added";
       $where        = array(
                         'status' => 1,
                       );
@@ -54,7 +54,8 @@ class Managesuppliers extends MY_Controller {
       $data         = array(
                         'supplier_name'  => $post['supplier_name'],
                         'address'        => $post['address'],
-                        'contact_number' => $post['contact_number'],
+                        'terms' 				 => $post['terms'],
+                        'products' 			 => $post['products'],
                         'status'         => 1
                       );
       $insert_data  = $this->MY_Model->insert('eb_suppliers',$data);
@@ -85,7 +86,8 @@ class Managesuppliers extends MY_Controller {
       $set          = array(
                         'supplier_name'  => $data['supplier_name'],
                         'address'        => $data['address'],
-                        'contact_number' => $data['contact_number'],
+												'terms' 					 => $data['terms'],
+                        'products' 			 => $data['products'],
                       );
       $where        = array(
                         'PK_supplier_id' => $data['id']

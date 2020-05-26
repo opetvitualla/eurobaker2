@@ -476,4 +476,82 @@ class ManageRawMaterials extends MY_Controller {
 			echo json_encode($response);
 		}
 
+		public function PriceLogs(){
+			$data["title"] 		  = "Price Logs";
+			$data["page_name"]  = "Raw Materials > Price Logs";
+			$data['has_header'] = "includes/admin/header";
+			$data['has_footer']	= "includes/index_footer";
+
+			$this->load_page('pricelogs',$data);
+		}
+
+		public function getPriceLogs() {
+			$limit        = $this->input->post('length');
+			$offset       = $this->input->post('start');
+			$search       = $this->input->post('search');
+			$order        = $this->input->post('order');
+			$draw         = $this->input->post('draw');
+			$column_order = array(
+												'PK_log_id',
+												'material_name',
+												'previous_price',
+												'current_price',
+												'eb_raw_materials_price_logs.date_added',
+											);
+			$join         = array(
+												'eb_raw_materials_list'	=> 'eb_raw_materials_list.PK_raw_materials_id = eb_raw_materials_price_logs.FK_raw_material_id'
+											);
+			$select       = "*";
+			$where        = array();
+			$group        = array();
+			$list         = $this->MY_Model->get_datatables('eb_raw_materials_price_logs',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
+
+			$list_of_price = array(
+																	"draw" => $draw,
+																	"recordsTotal" => $list['count_all'],
+																	"recordsFiltered" => $list['count'],
+																	"data" => $list['data']
+																);
+			echo json_encode($list_of_price);
+		}
+
+		public function generatePriceLogs() {
+				$report = $this->input->post();
+
+				$storData = array();
+				$metaData[] = array(
+						'PK_log_id' => 'Log ID',
+						'material_name' => 'Raw Material',
+						'previous_price' => 'Previous Price',
+						'current_price' => 'Current Price',
+						'date_added' => 'Date',
+				);
+				$options['join'] = array(
+						'eb_raw_materials_list'	=> 'eb_raw_materials_list.PK_raw_materials_id = eb_raw_materials_price_logs.FK_raw_material_id'
+				);
+
+				$generateData = $this->MY_Model->getRows('eb_raw_materials_price_logs', $options);
+
+				foreach($generateData as $key=>$element) {
+						$storData[] = array(
+								'PK_log_id' => 'PR-'.$element['PK_log_id'],
+								'material_name' => $element['material_name'],
+								'previous_price' => $element['previous_price'],
+								'current_price' => $element['current_price'],
+								'date_added' => $element['date_added']
+						);
+				}
+				$data = array_merge($metaData,$storData);
+				header("Content-type: application/csv");
+				header("Content-Disposition: attachment; filename=\"Price_Logs".".csv\"");
+				header("Pragma: no-cache");
+				header("Expires: 0");
+				$handle = fopen('php://output', 'w');
+				foreach ($data as $data) {
+						fputcsv($handle, $data);
+				}
+						fclose($handle);
+				exit;
+		}
+
 }

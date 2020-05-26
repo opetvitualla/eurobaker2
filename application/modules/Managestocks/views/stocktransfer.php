@@ -17,7 +17,7 @@
                         </ol>
                     </div>
                     <div class="col-md-7 align-self-center text-right d-none d-md-block">
-                        <button type="button" class="btn btn-info theme-bg" data-toggle="modal" data-target=".add_stock_transfer_modal"><i class="fa fa-plus-circle"></i> Transfer </button>
+                        <button type="button" class="btn btn-info theme-bg show-add-modal" data-toggle="modal" data-target=".add_stock_transfer_modal"><i class="fa fa-plus-circle"></i> Transfer </button>
                     </div>
                     <div class="">
                         <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
@@ -76,10 +76,10 @@
                                           <div class="col-md-4">
                                               <div class="form-group">
                                                   <label>To:</label>
-                                                  <select class="form-control select2" name="">
-                                                    <option value="">Toril</option>
-                                                    <option value="">Tagum</option>
-                                                    <option value="">Commisary</option>
+                                                  <select class="form-control select2" name="destination_branch_id">
+                                                    <option value="2">Tagum</option>
+                                                    <option value="3">Toril</option>
+                                                    <option value="4">Commisary</option>
                                                   </select>
                                               </div>
                                           </div>
@@ -100,6 +100,7 @@
                                                     <td>Item Name</td>
                                                     <td>Quantity</td>
                                                     <td style="width: 122px;">Item Unit</td>
+                                                    <td style="width: 122px;">Price</td>
                                                     <td>Action</td>
                                                 </tr>
                                             </thead>
@@ -166,7 +167,15 @@
                                           <!--/span-->
                                       </div>
                                       <div class="row">
-                                        <table class="table table-bordered po-table transfer">
+                                          <div class="col-md-4">
+                                              <div class="form-group">
+                                                  <label>STR No./BI no.:</label>
+                                                  <input type="number" class="form-control" name="str_no" value="">
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="row">
+                                        <table class="table table-bordered po-table-edit transfer">
                                             <thead>
                                                 <tr>
                                                     <td>Item Name</td>
@@ -227,7 +236,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>To:</label>
-                                            <p>Commisary</p>
+                                            <p class="destination">Commisary</p>
                                         </div>
                                     </div>
                                     <!--/span-->
@@ -255,8 +264,8 @@
                                 </div>
                                   <div class="form-actions">
                                       <hr/>
-                                      <h3 class="fbold o-total">Total Items: <span class="total-item">0</span></h3>
-                                      <h3 class="fbold o-total">Status: <span><em> Pending</em></span></h3>
+                                      <!-- <h3 class="fbold o-total">Total Items: <span class="total-item">0</span></h3> -->
+                                      <!-- <h3 class="fbold o-total">Status: <span><em> Pending</em></span></h3> -->
 
                                       <!-- <h3 class="fbold o-total">Overall Total: <span>&#8369;</span><span class="over-total">0</span></h3> -->
                                       <hr>
@@ -296,10 +305,18 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>To:</label>
-                                            <p>Commisary</p>
+                                            <p class="destination">Commisary</p>
                                         </div>
                                     </div>
                                     <!--/span-->
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>STR No./BI no.:</label>
+                                            <input type="number" class="form-control" name="str_no" value="">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                   <table class="table table-bordered po-table transfer-review">

@@ -20,12 +20,12 @@ class Stockout extends MY_Controller {
 			);
 
 			$segment = getData("eb_segment", $par, "obj");
-			
+
 			$data["segments"] = $segment;
 
 			if (get_user_type() == 1) {
 				$this->load_page('index',$data);
-			} 
+			}
 			else if (get_user_type() == 2) {
 				redirect(base_url());
 			}
@@ -40,7 +40,7 @@ class Stockout extends MY_Controller {
 			$search       = $this->input->post('search');
 			$order        = $this->input->post('order');
 			$draw         = $this->input->post('draw');
-			
+
 			$column_order = array(
 				'so.PK_stock_out_id',
 				'seg.segment_name',
@@ -61,7 +61,7 @@ class Stockout extends MY_Controller {
 			);
 			$group        = array();
 			$list         = getDataTables('eb_stock_out so',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
-			
+
 			$list_purchase_order = array(
 				"draw" => $draw,
 				"recordsTotal" => $list['count_all'],
@@ -79,7 +79,7 @@ class Stockout extends MY_Controller {
 
 
 		if(!empty($post)){
-			
+
 			$data = array(
 				"FK_user_id" 	 	=> my_user_id(), // change if naa nay useer
 				"FK_outlet_id"  	=>  _get_branch_assigned(),
@@ -134,7 +134,7 @@ class Stockout extends MY_Controller {
 			updateData("eb_stock_out", $set, $where); // update po
 
 			$where = array( "FK_stock_out_id" => $so_id );
-			deleteData("eb_stock_out_items", $where); 
+			deleteData("eb_stock_out_items", $where);
 
 			$items = json_decode($post["so_items"]);
 
@@ -160,7 +160,7 @@ class Stockout extends MY_Controller {
 	public function get_so_details($so_id){
 
 		$response = array("result" => "error");
-		
+
 		if(!empty($so_id)){
 
 			$par["select"] 	= "*";
@@ -171,7 +171,7 @@ class Stockout extends MY_Controller {
 			);
 			
 			$so_data = getData("eb_stock_out so", $par, "obj");
-			
+
 			if(!empty($so_data)){
 			
 				$par['select'] = 'firstname, lastname';
@@ -187,7 +187,7 @@ class Stockout extends MY_Controller {
 				$par["join"] 	= array(
 					"eb_raw_materials raw_mat" => "raw_mat.PK_raw_materials_id = so_item.FK_raw_material_id",
 				);
-				
+
 				$so_items = getData("eb_stock_out_items so_item", $par, "obj");
 
 				if(!empty($so_items)){
@@ -210,7 +210,7 @@ class Stockout extends MY_Controller {
 		$disc_items = json_decode($post["disc_item"]);
 
 		if(!empty($so_id)){
-			
+
 			$data = array(
 				"fk_stockout_id" => $so_id,
 				"fk_approve_user_id" => my_user_id(),

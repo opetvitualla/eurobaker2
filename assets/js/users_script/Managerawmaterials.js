@@ -205,80 +205,80 @@ $(document).ready(function () {
           ],
      });
 
-    $(document).on('submit', '#Raw_Material_Cat_Add', function (e) {
-         e.preventDefault();
-         var formData = new FormData($(this)[0]);
+     $(document).on('submit', '#Raw_Material_Cat_Add', function (e) {
+          e.preventDefault();
+          var formData = new FormData($(this)[0]);
 
-         $.ajax({
-              url: base_url + 'Managerawmaterials/addCategory',
-              data: formData,
-              processData: false,
-              contentType: false,
-              cache: false,
-              type: 'POST',
-              success: function (data) {
-                   s_alert("Successfully Saved!", "success");
-                   table_raw_materials_cat.ajax.reload();
-                   $('.add_raw_material_cat_modal').modal('hide');
-              }
-         });
-    });
+          $.ajax({
+               url: base_url + 'Managerawmaterials/addCategory',
+               data: formData,
+               processData: false,
+               contentType: false,
+               cache: false,
+               type: 'POST',
+               success: function (data) {
+                    s_alert("Successfully Saved!", "success");
+                    table_raw_materials_cat.ajax.reload();
+                    $('.add_raw_material_cat_modal').modal('hide');
+               }
+          });
+     });
 
-    $(document).on('click', '#view_Category_Details', function () {
-         var id = $(this).data('id');
-         $('.view_category_details_modal').modal('show');
-         $('.view_category_details_modal input').prop('disabled', true);
+     $(document).on('click', '#view_Category_Details', function () {
+          var id = $(this).data('id');
+          $('.view_category_details_modal').modal('show');
+          $('.view_category_details_modal input').prop('disabled', true);
 
-         $.ajax({
-              url: base_url + 'Managerawmaterials/viewCategoryDetails',
-              type: "post",
-              data: { "id": id },
-              dataType: 'json',
-              success: function (data) {
-                   $('.view_category_details_modal input[name="category_name"]').val(data.category_name);
-              }
-         });
-    });
+          $.ajax({
+               url: base_url + 'Managerawmaterials/viewCategoryDetails',
+               type: "post",
+               data: { "id": id },
+               dataType: 'json',
+               success: function (data) {
+                    $('.view_category_details_modal input[name="category_name"]').val(data.category_name);
+               }
+          });
+     });
 
-    $(document).on('click', '#edit_Category_Details', function () {
-         var id = $(this).data('id');
-         console.log(id);
-         $('.edit_category_details_modal').modal('show');
+     $(document).on('click', '#edit_Category_Details', function () {
+          var id = $(this).data('id');
+          console.log(id);
+          $('.edit_category_details_modal').modal('show');
 
-         $.ajax({
-              url: base_url + 'Managerawmaterials/viewCategoryDetails',
-              type: "post",
-              data: { "id": id },
-              dataType: 'json',
-              success: function (data) {
-                   $('.edit_category_details_modal input[name="category_name"]').val(data.category_name);
-                   $('.edit_category_details_modal .edit_Button').attr('data-id', data.PK_category_id);
-              }
-         });
-    });
+          $.ajax({
+               url: base_url + 'Managerawmaterials/viewCategoryDetails',
+               type: "post",
+               data: { "id": id },
+               dataType: 'json',
+               success: function (data) {
+                    $('.edit_category_details_modal input[name="category_name"]').val(data.category_name);
+                    $('.edit_category_details_modal .edit_Button').attr('data-id', data.PK_category_id);
+               }
+          });
+     });
 
-    $(document).on('submit', '#Raw_Material_Cat_Edit', function (e) {
-         e.preventDefault();
-         var formData = new FormData($(this)[0]);
-         var dataid = $('#Raw_Material_Cat_Edit .edit_Button').data('id');
-         formData.append('id', dataid)
+     $(document).on('submit', '#Raw_Material_Cat_Edit', function (e) {
+          e.preventDefault();
+          var formData = new FormData($(this)[0]);
+          var dataid = $('#Raw_Material_Cat_Edit .edit_Button').data('id');
+          formData.append('id', dataid)
 
-         $.ajax({
-              url: base_url + 'Managerawmaterials/updateCategoryDetails',
-              data: formData,
-              processData: false,
-              contentType: false,
-              cache: false,
-              type: 'POST',
-              success: function (data) {
-                   s_alert("Successfully Saved!", "success");
-                   table_raw_materials_cat.ajax.reload();
-                   $('.edit_category_details_modal').modal('hide');
-              }
-         });
-    });
-     
-     
+          $.ajax({
+               url: base_url + 'Managerawmaterials/updateCategoryDetails',
+               data: formData,
+               processData: false,
+               contentType: false,
+               cache: false,
+               type: 'POST',
+               success: function (data) {
+                    s_alert("Successfully Saved!", "success");
+                    table_raw_materials_cat.ajax.reload();
+                    $('.edit_category_details_modal').modal('hide');
+               }
+          });
+     });
+
+
      // units
      var unit_conversion_table = $('#unit_conversion_table').DataTable({
           "language": { "infoFiltered": "" },
@@ -319,7 +319,6 @@ $(document).ready(function () {
      });
 
      $(".show-add_unit-modal").click(function () {
-          
           let item_option = "<option value=''>Please select</option>";
           items.map(item => {
                item_option += `<option value="${item.PK_raw_materials_id}">${item.material_name}</option>`;
@@ -327,7 +326,7 @@ $(document).ready(function () {
 
           $(".item_dropdown").html(item_option);
           $(".item_dropdown").select2();
-         
+
           $(".add_unit_modal").modal();
      })
 
@@ -411,7 +410,7 @@ $(document).ready(function () {
      $(document).on("click", ".btn-edit-unit", function () {
           let item_id = $(this).data("id");
           $("#unit_con_id").val(item_id);
-          
+
 
           $(".table-unit-body-edit").html("")
 
@@ -430,7 +429,7 @@ $(document).ready(function () {
                               i_units += `<option ${(item.fk_new_unit_id == unit.PK_unit_id) ? "selected" : ""} value="${unit.PK_unit_id}">${unit.unit_name}</option>`
                          })
 
-                          let html = `
+                         let html = `
                               <tr>
                                    <td><span>${data.material_name}</span></td>
                                    <td>${data.unit}</td>
@@ -463,9 +462,9 @@ $(document).ready(function () {
           let res = items.find(item => item.PK_raw_materials_id == item_id)
 
           let i_units = "<option value=''> - </option>";
-          
+
           all_units.map(unit => {
-               i_units += `<option value="${unit.PK_unit_id}">${unit.unit_name}</option>`    
+               i_units += `<option value="${unit.PK_unit_id}">${unit.unit_name}</option>`
           })
 
           if (res != undefined) {
@@ -487,7 +486,7 @@ $(document).ready(function () {
                `;
                $(".table-unit-body").html(html)
           }
-          
+
      })
 
      $(document).on("click", ".remove-unit-row", function () {
@@ -496,7 +495,7 @@ $(document).ready(function () {
 
      $(document).on("change", ".new_unit_select", function (e) {
           let unit_val = $(this).val();
-          
+
           let counts = 0;
           $(".table-unit-body tr").each(function () {
                let r_val = $(this).find(".new_unit_select").val();
@@ -531,21 +530,21 @@ $(document).ready(function () {
      $("#unit_modal_form").submit(function (e) {
           e.preventDefault();
           let unit_items = [];
-          let has_err = false;     
+          let has_err = false;
           let idx = 0;
           $(".table-unit-body tr").each(function () {
                idx += 1;
-               
+
                let uom_val = $(this).find(".uom_value").val();
                let new_unit_val = $(this).find(".new_value").val();
                let selected_unit = $(this).find(".new_unit_select").val();
                let item_id = $(".item_dropdown").val();
-               
+
 
                if (uom_val == "" || uom_val == undefined) {
                     s_alert("Please add the required fields", "error")
                     has_err = true;
-               } else if (new_unit_val == "" || new_unit_val == undefined){
+               } else if (new_unit_val == "" || new_unit_val == undefined) {
                     s_alert("Please add the required fields", "error")
                     has_err = true;
                } else if (new_unit_val == uom_val) {
@@ -554,24 +553,24 @@ $(document).ready(function () {
                } else if (selected_unit == "" || selected_unit == undefined) {
                     s_alert("Please add the required fields", "error")
                     has_err = true;
-               }    
+               }
                unit_items.push({
-                    item_id        : item_id,
-                    uom_value      : uom_val,
-                    new_unit       : selected_unit,
-                    new_unit_value : new_unit_val,
+                    item_id: item_id,
+                    uom_value: uom_val,
+                    new_unit: selected_unit,
+                    new_unit_value: new_unit_val,
                })
 
           })
 
-          if (idx == 0) { 
+          if (idx == 0) {
                s_alert("Please add at least 1 item!", "error")
                return;
           }
-        
+
           if (!has_err) {
 
-               
+
                confirm_alert("Are you sure to add these units?").then(res => {
                     let frmdata = new FormData();
                     frmdata.append("unit_items", JSON.stringify(unit_items));
@@ -582,7 +581,7 @@ $(document).ready(function () {
                               unit_conversion_table.ajax.reload();
                          }
                     })
-               }) 
+               })
           }
 
      })
@@ -684,101 +683,125 @@ $(document).ready(function () {
           ],
      });
 
-    $(document).on('submit', '#Raw_Material_Unit_Add', function (e) {
-         e.preventDefault();
-         var formData = new FormData($(this)[0]);
+     $(document).on('submit', '#Raw_Material_Unit_Add', function (e) {
+          e.preventDefault();
+          var formData = new FormData($(this)[0]);
 
-         $.ajax({
-              url: base_url + 'Managerawmaterials/addUnit',
-              data: formData,
-              processData: false,
-              contentType: false,
-              cache: false,
-              type: 'POST',
-              success: function (data) {
-                   s_alert("Successfully Saved!", "success");
-                   table_raw_materials_unit.ajax.reload();
-                   $('.add_raw_material_unit_modal').modal('hide');
-              }
-         });
-    });
+          $.ajax({
+               url: base_url + 'Managerawmaterials/addUnit',
+               data: formData,
+               processData: false,
+               contentType: false,
+               cache: false,
+               type: 'POST',
+               success: function (data) {
+                    s_alert("Successfully Saved!", "success");
+                    table_raw_materials_unit.ajax.reload();
+                    $('.add_raw_material_unit_modal').modal('hide');
+               }
+          });
+     });
 
-    $(document).on('click', '#view_Unit_Details', function () {
-         var id = $(this).data('id');
-         $('.view_unit_details_modal').modal('show');
-         $('.view_unit_details_modal input').prop('disabled', true);
+     $(document).on('click', '#view_Unit_Details', function () {
+          var id = $(this).data('id');
+          $('.view_unit_details_modal').modal('show');
+          $('.view_unit_details_modal input').prop('disabled', true);
 
-         $.ajax({
-              url: base_url + 'Managerawmaterials/viewUnitDetails',
-              type: "post",
-              data: { "id": id },
-              dataType: 'json',
-              success: function (data) {
-                   $('.view_unit_details_modal input[name="unit_name"]').val(data.unit_name);
-                   $('.view_unit_details_modal input[name="unit_abbr"]').val(data.unit_abbr);
-              }
-         });
-    });
+          $.ajax({
+               url: base_url + 'Managerawmaterials/viewUnitDetails',
+               type: "post",
+               data: { "id": id },
+               dataType: 'json',
+               success: function (data) {
+                    $('.view_unit_details_modal input[name="unit_name"]').val(data.unit_name);
+                    $('.view_unit_details_modal input[name="unit_abbr"]').val(data.unit_abbr);
+               }
+          });
+     });
 
-    $(document).on('click', '#edit_Unit_Details', function () {
-         var id = $(this).data('id');
-         console.log(id);
-         $('.edit_unit_details_modal').modal('show');
+     $(document).on('click', '#edit_Unit_Details', function () {
+          var id = $(this).data('id');
+          console.log(id);
+          $('.edit_unit_details_modal').modal('show');
 
-         $.ajax({
-              url: base_url + 'Managerawmaterials/viewUnitDetails',
-              type: "post",
-              data: { "id": id },
-              dataType: 'json',
-              success: function (data) {
-                   $('.edit_unit_details_modal input[name="unit_name"]').val(data.unit_name);
-                   $('.edit_unit_details_modal input[name="unit_abbr"]').val(data.unit_abbr);
-                   $('.edit_unit_details_modal .edit_Button').attr('data-id', data.PK_unit_id);
-              }
-         });
-    });
+          $.ajax({
+               url: base_url + 'Managerawmaterials/viewUnitDetails',
+               type: "post",
+               data: { "id": id },
+               dataType: 'json',
+               success: function (data) {
+                    $('.edit_unit_details_modal input[name="unit_name"]').val(data.unit_name);
+                    $('.edit_unit_details_modal input[name="unit_abbr"]').val(data.unit_abbr);
+                    $('.edit_unit_details_modal .edit_Button').attr('data-id', data.PK_unit_id);
+               }
+          });
+     });
 
-    $(document).on('click', '#delete_unit', function () {
-         var id       = $(this).data('id');
-         var frmdata  = {
-                          "id": id,
-                          "delete": true
-                         };
-            confirm_alert("Are you sure you want to delete this unit?").then(confirm => {
-           $.ajax({
-                url: base_url + 'Managerawmaterials/updateUnitDetails',
-                type: "post",
-                data: { "id": id, "delete": true },
-                dataType: 'json',
-                success: function (data) {
-                      s_alert("Successfully Saved!", "success");
-                      table_raw_materials_unit.ajax.reload();
-                }
-           });
-         });
+     $(document).on('click', '#delete_unit', function () {
+          var id = $(this).data('id');
+          var frmdata = {
+               "id": id,
+               "delete": true
+          };
+          confirm_alert("Are you sure you want to delete this unit?").then(confirm => {
+               $.ajax({
+                    url: base_url + 'Managerawmaterials/updateUnitDetails',
+                    type: "post",
+                    data: { "id": id, "delete": true },
+                    dataType: 'json',
+                    success: function (data) {
+                         s_alert("Successfully Saved!", "success");
+                         table_raw_materials_unit.ajax.reload();
+                    }
+               });
+          });
 
-    });
+     });
 
-    $(document).on('submit', '#Raw_Material_Unit_Edit', function (e) {
-         e.preventDefault();
-         var formData = new FormData($(this)[0]);
-         var dataid = $('#Raw_Material_Unit_Edit .edit_Button').data('id');
-         formData.append('id', dataid)
+     $(document).on('submit', '#Raw_Material_Unit_Edit', function (e) {
+          e.preventDefault();
+          var formData = new FormData($(this)[0]);
+          var dataid = $('#Raw_Material_Unit_Edit .edit_Button').data('id');
+          formData.append('id', dataid)
 
-         $.ajax({
-              url: base_url + 'Managerawmaterials/updateUnitDetails',
-              data: formData,
-              processData: false,
-              contentType: false,
-              cache: false,
-              type: 'POST',
-              success: function (data) {
-                   s_alert("Successfully Saved!", "success");
-                   table_raw_materials_unit.ajax.reload();
-                   $('.edit_unit_details_modal').modal('hide');
-              }
-         });
-    });
+          $.ajax({
+               url: base_url + 'Managerawmaterials/updateUnitDetails',
+               data: formData,
+               processData: false,
+               contentType: false,
+               cache: false,
+               type: 'POST',
+               success: function (data) {
+                    s_alert("Successfully Saved!", "success");
+                    table_raw_materials_unit.ajax.reload();
+                    $('.edit_unit_details_modal').modal('hide');
+               }
+          });
+     });
+
+     var table_raw_materials_price_logs = $('#raw_Materials_Price_Logs').DataTable({
+          "language": { "infoFiltered": "" },
+          "processing": true, //Feature control the processing indicator.
+          "serverSide": true, //Feature control DataTables' server-side processing mode.
+          "responsive": true,
+          "order": [[0, 'desc']], //Initial no order.
+          "columns": [
+               {
+                    "data": "PK_log_id", "render": function (data, type, row, meta) {
+                         var str = 'PR-' + row.PK_log_id;
+                         return str;
+                    }
+               },
+               { "data": "material_name" },
+               { "data": "previous_price" },
+               { "data": "current_price" },
+               { "data": "date_added" },
+          ],
+          "ajax": {
+               "url": base_url + "Managerawmaterials/getPriceLogs",
+               "type": "POST"
+          },
+     });
 
 })
 

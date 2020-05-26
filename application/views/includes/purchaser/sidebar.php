@@ -12,7 +12,11 @@
                 </li>
                 <li> <a class="waves-effect waves-dark" href="<?= base_url('ManageItemInventory') ?>" aria-expanded="false"><i class="icon-Bar-Chart  "></i><span class="hide-menu">Item Inventory</span></a>
                 </li>
-
+                <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="icon-Warehouse "></i><span class="hide-menu">Manage Stocks</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="<?= base_url('Managestocks/StockAdjustments') ?>">Stock Adjustment</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

@@ -29,7 +29,7 @@ class Manageemployees extends MY_Controller {
 												'eb_users_meta'	=>	'eb_users_meta.FK_user_id = eb_users.PK_user_id',
 											);
       $select       = "PK_user_id, firstname, lastname, branch_assigned, email_address, date_added";
-      $where        = array();
+      $where        = array('user_type !=' => 1);
       $group        = array();
       $list         = $this->MY_Model->get_datatables('eb_users',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
 
