@@ -168,14 +168,17 @@ $(document).ready(function() {
 
   $(document).on('click', '.transfer_view_details', function() {
     let transferred_id = $(this).data("id");
+    $('.transfer_view_details_modal input').prop('disabled', true);
 
     axios.get(`${base_url}Managestocks/get_transferred_details/${transferred_id}`).then(res => {
-      console.log(res);
       if (res.data.result == "success") {
         let result = res.data.data;
         get_po_data = res.data.data;
-        $(".transfer-view").html("")
+        console.log(result[0].received_by);
+        // $(".transfer-view").html("")
         $('p.destination').html(result[0].destination);
+        $('.transfer_view_details_modal input[name="received_by"]').val(result[0].received_by);
+        $('.transfer_view_details_modal input[name="counterchecked_by"]').val(result[0].counterchecked_by);
         $('p.strno').html(result[0].str_no);
         // $(".po_received_date").html(result[0].date_received)
 
@@ -442,7 +445,7 @@ $(document).ready(function() {
     $(document).on('submit', '#transfer_review', function (e) {
       e.preventDefault();
       let actual_quantity = $('input[name="actual_quantity[]"]').val();
-      let frmdata = new FormData();
+      let frmdata = new FormData($(this)[0]);
       confirm_alert("Are you sure to mark this as Delivered?").then(res => {
         frmdata.append("transferred_id", transferred_id);
         frmdata.append("actual_quantity", actual_quantity);

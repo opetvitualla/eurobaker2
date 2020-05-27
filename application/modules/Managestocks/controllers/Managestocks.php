@@ -38,7 +38,7 @@ class Managestocks extends MY_Controller {
 											);
 			$select       = "PK_stock_transfer_id, FK_destination_branch_id,outlet_name, stock_out, eb_stock_transfer.status, eb_stock_transfer.date_added";
 			$where        = array(
-												'FK_origin_branch_id' => 1// current outlet id
+												'FK_destination_branch_id' => _get_outlet_assigned()// current outlet id
 											);
 			$group        = array();
 			$list         = $this->MY_Model->get_datatables('eb_stock_transfer',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
@@ -240,7 +240,11 @@ class Managestocks extends MY_Controller {
 					$insert_STOCK_OUT	=	insertData("eb_item_inventory", $transfer_from); // insert transfer items to inventory
 				}
 
-				$set = array( "status" => 1, );
+				$set = array(
+					"status" => 1,
+					"received_by" => $this->input->post('received_by'),
+					"counterchecked_by" => $this->input->post('counterchecked_by'), 
+				);
 				$where = array( "PK_stock_transfer_id" => $transferred_id );
 
 				updateData("eb_stock_transfer", $set, $where);

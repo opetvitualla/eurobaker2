@@ -25,7 +25,13 @@
                 </li>
                 <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="icon-Warehouse "></i><span class="hide-menu">Manage Stocks</span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="<?= base_url('Managestocks/StockTransfer') ?>  ">Stock Transfer</a></li>
+                        <li>
+                          <a href="<?= base_url('Managestocks/StockTransfer') ?>  ">Stock Transfer
+                            <?php if (!empty(_count_stock_transfer())): ?>
+                              <span class="label label-rounded label-danger submenu"><?= _count_stock_transfer() ?></span>
+                            <?php endif; ?>
+                          </a>
+                        </li>
                         <li><a href="<?= base_url('Stockout') ?>">Stock Out</a></li>
                         <li><a href="<?= base_url('Managestocks/StockAdjustments') ?>">Stock Adjustment</a></li>
                     </ul>

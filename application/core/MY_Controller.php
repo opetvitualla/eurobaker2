@@ -12,7 +12,7 @@ class MY_Controller extends MX_Controller {
 				redirect(base_url());
 			}
 		}
-		
+
 		else {
 			if(!$this->session->has_userdata('is_logged')){
 				redirect(base_url('login'));
@@ -34,7 +34,7 @@ class MY_Controller extends MX_Controller {
 		$this->load->view($page, $data);
 		$this->load->view('includes/purchaser/footer',$data);
 	}
-	
+
 	public function load_super_page($page, $data = array()){
 		$this->load->view('includes/supervisor/head',$data);
 		$this->load->view('includes/supervisor/header',$data);
@@ -44,6 +44,7 @@ class MY_Controller extends MX_Controller {
 	}
 
 	public function load_page($page, $data = array()){
+		// $stocks = _count_stock_transfer();
 		$this->load->view('includes/admin/head',$data);
 		$this->load->view('includes/admin/header',$data);
 		$this->load->view('includes/admin/sidebar',$data);

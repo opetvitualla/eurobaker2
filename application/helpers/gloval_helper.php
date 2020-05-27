@@ -29,11 +29,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     }
 
     function get_user_type() {
-      
+
         $ci = & get_instance();
 
          return $ci->session->userdata("user_type");
-        
+
     }
 
     function get_user_data($par = "user_id"){
@@ -44,21 +44,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
     function _get_branch_assigned(){
-        
+
         $ci = & get_instance();
         $data = json_decode($ci->session->userdata("branch_assigned"));
-        
+
         return $data[0];
-        
+
+    }
+
+    function _get_outlet_assigned(){
+
+        $ci = & get_instance();
+        $data = $ci->session->userdata("branch_assigned");
+
+        return $data;
+
     }
 
     function _get_all_units(){
-        
+
         $ci = & get_instance();
         $par["select"] = "*";
         $data = getData("eb_units", $par);
         return $data;
-        
+
+    }
+
+    function _count_stock_transfer(){
+
+        $ci = & get_instance();
+        $outlet = $ci->session->userdata("branch_assigned");
+        $par["select"] 	= "*";
+        $par["where"]	= "FK_destination_branch_id = $outlet AND status=0";
+
+        $data = getData("eb_stock_transfer", $par, "count");
+        return $data;
+
     }
 
     function get_user_id(){
@@ -66,7 +87,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         if($ci->session->has_userdata("pk_user_id")){
             return $ci->session->userdata("pk_user_id");
         }
-    
+
     }
 
     function my_user_id(){
@@ -74,7 +95,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         if($ci->session->has_userdata("PK_user_id")){
             return $ci->session->userdata("PK_user_id");
         }
-    
+
     }
 
     function get_post(){
@@ -223,17 +244,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $par["select"] = "PK_supplier_id, supplier_name";
             $par["where"]  = "status = 1";
             $supplier = getData("eb_suppliers", $par, "obj");
-            
+
 			return $supplier;
         }
     }
 
     if(!function_exists('_get_items')){
         function _get_items($params = array()){
-            
+
             $par["select"] = "PK_raw_materials_id, FK_category_id, material_name, unit, sales_price, related_item_id";
             $items = getData("eb_raw_materials_list", $par, "obj");
-            
+
 			return $items;
         }
     }

@@ -56,7 +56,7 @@
                   <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title">Transfer Item</h5>
+                        <h5 class="modal-title">Transfer Item </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -262,6 +262,20 @@
                                       <tbody class="table-po-body"> </tbody>
                                   </table>
                                 </div>
+                                <div class="row">
+                                  <div class="col-md-7">
+                                  </div>
+                                  <div class="col-md-5">
+                                      <div class="form-group">
+                                          <label>Received by:</label>
+                                          <input type="text" class="form-control" name="received_by" value="" readonly>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>Counterchecked by:</label>
+                                          <input type="text" class="form-control" name="counterchecked_by" value="" readonly>
+                                      </div>
+                                  </div>
+                                </div>
                                   <div class="form-actions">
                                       <hr/>
                                       <!-- <h3 class="fbold o-total">Total Items: <span class="total-item">0</span></h3> -->
@@ -330,6 +344,20 @@
                                       </thead>
                                       <tbody class="table-transfer-rev-body"> </tbody>
                                   </table>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-7">
+                                  </div>
+                                  <div class="col-md-5">
+                                      <div class="form-group">
+                                          <label>Received by:</label>
+                                          <input type="text" class="form-control" name="received_by" value="">
+                                      </div>
+                                      <div class="form-group">
+                                          <label>Counterchecked by:</label>
+                                          <input type="text" class="form-control" name="counterchecked_by" value="">
+                                      </div>
+                                  </div>
                                 </div>
                                   <div class="form-actions">
                                       <!-- <hr/> -->
