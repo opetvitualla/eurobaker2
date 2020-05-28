@@ -19,6 +19,7 @@
                         <li><a href="<?= base_url('Managerawmaterials/Categories') ?>">Categories</a></li>
                         <li><a href="<?= base_url('Managerawmaterials/Units') ?>">Units</a></li>
                         <li><a href="<?= base_url('Managerawmaterials/unit_conversion') ?>">Item Unit Conversion</a></li>
+                        <li><a href="<?= base_url('Managerawmaterials/expired_items') ?>">Expired Items</a></li>
                     </ul>
                 </li>
                 <li> <a class="waves-effect waves-dark" href="<?= base_url('Manageiteminventory/') ?>" aria-expanded="false"><i class="icon-Bar-Chart  "></i><span class="hide-menu">Item Inventory </span></a>

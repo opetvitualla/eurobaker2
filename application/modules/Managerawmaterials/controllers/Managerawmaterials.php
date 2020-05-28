@@ -232,13 +232,13 @@ class ManageRawMaterials extends MY_Controller {
 	}
 
 	public function save_unit_conversion(){
-		
+
 		$reponse = array("result" => false);
 
 		$post = json_decode($this->input->post("unit_items"));
 
 		if(!empty($post)){
-			
+
 			$item_id = $post[0]->item_id;
 
 			$data = array(
@@ -333,7 +333,7 @@ class ManageRawMaterials extends MY_Controller {
 					$reponse = array("result" => true, "data" => $get_data);
 				}
 			}
-		
+
 		}
 
 		echo json_encode($reponse);
@@ -346,7 +346,7 @@ class ManageRawMaterials extends MY_Controller {
 		$post = json_decode($this->input->post("unit_items"));
 
 		if(!empty($post)){
-			
+
 			$item_id = $post[0]->item_id;
 			$unit_con_id = $post[0]->unit_con_id;
 
@@ -355,7 +355,7 @@ class ManageRawMaterials extends MY_Controller {
 				"total_items" => count($post)
 			);
 			$where = array( "pk_unit_con_id" => $unit_con_id );
-			
+
 			updateData("eb_unit_converted", $data, $where);
 
 			$where = array( "fk_unit_con_id" => $unit_con_id );
@@ -552,6 +552,15 @@ class ManageRawMaterials extends MY_Controller {
 				}
 						fclose($handle);
 				exit;
+		}
+
+		public function expired_items() {
+			$data["title"] 		  = "Expired Items";
+			$data["page_name"]  = "Raw Materials > Expired Items";
+			$data['has_header'] = "includes/admin/header";
+			$data['has_footer']	= "includes/index_footer";
+
+			$this->load_page('expired_items',$data);
 		}
 
 }
